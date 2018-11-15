@@ -1,0 +1,140 @@
+
+running 'Blackjack Console App' @ Wed Nov 14 2018 22:39:54 GMT-0500 (Eastern Standard Time)
+
+Controller to Game object - startGame
+BJGame.startGame
+Controller to Game object - shuffleDeck
+BJGame.shuffleDeck
+============== ROUND 1 ==============
+Controller to Game object - initRound
+Controller to Game object - dealCards
+Controller to Game object - checkHands
+Controller to Game object - calcScores
+Controller to Game object - calcStats
+============== ROUND 2 ==============
+Controller to Game object - initRound
+Controller to Game object - dealCards
+Controller to Game object - checkHands
+Controller to Game object - calcScores
+Controller to Game object - calcStats
+============== ROUND 3 ==============
+Controller to Game object - initRound
+Controller to Game object - dealCards
+Controller to Game object - checkHands
+Controller to Game object - calcScores
+Controller to Game object - calcStats
+============== ROUND 4 ==============
+Controller to Game object - initRound
+Controller to Game object - dealCards
+Controller to Game object - checkHands
+Controller to Game object - calcScores
+Controller to Game object - calcStats
+============== ROUND 5 ==============
+Controller to Game object - initRound
+Controller to Game object - dealCards
+Controller to Game object - checkHands
+Controller to Game object - calcScores
+Controller to Game object - calcStats
+============== ROUND 6 ==============
+Controller to Game object - initRound
+Controller to Game object - dealCards
+Controller to Game object - checkHands
+Controller to Game object - calcScores
+Controller to Game object - calcStats
+============== ROUND 7 ==============
+Controller to Game object - initRound
+Controller to Game object - dealCards
+Controller to Game object - checkHands
+Controller to Game object - calcScores
+Controller to Game object - calcStats
+============== ROUND 8 ==============
+Controller to Game object - initRound
+Controller to Game object - dealCards
+Controller to Game object - checkHands
+Controller to Game object - calcScores
+Controller to Game object - calcStats
+============== ROUND 9 ==============
+Controller to Game object - initRound
+Controller to Game object - dealCards
+Controller to Game object - checkHands
+Controller to Game object - calcScores
+Controller to Game object - calcStats
+============== ROUND 10 ==============
+Controller to Game object - initRound
+Controller to Game object - dealCards
+Controller to Game object - checkHands
+Controller to Game object - calcScores
+Controller to Game object - calcStats
+============== ROUND 11 ==============
+Controller to Game object - initRound
+Controller to Game object - dealCards
+Controller to Game object - checkHands
+Controller to Game object - calcScores
+Controller to Game object - calcStats
+============== ROUND 12 ==============
+Controller to Game object - initRound
+Controller to Game object - dealCards
+Controller to Game object - checkHands
+Controller to Game object - calcScores
+Controller to Game object - calcStats
+============== ROUND 13 ==============
+Controller to Game object - initRound
+Controller to Game object - dealCards
+Controller to Game object - checkHands
+Controller to Game object - calcScores
+Controller to Game object - calcStats
+============== ROUND 14 ==============
+Controller to Game object - initRound
+Controller to Game object - dealCards
+Controller to Game object - checkHands
+Controller to Game object - calcScores
+Controller to Game object - calcStats
+============== ROUND 15 ==============
+Controller to Game object - initRound
+Controller to Game object - dealCards
+Controller to Game object - checkHands
+Controller to Game object - calcScores
+Controller to Game object - calcStats
+============== ROUND 16 ==============
+Controller to Game object - initRound
+Controller to Game object - dealCards
+Controller to Game object - checkHands
+Controller to Game object - calcScores
+Controller to Game object - calcStats
+============== ROUND 17 ==============
+Controller to Game object - initRound
+Controller to Game object - dealCards
+Controller to Game object - checkHands
+Controller to Game object - calcScores
+Controller to Game object - calcStats
+============== ROUND 18 ==============
+Controller to Game object - initRound
+Controller to Game object - dealCards
+Controller to Game object - checkHands
+Controller to Game object - calcScores
+Controller to Game object - calcStats
+============== ROUND 19 ==============
+Controller to Game object - initRound
+Controller to Game object - dealCards
+Controller to Game object - checkHands
+Controller to Game object - calcScores
+Controller to Game object - calcStats
+============== ROUND 20 ==============
+Controller to Game object - initRound
+Controller to Game object - dealCards
+Controller to Game object - checkHands
+Controller to Game object - calcScores
+Controller to Game object - calcStats
+
+Controller to Game object - calcFinalStats
+Controller to View object - showFinalStats
+
+============================================
+
+Rounds played: 20
+
+============================================
+
+
+
+completed simulation @ Wed Nov 14 2018 22:39:54 GMT-0500 (Eastern Standard Time)

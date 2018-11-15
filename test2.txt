@@ -1,0 +1,47 @@
+RUNNING TEST 2
+
+creating card Hand object
+
+created object: hand
+OBJECT PROPERTIES
+.name: hand
+.parent: tester
+.className: BJHand
+count: 0
+objects: 
+
+
+shuffling deck and adding 3 cards to Hand
+testing Deck.addCard() and Deck.getNextCard()
+
+showing Hand info:
+OBJECT PROPERTIES
+.name: hand
+.parent: tester
+.className: BJHand
+count: 3
+objects: 
+  [0] 6-C
+  [1] 9-C
+  [2] Q-H
+
+showing Hand.cardFaceValues()
+6-C    9-C    Q-H    
+showing Hand.cardPointValues()
+25
+
+is it a bust Hand? true
+is it a Blackjack? false
+
+clearing - testing Hand.clear()
+
+showing Hand info:
+OBJECT PROPERTIES
+.name: hand
+.parent: tester
+.className: BJHand
+count: 0
+objects: 
+
+
+TEST 2 COMPLETED.

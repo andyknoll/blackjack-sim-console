@@ -1,0 +1,93 @@
+RUNNING TEST 8
+
+testing Player and Dealer objects
+same as TEST 7 but using Players collection
+
+creating and initializing Player and Dealer objects
+
+showing Players collection object
+OBJECT PROPERTIES
+.name: players
+.parent: tester
+.className: BJPlayers
+count: 3
+objects: 
+  [0] player1
+  [1] player2
+  [2] dealer1
+
+OBJECT PROPERTIES
+.name: player1
+.parent: tester
+.className: BJPlayer
+.nickname: Huey
+.cash: 200
+.hand: [object Object]
+
+OBJECT PROPERTIES
+.name: player2
+.parent: tester
+.className: BJPlayer
+.nickname: Dewey
+.cash: 200
+.hand: [object Object]
+
+OBJECT PROPERTIES
+.name: dealer1
+.parent: tester
+.className: BJDealer
+.nickname: Mr. Magoo
+.cash: 1000000
+.hand: [object Object]
+.deck: [object Object]
+.deckCount: 52
+
+testing Players.getInitialCards(2)
+
+Player1.Hand cards
+OBJECT PROPERTIES
+.name: player1_hand
+.parent: player1
+.className: BJHand
+count: 2
+objects: 
+  [0] A-H
+  [1] Q-S
+.rules: null
+
+
+Player2.Hand cards
+OBJECT PROPERTIES
+.name: player2_hand
+.parent: player2
+.className: BJHand
+count: 2
+objects: 
+  [0] 6-D
+  [1] K-S
+.rules: null
+
+
+Dealer1.Hand cards
+OBJECT PROPERTIES
+.name: dealer1_hand
+.parent: dealer1
+.className: BJHand
+count: 2
+objects: 
+  [0] 10-D
+  [1] K-H
+.rules: null
+
+
+calling inherited dealer1.deck.showRange(0, 5)
+first 6 Dealer.Deck cards - should be same but alternating
+  [0]  A-H
+  [1]  6-D
+  [2]  10-D
+  [3]  Q-S
+  [4]  K-S
+  [5]  K-H
+
+
+TEST 8 COMPLETED.
