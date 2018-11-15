@@ -12,9 +12,19 @@ OBJECT PROPERTIES
 .className: BJPlayers
 count: 3
 objects: 
-  [0] player1
-  [1] player2
-  [2] dealer1
+  [0] dealer1
+  [1] player1
+  [2] player2
+
+OBJECT PROPERTIES
+.name: dealer1
+.parent: tester
+.className: BJDealer
+.nickname: Mr. Magoo
+.cash: 1000000
+.hand: [object Object]
+.deck: [object Object]
+.deckCount: 52
 
 OBJECT PROPERTIES
 .name: player1
@@ -32,16 +42,6 @@ OBJECT PROPERTIES
 .cash: 200
 .hand: [object Object]
 
-OBJECT PROPERTIES
-.name: dealer1
-.parent: tester
-.className: BJDealer
-.nickname: Mr. Magoo
-.cash: 1000000
-.hand: [object Object]
-.deck: [object Object]
-.deckCount: 52
-
 testing Players.getInitialCards(2)
 
 Player1.Hand cards
@@ -51,8 +51,8 @@ OBJECT PROPERTIES
 .className: BJHand
 count: 2
 objects: 
-  [0] A-H
-  [1] Q-S
+  [0] 7-S  
+  [1] 7-D  
 .rules: null
 
 
@@ -63,8 +63,8 @@ OBJECT PROPERTIES
 .className: BJHand
 count: 2
 objects: 
-  [0] 6-D
-  [1] K-S
+  [0] 4-S  
+  [1] 9-D  
 .rules: null
 
 
@@ -75,19 +75,31 @@ OBJECT PROPERTIES
 .className: BJHand
 count: 2
 objects: 
-  [0] 10-D
-  [1] K-H
+  [0] 6-H  
+  [1] J-C  
 .rules: null
 
 
 calling inherited dealer1.deck.showRange(0, 5)
 first 6 Dealer.Deck cards - should be same but alternating
-  [0]  A-H
-  [1]  6-D
-  [2]  10-D
-  [3]  Q-S
-  [4]  K-S
-  [5]  K-H
+  [0]  7-S
+  [1]  4-S
+  [2]  6-H
+  [3]  7-D
+  [4]  9-D
+  [5]  J-C
+
+showing Players.cardFaceValues()
+Huey           7-S      7-D      
+Dewey          4-S      9-D      
+Mr. Magoo      6-H      J-C      
+
+
+showing Players.cardValues()
+Huey           7    7    
+Dewey          4    9    
+Mr. Magoo      6    J    
+
 
 
 TEST 8 COMPLETED.
