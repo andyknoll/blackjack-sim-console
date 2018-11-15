@@ -109,7 +109,8 @@ BJDeck.prototype.info = function() {
 
 // overridden to cshow Card values
 BJDeck.prototype.childInfo = function(obj, idx) {
-    var s = "  [" + idx + "]  " + obj.faceValue() + br;
+    var brackets = "  [" + idx + "] ";
+    var s = brackets.padEnd(8) + obj.faceValue() + br;
     return s;
 };
 

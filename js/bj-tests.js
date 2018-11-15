@@ -10,16 +10,16 @@
 *****************************************************************************/
 
 // base JS "classes" supporting inheritance and polymorphism
-var AKObject  = require('./ak-objects.js');
-var Decks     = require('./bj-deck.js');
-var BJHand    = require('./bj-hand.js');
-var Players   = require('./bj-players.js');
-var Rules     = require('./bj-rules.js');
+var AKObject = require('./ak-objects.js');
+var Decks = require('./bj-deck.js');
+var BJHand = require('./bj-hand.js');
+var Players = require('./bj-players.js');
+var Rules = require('./bj-rules.js');
 
 var br = "\r\n";
 
 // BJTester "class"
-var BJTester = function(name, parent) {
+var BJTester = function (name, parent) {
     AKObject.call(this, name, parent);
     this._className = "BJTester";
     this.app = parent;
@@ -29,11 +29,11 @@ BJTester.prototype = Object.create(AKObject.prototype);
 BJTester.prototype.constructor = BJTester;
 
 // redirect to the app's output
-BJTester.prototype.output = function(s) {
+BJTester.prototype.output = function (s) {
     this.app.output(s);
 };
 
-BJTester.prototype.createTestObjects = function() {
+BJTester.prototype.createTestObjects = function () {
 
     // 4 decks
     this.d0 = new Decks.BJDeck("d0", this);
@@ -51,24 +51,24 @@ BJTester.prototype.createTestObjects = function() {
 
 
 
-BJTester.prototype.runTest = function(n) {
-    switch(n) {
-        case "1"  : this.runTest1(); break;
-        case "2"  : this.runTest2(); break;
-        case "3"  : this.runTest3(); break;
-        case "4"  : this.runTest4(); break;
-        case "5"  : this.runTest5(); break;
-        case "6"  : this.runTest6(); break;
-        case "7"  : this.runTest7(); break;
-        case "8"  : this.runTest8(); break;
-        case "9"  : this.runTest9(); break;
-        case "10" : this.runTest10(); break;
-        default : this.runTest1(); break;
+BJTester.prototype.runTest = function (n) {
+    switch (n) {
+        case "1": this.runTest1(); break;
+        case "2": this.runTest2(); break;
+        case "3": this.runTest3(); break;
+        case "4": this.runTest4(); break;
+        case "5": this.runTest5(); break;
+        case "6": this.runTest6(); break;
+        case "7": this.runTest7(); break;
+        case "8": this.runTest8(); break;
+        case "9": this.runTest9(); break;
+        case "10": this.runTest10(); break;
+        default: this.runTest1(); break;
     }
 };
 
 
-BJTester.prototype.runTest1 = function() {
+BJTester.prototype.runTest1 = function () {
     this.output("RUNNING TEST 1");
     this.output("");
 
@@ -98,7 +98,7 @@ BJTester.prototype.runTest1 = function() {
 
 
 
-BJTester.prototype.runTest2 = function() {
+BJTester.prototype.runTest2 = function () {
     this.output("RUNNING TEST 2");
     this.output("");
 
@@ -115,7 +115,7 @@ BJTester.prototype.runTest2 = function() {
     this.multiDeck.addDeck(this.d2);
     this.multiDeck.addDeck(this.d3);
     this.multiDeck.shuffle();
-    
+
     this.output("shuffling deck and adding 3 cards to Hand");
     this.output("testing Deck.getNextCard() and Hand.addCard()");
     this.hand.addCard(this.multiDeck.getNextCard());
@@ -144,7 +144,7 @@ BJTester.prototype.runTest2 = function() {
 };
 
 
-BJTester.prototype.runTest3 = function() {
+BJTester.prototype.runTest3 = function () {
     this.output("RUNNING TEST 3");
     this.output("");
 
@@ -155,7 +155,7 @@ BJTester.prototype.runTest3 = function() {
     this.multiDeck.addDeck(this.d1);
     this.multiDeck.addDeck(this.d2);
     this.multiDeck.addDeck(this.d3);
-    
+
     this.output("shuffling and dealing 10 Hand objects of 3 Cards");
     this.multiDeck.shuffle();
     this.output("");
@@ -165,14 +165,15 @@ BJTester.prototype.runTest3 = function() {
         this.hand.addCard(this.multiDeck.getNextCard());
         this.hand.addCard(this.multiDeck.getNextCard());
         this.hand.addCard(this.multiDeck.getNextCard());
-        this.output("Hand " + (i+1) + ": showing cardFaceValues()");
+        this.output("Hand " + (i + 1) + ": showing cardFaceValues()");
         this.output(this.hand.cardFaceValues());
         //this.output("HOLDING? " + this.hand.isHolding());
         if (this.hand.isBlackjack()) this.output("!!! BLACKJACK !!!");
         this.output("POINTS: " + this.hand.cardPointValues());
         if (this.hand.isBust()) this.output("BUSTED!");
         if (!this.hand.isBust()) this.output("YOU'RE OK - NOT A BUST");
-        this.hand.clear();        
+        this.output("");
+        this.hand.clear();
     }
 
     this.output("");
@@ -181,7 +182,7 @@ BJTester.prototype.runTest3 = function() {
 
 
 
-BJTester.prototype.runTest4 = function() {
+BJTester.prototype.runTest4 = function () {
     this.output("RUNNING TEST 4");
     this.output("");
 
@@ -194,10 +195,10 @@ BJTester.prototype.runTest4 = function() {
 
     this.output("initializing Player and Dealer objects");
     this.output("");
-    this.player1.tableName = "Huey";
-    this.player1.cashRemaining = "200";
-    this.dealer1.tableName = "Mr. Magoo";
-    this.dealer1.cashRemaining = "1000000";
+    this.player1.nickname = "Huey";
+    this.player1.cash = "200";
+    this.dealer1.nickname = "Mr. Magoo";
+    this.dealer1.cash = "1000000";
 
     this.output(this.player1.info());
     this.output(this.dealer1.info());
@@ -205,8 +206,8 @@ BJTester.prototype.runTest4 = function() {
     this.output("creating and initializing second Player object");
     this.output("");
     this.player2 = new Players.BJPlayer("player2", this);
-    this.player2.tableName = "Louie";
-    this.player2.cashRemaining = "200";
+    this.player2.nickname = "Louie";
+    this.player2.cash = "200";
     this.output(this.player2.info());
 
     this.output("");
@@ -214,7 +215,7 @@ BJTester.prototype.runTest4 = function() {
 };
 
 
-BJTester.prototype.runTest5 = function() {
+BJTester.prototype.runTest5 = function () {
     this.output("RUNNING TEST 5");
     this.output("");
 
@@ -257,7 +258,7 @@ BJTester.prototype.runTest5 = function() {
 };
 
 
-BJTester.prototype.runTest6 = function() {
+BJTester.prototype.runTest6 = function () {
     this.output("RUNNING TEST 6");
     this.output("");
 
@@ -291,7 +292,7 @@ BJTester.prototype.runTest6 = function() {
 };
 
 
-BJTester.prototype.runTest7 = function() {
+BJTester.prototype.runTest7 = function () {
     this.output("RUNNING TEST 7");
     this.output("");
 
@@ -310,7 +311,7 @@ BJTester.prototype.runTest7 = function() {
     this.players.addPlayer(this.player2);
     this.output("showing Players collection object");
     this.output(this.players.info());
-    
+
     this.dealer1.nickname = "Mr. Magoo";
     this.dealer1.cash = "1000000";
     this.player1.nickname = "Huey";
@@ -349,7 +350,7 @@ BJTester.prototype.runTest7 = function() {
 };
 
 
-BJTester.prototype.runTest8 = function() {
+BJTester.prototype.runTest8 = function () {
     this.output("RUNNING TEST 8");
     this.output("");
 
@@ -383,7 +384,7 @@ BJTester.prototype.runTest8 = function() {
 
     this.output("showing Players collection object");
     this.output(players.info());
-    
+
     this.output(dealer1.info());
     this.output(player1.info());
     this.output(player2.info());
@@ -413,18 +414,18 @@ BJTester.prototype.runTest8 = function() {
     this.output("showing Players.cardFaceValues()");
     this.output(players.cardFaceValues());
     this.output("");
-    
+
     this.output("showing Players.cardValues()");
     this.output(players.cardValues());
     this.output("");
-    
+
 
     this.output("");
     this.output("TEST 8 COMPLETED.");
 };
 
 
-BJTester.prototype.runTest9 = function() {
+BJTester.prototype.runTest9 = function () {
     this.output("RUNNING TEST 9");
     this.output("");
     this.output("no test written here yet");
@@ -432,7 +433,7 @@ BJTester.prototype.runTest9 = function() {
     this.output("TEST 9 COMPLETED.");
 };
 
-BJTester.prototype.runTest10 = function() {
+BJTester.prototype.runTest10 = function () {
     this.output("RUNNING TEST 10");
     this.output("");
     this.output("no test written here yet");

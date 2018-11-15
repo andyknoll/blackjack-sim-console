@@ -28,6 +28,12 @@
             Hand
             Rules
 
+
+
+    Players - 2 down
+    Dealer  - 1 down 1 up
+
+    
 *****************************************************************************/
 
 // base JS "classes" supporting inheritance and polymorphism
