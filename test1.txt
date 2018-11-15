@@ -24,19 +24,19 @@ showing first 13 cards
 
 shuffling multideck - testing .shuffle()
 showing first 13 cards
-  [0]  8-D
-  [1]  A-C
-  [2]  J-D
-  [3]  5-S
-  [4]  5-S
-  [5]  8-C
-  [6]  7-C
-  [7]  10-D
-  [8]  4-H
-  [9]  5-C
-  [10]  6-D
-  [11]  4-C
-  [12]  4-S
+  [0]  6-H
+  [1]  J-S
+  [2]  8-D
+  [3]  8-S
+  [4]  A-C
+  [5]  10-C
+  [6]  8-C
+  [7]  Q-D
+  [8]  J-S
+  [9]  2-C
+  [10]  Q-C
+  [11]  10-C
+  [12]  5-S
 
 
 TEST 1 COMPLETED.

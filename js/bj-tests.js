@@ -51,15 +51,20 @@ BJTester.prototype.createTestObjects = function() {
 
 
 
-BJTester.prototype.runTests = function() {
-    //this.runTest1();
-    //this.runTest2();
-    //this.runTest3();
-    //this.runTest4();
-    //this.runTest5();
-    //this.runTest6();
-    //this.runTest7();
-    this.runTest8();
+BJTester.prototype.runTest = function(n) {
+    switch(n) {
+        case "1"  : this.runTest1(); break;
+        case "2"  : this.runTest2(); break;
+        case "3"  : this.runTest3(); break;
+        case "4"  : this.runTest4(); break;
+        case "5"  : this.runTest5(); break;
+        case "6"  : this.runTest6(); break;
+        case "7"  : this.runTest7(); break;
+        case "8"  : this.runTest8(); break;
+        case "9"  : this.runTest9(); break;
+        case "10" : this.runTest10(); break;
+        default : this.runTest1(); break;
+    }
 };
 
 
@@ -112,7 +117,7 @@ BJTester.prototype.runTest2 = function() {
     this.multiDeck.shuffle();
     
     this.output("shuffling deck and adding 3 cards to Hand");
-    this.output("testing Deck.addCard() and Deck.getNextCard()");
+    this.output("testing Deck.getNextCard() and Hand.addCard()");
     this.hand.addCard(this.multiDeck.getNextCard());
     this.hand.addCard(this.multiDeck.getNextCard());
     this.hand.addCard(this.multiDeck.getNextCard());
@@ -417,6 +422,24 @@ BJTester.prototype.runTest8 = function() {
     this.output("");
     this.output("TEST 8 COMPLETED.");
 };
+
+
+BJTester.prototype.runTest9 = function() {
+    this.output("RUNNING TEST 9");
+    this.output("");
+    this.output("no test written here yet");
+    this.output("");
+    this.output("TEST 9 COMPLETED.");
+};
+
+BJTester.prototype.runTest10 = function() {
+    this.output("RUNNING TEST 10");
+    this.output("");
+    this.output("no test written here yet");
+    this.output("");
+    this.output("TEST 10 COMPLETED.");
+};
+
 
 
 module.exports = BJTester;

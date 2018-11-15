@@ -79,20 +79,24 @@ BJConsoleApp.prototype.output = function(s) {
 };
 
 BJConsoleApp.prototype.run = function() {
-    this.output("");
-    this.output("running '" + this.name() + "' @ " + new Date());
-    this.output("");
-    //this.output(this.info());
-    this.ctrls.bjCtrl.startGame();
-    this.output("");
-    this.output("completed simulation @ " + new Date());
+    var args = process.argv;        // Node command line
+    if (args[2] == "test") {
+        this.runTests(args[3]);     // runTests(n)
+    } else {
+        this.output("");            // run actual game
+        this.output("running '" + this.name() + "' @ " + new Date());
+        this.output("");
+        //this.output(this.info());
+        this.ctrls.bjCtrl.startGame();
+        this.output("");
+        this.output("completed simulation @ " + new Date());    
+    }
 };
 
-BJConsoleApp.prototype.runTests = function() {
+BJConsoleApp.prototype.runTests = function(n) {
     var tester = new BJTester("tester", this);
-    tester.runTests();
+    tester.runTest(n);
 };
 
 var app = new BJConsoleApp("Blackjack Console App", null);      // no parent
-//app.run();
-app.runTests();
+app.run();
