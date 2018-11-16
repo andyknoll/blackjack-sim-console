@@ -248,21 +248,6 @@ AKCollection.prototype.clear = function(name) {
     }
 };
 
-/*
-// new 09-17-2018
-AKCollection.prototype.getNextObject = function() {
-    this.next();
-    return this.currObject();
-};
-
-// new 09-17-2018
-AKCollection.prototype.getPrevObject = function() {
-    this.prev();
-    return this.currObject();
-};
-*/
-
-
 // Durstenfeld algorithm - shuffle any array in place
 AKCollection.prototype.shuffle = function() {
     var i, j, tempObj;
