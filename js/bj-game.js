@@ -69,6 +69,11 @@ BJGame = function(name, parent) {
 BJGame.prototype = Object.create(AKObject.prototype);
 BJGame.prototype.constructor = BJGame;
 
+// getters
+BJGame.prototype.playerCount = function() { return this.players.count(); };
+
+
+
 BJGame.prototype.info = function() {
 	var s = "";
     s += AKObject.prototype.info.call(this);

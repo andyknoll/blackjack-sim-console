@@ -140,8 +140,48 @@ BJTester.prototype.runTest5 = function () {
     this.output("RUNNING TEST 5");
     this.output(new Date());
     this.output("");
-    this.output("testing the...");
+    this.output("testing Deck.shuffle() and Dealer.dealCardTo()");
     this.output("");
+
+    this.testGame = new BJGame("testGame", this);
+    this.testGame.createObjects();
+    this.testGame.initObjects();
+
+    var game = this.testGame;
+    var dealer = game.dealer;
+    var deck = dealer.deck;
+    var player = game.players.player(0);
+
+    this.output(dealer.info());
+    this.output(deck.infoShort());
+    this.output("showing first ten cards");
+    this.output(deck.showRange(0, 9));
+    this.output("shuffling deck");
+    this.output("");
+    dealer.shuffleDeck();
+    this.output("showing first ten cards");
+    this.output(deck.showRange(0, 9));
+
+    this.output("dealing first three cards to " + player.nickname);
+    dealer.dealCardTo(player);
+    dealer.dealCardTo(player);
+    dealer.dealCardTo(player);
+    this.output(player.hand.info());
+
+    this.output("dealing first three cards to " + dealer.nickname);
+    dealer.dealCardTo(dealer);
+    dealer.dealCardTo(dealer);
+    dealer.dealCardTo(dealer);
+    this.output(dealer.hand.info());
+
+    this.output("showing hand.cardFaceValues()");
+    this.output("");
+    this.output(player.nickname.padEnd(15) + player.hand.cardFaceValues());
+    this.output(dealer.nickname.padEnd(15) + dealer.hand.cardFaceValues());
+    this.output("");
+    
+    this.output("showing first ten cards again");
+    this.output(deck.showRange(0, 9));
 
     this.output("");
     this.output("TEST 5 COMPLETED.");
@@ -151,8 +191,35 @@ BJTester.prototype.runTest6 = function () {
     this.output("RUNNING TEST 6");
     this.output(new Date());
     this.output("");
-    this.output("testing the...");
+    this.output("testing dealer.dealFirstCards() and players.cardFaceValues()");
     this.output("");
+
+    this.testGame = new BJGame("testGame", this);
+    this.testGame.createObjects();
+    this.testGame.initObjects();
+
+    var game = this.testGame;
+    var dealer = game.dealer;
+    var players = game.players;
+
+    this.output("dealer dealing first cards");
+    this.output("");
+    dealer.dealFirstCards();
+    this.output(players.cardFaceValues());
+    this.output(dealer.nickname.padEnd(15) + dealer.hand.cardFaceValues());
+
+    this.output("");
+    this.output("players clearing hands and dealer shuffling deck");
+    players.clearHands();
+    dealer.clearHand();
+    dealer.shuffleDeck();
+    this.output("");
+
+    this.output("dealer dealing first cards again");
+    this.output("");
+    dealer.dealFirstCards();
+    this.output(players.cardFaceValues());
+    this.output(dealer.nickname.padEnd(15) + dealer.hand.cardFaceValues());
 
     this.output("");
     this.output("TEST 6 COMPLETED.");

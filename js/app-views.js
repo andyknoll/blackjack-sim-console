@@ -22,7 +22,8 @@
 
 *****************************************************************************/
 
-var br = "\r\n";    // CRLF
+//var br = "\r\n";    // CRLF for text files
+var br = "\r";        // CR only for screen
 
 // AppViews "class"
 var AppViews = function(name, parent) {

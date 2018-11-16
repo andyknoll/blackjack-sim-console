@@ -32,6 +32,11 @@ BJPlayer.prototype.info = function() {
     return s;
 };
 
+BJPlayer.prototype.clearHand = function() {
+    this.hand.clear();
+};
+
+
 
 
 
@@ -59,29 +64,35 @@ BJPlayers.prototype.createAndAddPlayers = function(num) {
 };
 
 
-
-/***
-BJPlayers.prototype.getInitialCards = function(num) {
-    if (this.isEmpty()) return;
-    for (var n = 0; n < num; n++) {
-        for (var p = 1; p < this.count(); p++) {
-            this.dealer.dealCardTo(this.player(p));       // skip Dealer 
-        }
-        this.dealer.dealCardTo(this.player(0));           // now the Dealer 
-    }
-};
-
 BJPlayers.prototype.cardFaceValues = function() {
     var s = "";
     var player = null;
-    for (var p = 1; p < this.count(); p++) {
+    for (var p = 0; p < this.count(); p++) {
         player = this.player(p);
-        s += player.nickname.padEnd(15) + player.hand.cardFaceValues() + br;
+        s += player.nickname.padEnd(15) + player.hand.cardFaceValues() + br;        // MOVE THESE TO PLAYER (+ DEALER)
     }
-    s += this.dealer.nickname.padEnd(15) + this.dealer.hand.cardFaceValues() + br;
     return s;
 };
 
+BJPlayers.prototype.cardValues = function() {
+    var s = "";
+    var player = null;
+    for (var p = 0; p < this.count(); p++) {
+        player = this.player(p);
+        s += player.nickname.padEnd(15) + player.hand.cardValues() + br;
+    }
+    return s;
+};
+
+// remember to do this before each game
+BJPlayers.prototype.clearHands = function() {
+    var player = null;
+    for (var p = 0; p < this.count(); p++) {
+        this.player(p).clearHand();
+    }
+};
+
+/***
 BJPlayers.prototype.cardValues = function() {
     var s = "";
     var player = null;
