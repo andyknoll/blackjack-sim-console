@@ -1,6 +1,6 @@
 /*****************************************************************************
 
-    bj-deck.js
+    bj-decks.js
 
     Andy Knoll
     November 2018
@@ -152,6 +152,15 @@ BJMultiDeck.prototype.addDeck = function(deck) {
     }
     return this.count();
 };
+
+BJMultiDeck.prototype.createAndAddDecks = function(num) {
+    var deck = null;
+    for (var i = 0; i < num; i++) {
+        deck = new BJDeck("deck" + i, this);
+        this.addDeck(deck);
+    }
+};
+
 
 
 

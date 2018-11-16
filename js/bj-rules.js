@@ -14,28 +14,14 @@
 
 var br = "\r\n";
 
-// BJRule "class"
-var BJRule = function(name, parent) {
-    AKObject.call(this, name, parent);
-    this._className = "BJRule";
-};
-BJRule.prototype = Object.create(AKObject.prototype);
-BJRule.prototype.constructor = BJRule;
-
-
-
 
 // BJRules "class"
 var BJRules = function(name, parent) {
-    AKCollection.call(this, name, parent);
+    AKObject.call(this, name, parent);
     this._className = "BJRules";
 };
-BJRules.prototype = Object.create(AKCollection.prototype);
+BJRules.prototype = Object.create(AKObject.prototype);
 BJRules.prototype.constructor = BJRules;
-
-BJRules.prototype.addRule = function(rule) {
-    return this.addObject(rule);
-};
 
 BJRules.prototype.isHandBust = function(hand) {
     return hand.cardPointValues() > 21;
@@ -74,9 +60,43 @@ BJVegasRules.prototype.isHandBust = function(hand) {
 
 
 
+// BJAtlanticRules "class"
+var BJAtlanticRules = function(name, parent) {
+    BJRules.call(this, name, parent);
+    this._className = "BJAtlanticRules";
+};
+BJAtlanticRules.prototype = Object.create(BJRules.prototype);
+BJAtlanticRules.prototype.constructor = BJAtlanticRules;
+
+
+
+
+
+
+// BJRulesCollection "class"
+var BJRulesCollection = function(name, parent) {
+    AKCollection.call(this, name, parent);
+    this._className = "BJRulesCollection";
+};
+BJRulesCollection.prototype = Object.create(AKCollection.prototype);
+BJRulesCollection.prototype.constructor = BJRulesCollection;
+
+// getter
+BJRulesCollection.prototype.rule = function(idx) { return this.object(idx); };
+
+BJRulesCollection.prototype.addRules = function(rulesObj) {
+    return this.addObject(rulesObj);
+};
+
+
+
+
+
+
 module.exports = { 
-    BJRule : BJRule,
     BJRules : BJRules,
-    BJVegasRules : BJVegasRules
+    BJVegasRules : BJVegasRules,
+    BJAtlanticRules : BJAtlanticRules,
+    BJRulesCollection : BJRulesCollection
 }
     

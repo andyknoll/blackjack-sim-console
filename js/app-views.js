@@ -22,26 +22,32 @@
 
 *****************************************************************************/
 
-var AKObject = require('./ak-objects.js');
-
-var br = "\r\n";
+var br = "\r\n";    // CRLF
 
 // AppViews "class"
 var AppViews = function(name, parent) {
-    AKObject.call(this, name, parent);
+    AKCollection.call(this, name, parent);
     this._className = "AppViews";
 
     this.bjView = new BJConsoleView("bjView", this);
 };
-AppViews.prototype = Object.create(AKObject.prototype);
+AppViews.prototype = Object.create(AKCollection.prototype);
 AppViews.prototype.constructor = AppViews;
 
 AppViews.prototype.info = function() {
 	var s = "";
-    s += AKObject.prototype.info.call(this);
+    s += AKCollection.prototype.info.call(this);
     s += ".bjView: " + this.bjView.name() + br;
     return s;
 };
+
+AppViews.prototype.output = function(txt) {
+    this.bjView.output(txt);
+};
+
+
+
+
 
 
 // BJConsoleView "class"
@@ -53,10 +59,9 @@ BJConsoleView.prototype = Object.create(AKObject.prototype);
 BJConsoleView.prototype.constructor = BJConsoleView;
 
 // output to console (not browser) in this version
-BJConsoleView.prototype.output = function(s) {
-    console.log(s + "\r");
+BJConsoleView.prototype.output = function(txt) {
+    console.log(txt + br);
 };
-
 
 BJConsoleView.prototype.showFinalStats = function(numRounds) {
     var s = "";

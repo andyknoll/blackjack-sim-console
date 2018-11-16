@@ -7,9 +7,13 @@
 
     Base class JS "classes" supporting inheritance and polymorphism.
 
+        AKObject
+        AKMvcApp
+        AKCollection
+
 *****************************************************************************/
 
-var br = "\r\n";      // newline for output
+var br = "\r\n";      // CRLF newline for output
 
 
 // base AKObject class
@@ -39,21 +43,59 @@ AKObject.prototype.info = function() {
 };
 
 
-/***
-// AKChildObject - inherits from AKObject
-AKChildObject = function(name, parent) {
-    AKObject.call(this, name, parent);
-    this._className = "AKChildObject";
-};
-AKChildObject.prototype = Object.create(AKObject.prototype);
-AKChildObject.prototype.constructor = AKChildObject;
 
-AKChildObject.prototype.info = function() {
+
+
+
+// AKMvcApp - inherits from AKObject
+AKMvcApp = function(name, parent) {
+    AKObject.call(this, name, parent);
+    this._className = "AKMvcApp";
+
+    this.models = this.createModels();  // override in cutom apps
+    this.views  = this.createViews();
+    this.ctrls  = this.createControllers();
+
+    this.config = null;     // if using config object
+};
+AKMvcApp.prototype = Object.create(AKObject.prototype);
+AKMvcApp.prototype.constructor = AKMvcApp;
+
+// getters
+AKMvcApp.prototype.model = function(idx) { return this.models.object(idx); };
+AKMvcApp.prototype.view  = function(idx) { return this.views.object(idx); };
+AKMvcApp.prototype.ctrl  = function(idx) { return this.ctrls.object(idx); };
+
+// override in cutom apps
+AKMvcApp.prototype.createModels = function() { 
+    return new AKCollection("models", this);
+};
+
+AKMvcApp.prototype.createViews = function() { 
+    return new AKCollection("views", this);
+};
+
+AKMvcApp.prototype.createControllers = function() {
+    return new AKCollection("ctrls", this);
+};
+
+AKMvcApp.prototype.output = function(txt) { 
+    // override for console or web app
+};
+
+AKMvcApp.prototype.info = function() {
 	var s = "";
     s += AKObject.prototype.info.call(this);
+    s += ".models: " + this.models + br;
+    s += ".views: "  + this.views + br;
+    s += ".ctrls: "  + this.ctrls + br;
     // new properties go here...
 };
-***/
+
+
+
+
+
 
 
 
@@ -86,6 +128,14 @@ AKCollection.prototype.info = function() {
     s += "count: " + this.count() + br;
     s += "objects: " + br;
     s += this.childrenInfo();
+    return s;
+};
+
+// do not list out all the objects
+AKCollection.prototype.infoShort = function() {
+    var s = "";
+    s += AKObject.prototype.info.call(this);
+    s += "count: " + this.count() + br;
     return s;
 };
 
@@ -226,4 +276,8 @@ AKCollection.prototype.shuffle = function() {
 
 
 
-module.exports = AKObject;
+module.exports = {
+    AKObject : AKObject,
+    AKMvcApp : AKMvcApp,
+    AKCollection : AKCollection
+}

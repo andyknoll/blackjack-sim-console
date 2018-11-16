@@ -36,53 +36,60 @@
     
 *****************************************************************************/
 
-// base JS "classes" supporting inheritance and polymorphism
-var AKObject  = require('./js/ak-objects.js');
-
 var AppModels = require('./js/app-models.js');
 var AppViews  = require('./js/app-views.js');
 var AppCtrls  = require('./js/app-ctrls.js');
 
-var Decks     = require('./js/bj-deck.js');
-var BJHand    = require('./js/bj-hand.js');
-var BJTester  = require('./js/bj-tests.js');
-var BJPlayers = require('./js/bj-players.js');
+var BJTester  = require('./js/bj-tester.js');
+
+// something like this...
+var appConfig = {
+    playerCount : 5,
+    deckCount   : 1,      // 1 thru 8
+    startCash   : 200,
+    gameAnte    : 15,
+    gameCount   : 20
+};
 
 
-var br = "\r\n";
+var br = "\r\n";    // CRLF
 
 // BJConsoleApp "class"
 BJConsoleApp = function(name, parent) {
-    AKObject.call(this, name, parent);
+    AKMvcApp.call(this, name, parent);
     this._className = "BJConsoleApp";
-
-    // the app's MVC objects
-    this.models = new AppModels("models", null);   // no access 
-    this.views  = new AppViews("views", null);     // no access
-    this.ctrls  = new AppCtrls("ctrls", this);     // can access parent app
+    this.msg = "";
 };
-BJConsoleApp.prototype = Object.create(AKObject.prototype);
+BJConsoleApp.prototype = Object.create(AKMvcApp.prototype);
 BJConsoleApp.prototype.constructor = BJConsoleApp;
+
 
 BJConsoleApp.prototype.info = function() {
 	var s = "";
-    s += AKObject.prototype.info.call(this);
+    s += AKMvcApp.prototype.info.call(this);
     // new properties go here...
-    s += ".models: " + this.models.name() + br;
-    s += ".views: "  + this.views.name()  + br;
-    s += ".ctrls: "  + this.ctrls.name()  + br;
-    //s += br;
-    //s += this.models.info() + br;
-    //s += this.views.info()  + br;
-    //s += this.ctrls.info()  + br;
     return s;
+};
+
+// override in cutom apps
+BJConsoleApp.prototype.createModels = function() { 
+    return new AppModels("models", this);
+};
+
+BJConsoleApp.prototype.createViews = function() { 
+    return new AppViews("views", this);
+};
+
+BJConsoleApp.prototype.createControllers = function() { 
+    return new AppCtrls("ctrls", this);
 };
 
 // keep output destination unknown to the App code
 // view will output to console (or browser if web app)
 BJConsoleApp.prototype.output = function(s) {
-    this.views.bjView.output(s);    // to console
+    this.views.output(s);    // to console in this case
 };
+
 
 BJConsoleApp.prototype.run = function() {
     var args = process.argv;        // Node command line
@@ -104,5 +111,8 @@ BJConsoleApp.prototype.runTests = function(n) {
     tester.runTest(n);
 };
 
+
+// create and run the app object
+// now uses command line arguments "node app.js test 4"
 var app = new BJConsoleApp("Blackjack Console App", null);      // no parent
 app.run();

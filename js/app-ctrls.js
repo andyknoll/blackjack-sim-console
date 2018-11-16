@@ -22,14 +22,9 @@
 
 *****************************************************************************/
 
-var AKObject = require('./ak-objects.js');
-
-var br = "\n";
-
-
 // AppCtrls "class"
 var AppCtrls = function(name, parent) {
-    AKObject.call(this, name, parent);
+    AKCollection.call(this, name, parent);
     this._className = "AppCtrls";
 
     this.app = this.parent();           // alias
@@ -38,12 +33,12 @@ var AppCtrls = function(name, parent) {
 
     this.bjCtrl = new BJController("bjCtrl", this);
 };
-AppCtrls.prototype = Object.create(AKObject.prototype);
+AppCtrls.prototype = Object.create(AKCollection.prototype);
 AppCtrls.prototype.constructor = AppCtrls;
 
 AppCtrls.prototype.info = function() {
 	var s = "";
-    s += AKObject.prototype.info.call(this);
+    s += AKCollection.prototype.info.call(this);
     s += ".models: " + this.models.name() + br;
     s += ".views: "  + this.views.name() + br;
     s += ".bjCtrl: " + this.bjCtrl.name() + br;
@@ -132,8 +127,8 @@ BJController.prototype.startGame = function() {
 };
 
 // convenience method call
-BJController.prototype.output = function(s) {
-    this.view.output(s);
+BJController.prototype.output = function(txt) {
+    this.view.output(txt);
 };
 
 

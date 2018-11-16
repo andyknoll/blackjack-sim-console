@@ -1,6 +1,6 @@
 /*****************************************************************************
 
-    app-views.js
+    bj-tester.js
 
     Andy Knoll
     November 2018
@@ -9,12 +9,11 @@
 
 *****************************************************************************/
 
-// base JS "classes" supporting inheritance and polymorphism
-var AKObject = require('./ak-objects.js');
-var Decks = require('./bj-deck.js');
-var BJHand = require('./bj-hand.js');
+var BJGame  = require('./bj-game.js');
+var BJHand  = require('./bj-hand.js');
+var Decks   = require('./bj-decks.js');
 var Players = require('./bj-players.js');
-var Rules = require('./bj-rules.js');
+var Rules   = require('./bj-rules.js');
 
 var br = "\r\n";
 
@@ -33,6 +32,7 @@ BJTester.prototype.output = function (s) {
     this.app.output(s);
 };
 
+// reusable objects in this file
 BJTester.prototype.createTestObjects = function () {
 
     // 4 decks
@@ -428,7 +428,9 @@ BJTester.prototype.runTest8 = function () {
 BJTester.prototype.runTest9 = function () {
     this.output("RUNNING TEST 9");
     this.output("");
-    this.output("no test written here yet");
+    this.output("creating Game model object");
+    this.game = new BJGame("bjTestGame", this);
+    this.output(this.game.info());
     this.output("");
     this.output("TEST 9 COMPLETED.");
 };
