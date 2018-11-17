@@ -225,6 +225,11 @@ AKCollection.prototype.currObject = function() {
     return this._objects[this._currIndex];
 };
 
+// alias name
+AKCollection.prototype.current = function() {
+    return this.currObject();
+};
+
 
 // search
 AKCollection.prototype.byIndex = function(idx) {

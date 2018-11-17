@@ -71,6 +71,7 @@ BJGame.prototype.constructor = BJGame;
 
 // getters
 BJGame.prototype.playerCount = function() { return this.players.count(); };
+BJGame.prototype.currRules = function() { return this.rules.currObject(); };
 
 
 
@@ -125,6 +126,11 @@ BJGame.prototype.initObjects = function() {
     this.rules.addRules(rules);
     rules = new Rules.BJAtlanticRules("Atlantic Rules", this.rules);
     this.rules.addRules(rules);
+    this.setCurrRules(0);
+};
+
+BJGame.prototype.setCurrRules = function(idx) {
+    this.rules.setCurrIndex(idx);
 };
 
 

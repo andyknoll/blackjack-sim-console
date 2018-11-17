@@ -43,7 +43,14 @@ BJTester.prototype.runTest = function (n) {
         case "7": this.runTest7(); break;
         case "8": this.runTest8(); break;
         case "9": this.runTest9(); break;
-        default:  this.runTest1(); break;
+
+        case "10": this.runTest10(); break;
+        case "11": this.runTest11(); break;
+        case "12": this.runTest12(); break;
+        case "13": this.runTest13(); break;
+        case "14": this.runTest14(); break;
+        case "15": this.runTest15(); break;
+        default:   this.runTest1(); break;
     }
 };
 
@@ -299,7 +306,157 @@ BJTester.prototype.runTest9 = function () {
     this.output("RUNNING TEST 9");
     this.output(new Date());
     this.output("");
+    this.output("testing 3-card Hands");
+    this.output("");
+
+    this.testGame = new BJGame("testGame", this);
+    this.testGame.createObjects();
+    this.testGame.initObjects();
+
+    var game = this.testGame;
+    var dealer = game.dealer;
+    var players = game.players;
+    var player = null;
+
+    this.output("");
+    this.output("dealer.shuffleDeck()");
+    dealer.shuffleDeck();
+    this.output("players.clearHands()");
+    players.clearHands();
+    this.output("dealer.dealFirstCards()");
+    dealer.dealFirstCards();
+    this.output("dealer dealCardTo() everyone");
+    dealer.dealCardTo(players.player(0));
+    dealer.dealCardTo(players.player(1));
+    dealer.dealCardTo(players.player(2));
+    dealer.dealCardTo(players.player(3));
+    dealer.dealCardTo(dealer);
+
+    this.output("players.cardFaceValues()");
+    this.output("");
+    this.output(players.cardValuesAndPointTotal());
+    this.output(dealer.cardValuesAndPointTotal());
+
+    player = players.player(0);
+    this.output(player.nickname.padEnd(15) + player.hand.pointTotal());
+    player = players.player(1);
+    this.output(player.nickname.padEnd(15) + player.hand.pointTotal());
+    player = players.player(2);
+    this.output(player.nickname.padEnd(15) + player.hand.pointTotal());
+    player = players.player(3);
+    this.output(player.nickname.padEnd(15) + player.hand.pointTotal());
+    this.output("");
+    player = dealer;
+    this.output(player.nickname.padEnd(15) + player.hand.pointTotal());
+    
+    
+    this.output("");
     this.output("TEST 9 COMPLETED.");
+};
+
+BJTester.prototype.runTest10 = function () {
+    this.output("RUNNING TEST 10");
+    this.output(new Date());
+    this.output("");
+    this.output("testing 3-card Hands and outcomes");
+    this.output("");
+
+    this.testGame = new BJGame("testGame", this);
+    this.testGame.createObjects();
+    this.testGame.initObjects();
+
+    var game = this.testGame;
+    var dealer = game.dealer;
+    var players = game.players;
+    var player = null;
+    var s, s2;
+
+    dealer.shuffleDeck();
+    players.clearHands();
+    dealer.dealFirstCards();
+    dealer.dealCardTo(players.player(0));
+    dealer.dealCardTo(players.player(1));
+    dealer.dealCardTo(players.player(2));
+    dealer.dealCardTo(players.player(3));
+    dealer.dealCardTo(dealer);
+
+    this.output(dealer.info())
+    
+    // players
+    for (var i = 0; i < 4; i++) {
+        player = players.player(i);
+        player.rules = game.currRules();
+        s = player.nickname.padEnd(15) + player.hand.pointTotal();
+        s2 = s.padEnd(5);
+        if (player.hand.isBust()) s2 += "BUST";
+        if (player.hand.isBlackjack()) s2 += "BLACKJACK!";    
+        this.output(s2);
+    }
+
+    // dealer
+    s = "";
+    player = dealer;
+    s = player.nickname.padEnd(15) + player.hand.pointTotal();
+    s2 = s.padEnd(5);
+    if (player.hand.isBust()) s2 += "BUST";
+    if (player.hand.isBlackjack()) s2 += "BLACKJACK!";    
+    this.output(s2);
+
+    this.output("");
+    this.output("TEST 10 COMPLETED.");
+};
+
+
+
+
+
+
+
+
+
+BJTester.prototype.runTest11 = function () {
+    this.output("RUNNING TEST 11");
+    this.output(new Date());
+    this.output("");
+    this.output("testing...");
+    this.output("");
+    this.output("TEST 11 COMPLETED.");
+};
+
+BJTester.prototype.runTest12 = function () {
+    this.output("RUNNING TEST 12");
+    this.output(new Date());
+    this.output("");
+    this.output("testing...");
+    this.output("");
+    this.output("TEST 12 COMPLETED.");
+};
+
+BJTester.prototype.runTest13 = function () {
+    this.output("RUNNING TEST 13");
+    this.output(new Date());
+    this.output("");
+    this.output("testing...");
+    this.output("");
+    this.output("TEST 13 COMPLETED.");
+};
+
+BJTester.prototype.runTest14 = function () {
+    this.output("RUNNING TEST 14");
+    this.output(new Date());
+    this.output("");
+    this.output("testing...");
+    this.output("");
+    this.output("TEST 14 COMPLETED.");
+};
+
+BJTester.prototype.runTest15 = function () {
+    this.output("RUNNING TEST 15");
+    this.output(new Date());
+    this.output("");
+    this.output("testing...");
+    this.output("");
+    this.output("TEST 15 COMPLETED.");
 };
 
 

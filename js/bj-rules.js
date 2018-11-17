@@ -24,12 +24,12 @@ BJRules.prototype = Object.create(AKObject.prototype);
 BJRules.prototype.constructor = BJRules;
 
 BJRules.prototype.isHandBust = function(hand) {
-    return hand.cardPointValues() > 21;
+    return hand.pointTotal() > 21;
 };
 
 // not really - must be only first two cards!
 BJRules.prototype.isHandBlackjack = function(hand) {
-    return hand.cardPointValues() == 21;    
+    return hand.pointTotal() == 21;    
 };
 
 // THIS IS THE MAIN DECISION ALGORITHM

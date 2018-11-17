@@ -5,6 +5,8 @@
     Andy Knoll
     November 2018
 
+    A Hand is owned by a Player.
+
 *****************************************************************************/
 
 var br = "\r\n";
@@ -13,14 +15,15 @@ var br = "\r\n";
 var BJHand = function(name, parent) {
     AKCollection.call(this, name, parent);
     this._className = "BJHand";
-    this.rules = null;      // e.g. "Vegas Rules"
     this.numAces = 0;
+    this.player = parent;
 };
 BJHand.prototype = Object.create(AKCollection.prototype);
 BJHand.prototype.constructor = BJHand;
 
 // getter
 BJHand.prototype.card = function(idx) { return this.object(idx); };
+BJHand.prototype.currRules = function() { return this.player.currRules(); };
 
 // methods
 BJHand.prototype.info = function() {
@@ -37,7 +40,7 @@ BJHand.prototype.info = function() {
    
     s += ".count: " + this.count() + br;
     s += ".numAces: " + this.numAces + br;
-    s += ".cardPointValues: " + this.cardPointValues() + br;
+    s += ".pointTotal: " + this.pointTotal() + br;
     return s;
 };
 
@@ -62,7 +65,7 @@ BJHand.prototype.childInfo = function(card, idx) {
 BJHand.prototype.cardFaceValues = function() {
     var s = "";
     for (var i = 0; i < this.count(); i++) {
-        s += this.card(i).faceValue().padEnd(5) + "    ";
+        s += this.card(i).faceValue().padEnd(5) + " ";
     }
     return s;
 };
@@ -70,14 +73,14 @@ BJHand.prototype.cardFaceValues = function() {
 BJHand.prototype.cardValues = function() {
     var s = "";
     for (var i = 0; i < this.count(); i++) {
-        s += this.card(i).value + "    ";
+        s += this.card(i).value.padEnd(5) + " ";
     }
     return s;
 };
 
 
 // special cases if there is one or more than one Ace
-BJHand.prototype.cardPointValues = function() {
+BJHand.prototype.pointTotal = function() {
     var total = 0;
     var deduct = 0
     for (var i = 0; i < this.count(); i++) {
@@ -97,16 +100,16 @@ BJHand.prototype.setRules = function(rulesObject) {
 
 // now using Rules objects!
 BJHand.prototype.isBust = function() {
-    if (!this.rules) return false;
+    if (!this.currRules()) return false;
     //return this.cardPointValues() > 21;
-    return this.rules.isHandBust(this);
+    return this.currRules().isHandBust(this);
 };
 
 // now using Rules objects!
 BJHand.prototype.isBlackjack = function() {
-    if (!this.rules) return false;
+    if (!this.currRules()) return false;
     //return this.cardPointValues() == 21;
-    return this.rules.isHandBlackjack(this);
+    return this.currRules().isHandBlackjack(this);
 };
 
 // THIS IS THE MAIN DECISION ALGORITHM
