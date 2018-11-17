@@ -22,13 +22,14 @@ var BJTester = function (name, parent) {
     AKObject.call(this, name, parent);
     this._className = "BJTester";
     this.app = parent;
+    this.view = this.app.views.bjView;
 };
 BJTester.prototype = Object.create(AKObject.prototype);
 BJTester.prototype.constructor = BJTester;
 
-// redirect to the app's output
+// redirect to the app's console View
 BJTester.prototype.output = function (s) {
-    this.app.output(s);
+    this.app.views.bjView.output(s);
 };
 
 
@@ -65,10 +66,16 @@ BJTester.prototype.runTest1 = function () {
 
     this.output("creating BJGame object");
     this.testGame = new BJGame("testGame", this);
-    this.output(this.testGame.info());
+    //this.output(this.testGame.info());
+    this.view.outputGameProps(this.testGame.props);
+    this.output("");
 
     this.output("calling game.createObjects()");
+    this.output("");
     this.testGame.createObjects();
+    //this.view.outputGameInfo(this.testGame);
+    this.view.outputGameProps(this.testGame.props);
+    this.output("");
     this.output(this.testGame.info());
     this.output("");
 
@@ -380,24 +387,24 @@ BJTester.prototype.runTest10 = function () {
     dealer.dealCardTo(players.player(3));
     dealer.dealCardTo(dealer);
 
-    this.output(dealer.info())
-    
     // players
     for (var i = 0; i < 4; i++) {
         player = players.player(i);
         player.rules = game.currRules();
-        s = player.nickname.padEnd(15) + player.hand.pointTotal();
-        s2 = s.padEnd(5);
+        s = player.nickname.padEnd(15) + player.hand.pointTotal() + "  ";
+        s2 = s.padEnd(20);
+        if (player.hand.isUnder()) s2 += "UNDER";
         if (player.hand.isBust()) s2 += "BUST";
         if (player.hand.isBlackjack()) s2 += "BLACKJACK!";    
         this.output(s2);
-    }
+        }
 
     // dealer
     s = "";
     player = dealer;
-    s = player.nickname.padEnd(15) + player.hand.pointTotal();
-    s2 = s.padEnd(5);
+    s = player.nickname.padEnd(15) + player.hand.pointTotal() + "  ";
+    s2 = s.padEnd(20);
+    if (player.hand.isUnder()) s2 += "UNDER";
     if (player.hand.isBust()) s2 += "BUST";
     if (player.hand.isBlackjack()) s2 += "BLACKJACK!";    
     this.output(s2);

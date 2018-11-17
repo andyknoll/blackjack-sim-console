@@ -65,6 +65,13 @@ BJGame = function(name, parent) {
     this.dealer  = null;
     this.players = null;
     this.rules   = null;
+
+    // for passing to Views
+    this.props = {
+        name : this.name(),
+        parent : this.parent().name(),
+        className : this.className()
+    };
 };
 BJGame.prototype = Object.create(AKObject.prototype);
 BJGame.prototype.constructor = BJGame;
@@ -73,6 +80,7 @@ BJGame.prototype.constructor = BJGame;
 BJGame.prototype.playerCount = function() { return this.players.count(); };
 BJGame.prototype.currRules = function() { return this.rules.currObject(); };
 
+BJGame.props = {}
 
 
 BJGame.prototype.info = function() {

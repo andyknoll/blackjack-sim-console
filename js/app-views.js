@@ -42,10 +42,11 @@ AppViews.prototype.info = function() {
     return s;
 };
 
+/*
 AppViews.prototype.output = function(txt) {
     this.bjView.output(txt);
 };
-
+*/
 
 
 
@@ -63,6 +64,31 @@ BJConsoleView.prototype.constructor = BJConsoleView;
 BJConsoleView.prototype.output = function(txt) {
     console.log(txt + br);
 };
+
+// trying this - we can print individual props
+BJConsoleView.prototype.outputGameInfo = function(game) {
+    /*
+    console.log(game.name());
+    console.log(game.parent().name());
+    console.log(game.className());
+    console.log(game.deck.name());
+    console.log(game.dealer.name());
+    console.log(game.players.name());
+    console.log(game.rules.name());
+    */
+    console.log(game.info());
+};
+
+BJConsoleView.prototype.outputGameProps = function(props) {
+    console.log("DISPLAYING PROPERTIES" + br);
+    console.log(props.name + br);
+    console.log(props.parent + br);
+    console.log(props.className + br);
+    props.name = "";
+};
+
+
+
 
 BJConsoleView.prototype.showFinalStats = function(numRounds) {
     var s = "";

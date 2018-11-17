@@ -18,12 +18,12 @@ var BJDealer = function(name, parent, deck) {
     Players.BJPlayer.call(this, name, parent);
     this._className = "BJDealer";
     this.deck = deck;
-    this.game = parent;     // alias
 };
 BJDealer.prototype = Object.create(Players.BJPlayer.prototype);
 BJDealer.prototype.constructor = BJDealer;
 
-// getter
+// getters
+BJDealer.prototype.game = function() { return this.parent(); };
 BJDealer.prototype.deckCount = function() { return this.deck.count(); }
 
 BJDealer.prototype.info = function() {
@@ -58,7 +58,7 @@ BJDealer.prototype.dealCardsTo = function(player, numCards) {
 };
 
 BJDealer.prototype.dealFirstCards = function() {
-    var players = this.game.players;
+    var players = this.game().players;
     for (var n = 0; n < 2; n++) {
         for (var p = 0; p < players.count(); p++) {
             this.dealCardTo(players.player(p));       // only players 

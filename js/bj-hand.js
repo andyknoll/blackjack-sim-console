@@ -98,19 +98,26 @@ BJHand.prototype.setRules = function(rulesObject) {
     this.rules = rulesObject;
 };
 
+
+// now using Rules objects!
+BJHand.prototype.isUnder = function() {
+    //return this.pointTotal() < 21;
+    return this.currRules().isHandUnder(this);
+};
+
 // now using Rules objects!
 BJHand.prototype.isBust = function() {
-    if (!this.currRules()) return false;
-    //return this.cardPointValues() > 21;
+    //return this.pointTotal() > 21;
     return this.currRules().isHandBust(this);
 };
 
 // now using Rules objects!
 BJHand.prototype.isBlackjack = function() {
-    if (!this.currRules()) return false;
-    //return this.cardPointValues() == 21;
+    //return this.pointTotal() == 21;
     return this.currRules().isHandBlackjack(this);
 };
+
+
 
 // THIS IS THE MAIN DECISION ALGORITHM
 // NEED TO SUPPORT RULES FOR 2 STYLES OF PLAY

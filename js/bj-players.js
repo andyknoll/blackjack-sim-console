@@ -23,8 +23,8 @@ BJPlayer.prototype = Object.create(AKObject.prototype);
 BJPlayer.prototype.constructor = BJPlayer;
 
 // getters
-BJPlayer.prototype.bjGame = function() { return this.parent().parent(); };
-BJPlayer.prototype.currRules = function() { return this.bjGame().currRules(); };
+BJPlayer.prototype.game = function() { return this.parent().parent(); };
+BJPlayer.prototype.currRules = function() { return this.game().currRules(); };
 
 
 BJPlayer.prototype.info = function() {
@@ -33,7 +33,7 @@ BJPlayer.prototype.info = function() {
     s += ".nickname: " + this.nickname + br;
     s += ".cash: " + this.cash + br;
     s += ".hand: " + this.hand + br;
-    s += ".bjGame: " + this.bjGame() + br;
+    s += ".game: " + this.game() + br;
     return s;
 };
 

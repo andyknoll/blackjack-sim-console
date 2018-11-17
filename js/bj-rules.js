@@ -23,6 +23,10 @@ var BJRules = function(name, parent) {
 BJRules.prototype = Object.create(AKObject.prototype);
 BJRules.prototype.constructor = BJRules;
 
+BJRules.prototype.isHandUnder = function(hand) {
+    return hand.pointTotal() < 21;    
+};
+
 BJRules.prototype.isHandBust = function(hand) {
     return hand.pointTotal() > 21;
 };
