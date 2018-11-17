@@ -230,12 +230,67 @@ BJTester.prototype.runTest7 = function () {
     this.output("RUNNING TEST 7");
     this.output(new Date());
     this.output("");
+    this.output("testing Hand values");
+    this.output("");
+
+    this.testGame = new BJGame("testGame", this);
+    this.testGame.createObjects();
+    this.testGame.initObjects();
+
+    var game = this.testGame;
+    var dealer = game.dealer;
+
+    var numCards = 5;
+    this.output("dealer dealing " + numCards + " card Hand to himself");
+    this.output("");
+    dealer.shuffleDeck();
+    dealer.dealCardsTo(dealer, numCards);
+    this.output(dealer.nickname.padEnd(15) + dealer.hand.cardFaceValues());
+    this.output("");
+    this.output(dealer.hand.info());
+
+    this.output("");
     this.output("TEST 7 COMPLETED.");
 };
+
 
 BJTester.prototype.runTest8 = function () {
     this.output("RUNNING TEST 8");
     this.output(new Date());
+    this.output("");
+    this.output("testing Ace values");
+    this.output("");
+
+    this.testGame = new BJGame("testGame", this);
+    this.testGame.createObjects();
+    this.testGame.initObjects();
+
+    var card = null;
+    var hand = null;
+    var NUM_CARDS = 11;
+
+    this.output("creating rigged Hand containing " + NUM_CARDS + " cards - all Aces");
+    this.output("");
+    hand = new BJHand("hand", this);
+    this.output("showing empty Hand");
+    this.output("");
+    this.output(hand.info());
+
+    // rig deck with all Aces
+    for (var i = 0; i < NUM_CARDS; i++) {
+        card = new Decks.BJCard("card" + i, hand);
+        card.setFaceValue("A", "S");
+        this.output(card.name() + "   " + card.faceValue());
+        hand.addCard(card);    
+    }
+
+    this.output("showing Hand");
+    this.output("");
+    this.output(hand.info());
+    this.output(hand.cardFaceValues());
+    this.output("");
+    this.output("Total points in this hand: " + hand.cardPointValues());
+
     this.output("");
     this.output("TEST 8 COMPLETED.");
 };

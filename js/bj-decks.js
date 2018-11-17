@@ -14,8 +14,8 @@ var br = "\r\n";
 var BJCard = function(name, parent) {
     AKObject.call(this, name, parent);
     this._className = "BJCard";
-    this.value;
-    this.suit;
+    this.value = "";
+    this.suit = "";
 };
 BJCard.prototype = Object.create(AKObject.prototype);
 BJCard.prototype.constructor = BJCard;
@@ -25,6 +25,8 @@ BJCard.prototype.info = function() {
     s += AKObject.prototype.info.call(this);
     s += ".value: " + this.value + br;
     s += ".suit: "  + this.suit + br;
+    s += ".faceValue: "   + this.faceValue() + br;
+    s += ".pointValue: "  + this.pointValue() + br;
     return s;
 };
 
@@ -52,7 +54,7 @@ BJCard.prototype.pointValue = function() {
         case "J"  : 
         case "Q"  :
         case "K"  : return 10;
-        case "A"  : return 11;       // SPECIAL CASE - REVISIT THIS!
+        case "A"  : return 11;  // unless forced to 1
     }
 };
 

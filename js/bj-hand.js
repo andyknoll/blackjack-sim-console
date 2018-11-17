@@ -14,6 +14,7 @@ var BJHand = function(name, parent) {
     AKCollection.call(this, name, parent);
     this._className = "BJHand";
     this.rules = null;      // e.g. "Vegas Rules"
+    this.numAces = 0;
 };
 BJHand.prototype = Object.create(AKCollection.prototype);
 BJHand.prototype.constructor = BJHand;
@@ -25,25 +26,36 @@ BJHand.prototype.card = function(idx) { return this.object(idx); };
 BJHand.prototype.info = function() {
 	var s = "";
     s += AKCollection.prototype.info.call(this);
+    s += br;
+
+    /*
     if (this.rules)
         s += ".rules: " + this.rules.name() + br;
     else
         s += ".rules: null" + br;
+    */
+   
+    s += ".count: " + this.count() + br;
+    s += ".numAces: " + this.numAces + br;
+    s += ".cardPointValues: " + this.cardPointValues() + br;
     return s;
 };
 
 BJHand.prototype.addCard = function(card) {
+    if (card.value == "A") this.numAces++;
     return this.addObject(card);
 };
 
-// overridden for info() string
-BJHand.prototype.childrenInfo = function() {
+BJHand.prototype.clear = function() {
+    this.numAces = 0;
+    return AKCollection.prototype.clear.call(this);     // super
+};
+
+// overridden to show face values
+BJHand.prototype.childInfo = function(card, idx) {
     var s = "";
-    var card = null;
-    for (var i = 0; i < this.count(); i++) {
-        card = this.card(i);
-        s += "  [" + i + "] " + card.faceValue().padEnd(5) + br;
-    }
+    var faceVal = card.faceValue();
+    s += "  [" + idx + "] " + faceVal.padEnd(5) + br;
     return s;
 };
 
@@ -64,36 +76,19 @@ BJHand.prototype.cardValues = function() {
 };
 
 
-// THIS IS WRONG! MULTIPLE VALUES ARE POSSIBLE WITH ACES
+// special cases if there is one or more than one Ace
 BJHand.prototype.cardPointValues = function() {
     var total = 0;
+    var deduct = 0
     for (var i = 0; i < this.count(); i++) {
         total += this.card(i).pointValue();
     }
-    return total;
-};
-
-// THIS IS THE MAIN HAND VALUES ALGORITHM!
-// Aces can count as 1 or 11 - hands can also have multiple Aces
-// must also filter out duplicates - only UNIQUE possibilities!
-BJHand.prototype.cardPossibleValues = function() {
-    // 2 to the n possibilites
-    let total = 0;
-    var card = null;
-    var aceCount = 0;
-    var possibles = [];
-    var values = [];
-    for (var i = 0; i < this.count(); i++) {
-        card = this.card(i);
-        if (card.value = "A") {
-            //console .log("FOUND AN ACE IN POS " + i);
-            //possibles.push(i);      // for now...
-            aceCount++;
-        }
-        total += card.pointValue();
+    if (total <= 21) return total;
+    if (this.numAces == 1) deduct = 10;
+    if (this.numAces > 1) {
+        deduct = (this.numAces - 1) * 10;
     }
-    possibles.push("aces: " + aceCount);      // for now...
-    return possibles;
+    return total - deduct;
 };
 
 BJHand.prototype.setRules = function(rulesObject) {

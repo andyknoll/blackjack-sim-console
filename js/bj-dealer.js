@@ -48,6 +48,15 @@ BJDealer.prototype.dealCardTo = function(player) {
     //
 };
 
+BJDealer.prototype.dealCardsTo = function(player, numCards) {
+    var card = null;
+    if (!player) return;
+    for (var i = 0; i < numCards; i++) {
+        card = this.deck.getNextCard();
+        player.hand.addCard(card);    
+    }
+};
+
 BJDealer.prototype.dealFirstCards = function() {
     var players = this.game.players;
     for (var n = 0; n < 2; n++) {

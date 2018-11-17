@@ -131,7 +131,7 @@ AKCollection.prototype.info = function() {
     return s;
 };
 
-// do not list out all the objects
+// do not list out all the childrenInfo() objects
 AKCollection.prototype.infoShort = function() {
     var s = "";
     s += AKObject.prototype.info.call(this);
@@ -149,6 +149,13 @@ AKCollection.prototype.childrenInfo = function() {
     return s;
 };
 
+// override as needed - used with methods above
+AKCollection.prototype.childInfo = function(obj, idx) {
+    var s = "  [" + idx + "] " + obj.name() + br;
+    return s;
+};
+
+
 AKCollection.prototype.showRange = function(min, max) {
     var s = "";
     var obj = null;
@@ -159,12 +166,6 @@ AKCollection.prototype.showRange = function(min, max) {
         obj = this.object(i);
         s += this.childInfo(obj, i);
     }
-    return s;
-};
-
-// override as needed - used with methods above
-AKCollection.prototype.childInfo = function(obj, idx) {
-    var s = "  [" + idx + "] " + obj.name() + br;
     return s;
 };
 
