@@ -112,6 +112,7 @@ BJConsoleApp.prototype.runTests = function(n) {
 };
 
 
+
 // create and run the app object
 // now uses command line arguments "node app.js test 4"
 var app = new BJConsoleApp("Blackjack Console App", null);      // no parent

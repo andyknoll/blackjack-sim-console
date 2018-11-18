@@ -469,8 +469,79 @@ BJTester.prototype.runTest12 = function () {
     this.output("RUNNING TEST 12");
     this.output(new Date());
     this.output("");
-    this.output("testing...");
+    this.output("testing Matrix and array syntx");
     this.output("");
+
+    var d0 = [0,  1,  2,  3,  4,  5];
+    var d1 = [1, 11, 12, 13, 14, 15];
+    var d2 = [2, 21, 22, 23, 24, 25];
+    var d3 = [3, 31, 32, 33, 34, 35];
+    var d4 = [4, 41, 42, 43, 44, 45];
+    var d5 = [5, 51, 52, 53, 54, 55];
+
+    var pMoves = [d0, d1, d2, d3, d4, d5];
+
+    this.output("pMoves[]");
+    this.output(pMoves);
+
+    this.output("");
+    this.output("pMoves[3]");
+    this.output(pMoves[3]);
+
+    this.output("");
+    this.output("pMoves[3, 2] - DOES NOT WORK");
+    this.output(pMoves[3, 2]);
+
+    this.output("");
+    this.output("pMoves[3][2] - THIS WORKS");
+    this.output(pMoves[3][2]);
+
+    this.output("");
+    this.output("pMoves[0][0] thru pMoves[5][5]");
+    this.output(pMoves[0][0]);
+    this.output(pMoves[1][1]);
+    this.output(pMoves[2][2]);
+    this.output(pMoves[3][3]);
+    this.output(pMoves[4][4]);
+    this.output(pMoves[5][5]);
+
+    var pMoves = [
+        [ 0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11],
+        [ 1, "H", "H", "H", "H", "H", "H", "H", "H", "H", "H", "H"],
+        [ 2, "H", "H", "H", "H", "H", "H", "H", "H", "H", "H", "H"],
+        [ 3, "H", "H", "H", "H", "H", "H", "H", "H", "H", "H", "H"],
+        [ 4, "H", "H", "H", "H", "H", "H", "H", "H", "H", "H", "H"],
+        [ 5, "H", "H", "H", "H", "H", "H", "H", "H", "H", "H", "H"],
+        [ 6, "H", "H", "H", "H", "H", "H", "H", "H", "H", "H", "H"],
+        [ 7, "H", "H", "H", "H", "H", "H", "H", "H", "H", "H", "H"],
+        [ 8, "H", "H", "H", "H", "H", "H", "H", "H", "H", "H", "H"],
+        [ 9, "H", "H", "H", "H", "H", "H", "H", "H", "H", "H", "H"],
+        [10, "H", "H", "H", "H", "H", "H", "H", "H", "H", "H", "H"],
+        [11, "H", "H", "H", "H", "H", "H", "H", "H", "H", "H", "H"],
+        [12, "H", "H", "H", "H", "H", "H", "H", "H", "H", "H", "H"],
+        [13, "H", "H", "H", "H", "H", "H", "H", "H", "H", "H", "H"],
+        [14, "S", "S", "S", "S", "S", "S", "S", "S", "S", "S", "S"],
+        [15, "S", "S", "S", "S", "S", "S", "S", "S", "S", "S", "S"],
+        [16, "S", "S", "S", "S", "S", "S", "S", "S", "S", "S", "S"],
+        [17, "S", "S", "S", "S", "S", "S", "S", "S", "S", "S", "S"],
+        [18, "S", "S", "S", "S", "S", "S", "S", "S", "S", "S", "S"],
+        [19, "S", "S", "S", "S", "S", "S", "S", "S", "S", "S", "S"],
+        [20, "S", "S", "S", "S", "S", "S", "S", "S", "S", "S", "S"],
+        [21, "S", "S", "S", "S", "S", "S", "S", "S", "S", "S", "S"],
+    ];
+
+   this.output("");
+   this.output("pMoves[0][0] - should be 0");
+   this.output(pMoves[0][0]);
+
+   this.output("");
+   this.output("pMoves[1][1] - should be H");
+   this.output(pMoves[1][1]);
+
+  this.output("");
+    this.output("pMoves[21][11] - should be S");
+    this.output(pMoves[21][11]);
+
     this.output("");
     this.output("TEST 12 COMPLETED.");
 };
