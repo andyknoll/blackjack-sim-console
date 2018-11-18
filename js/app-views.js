@@ -65,6 +65,15 @@ BJConsoleView.prototype.output = function(txt) {
     console.log(txt + br);
 };
 
+BJConsoleView.prototype.createObjects = function() {
+    this.output("BJConsoleView.createObjects");
+};
+
+BJConsoleView.prototype.initObjects = function() {
+    this.output("BJConsoleView.initObjects");
+};
+
+
 // trying this - we can print individual props
 BJConsoleView.prototype.outputGameInfo = function(game) {
     /*

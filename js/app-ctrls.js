@@ -131,5 +131,17 @@ BJController.prototype.output = function(txt) {
     this.view.output(txt);
 };
 
+// actual app methods - called by tester
+BJController.prototype.createObjects = function() {
+    this.game.createObjects();
+    this.view.createObjects();
+};
+
+BJController.prototype.initObjects = function() {
+    this.game.initObjects();
+    this.view.initObjects();
+};
+
+
 
 module.exports = AppCtrls;

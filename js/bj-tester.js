@@ -22,7 +22,14 @@ var BJTester = function (name, parent) {
     AKObject.call(this, name, parent);
     this._className = "BJTester";
     this.app = parent;
-    this.view = this.app.views.bjView;
+
+    this.models = this.app.models;
+    this.views  = this.app.views;
+    this.ctrls  = this.app.ctrls;
+
+    this.game = this.models.bjGame;     // BJ specific
+    this.view = this.views.bjView;
+    this.ctrl = this.ctrls.bjCtrl;
 };
 BJTester.prototype = Object.create(AKObject.prototype);
 BJTester.prototype.constructor = BJTester;
@@ -369,45 +376,57 @@ BJTester.prototype.runTest10 = function () {
     this.output("");
 
     this.testGame = new BJGame("testGame", this);
-    this.testGame.createObjects();
-    this.testGame.initObjects();
+    //this.testGame.createObjects();
+    //this.testGame.initObjects();
+    this.ctrl.createObjects();          // actual app calls
+    this.ctrl.initObjects();
+    this.output("");
 
-    var game = this.testGame;
+    var game = this.game;
     var dealer = game.dealer;
     var players = game.players;
     var player = null;
     var s, s2;
 
-    dealer.shuffleDeck();
-    players.clearHands();
-    dealer.dealFirstCards();
-    dealer.dealCardTo(players.player(0));
-    dealer.dealCardTo(players.player(1));
-    dealer.dealCardTo(players.player(2));
-    dealer.dealCardTo(players.player(3));
-    dealer.dealCardTo(dealer);
 
-    // players
-    for (var i = 0; i < 4; i++) {
+    var NUM_ROUNDS = 5;
+    this.output("playing " + NUM_ROUNDS + " rounds");
+    this.output("");
+    for (var r = 1; r <= NUM_ROUNDS; r++) {
+        this.output("ROUND " + r);
+        players.clearHands();
+        dealer.clearHand();
+        dealer.shuffleDeck();
+        dealer.dealFirstCards();
+        dealer.dealCardTo(players.player(0));
+        dealer.dealCardTo(players.player(1));
+        dealer.dealCardTo(players.player(2));
+        dealer.dealCardTo(players.player(3));
+        dealer.dealCardTo(dealer);
+
+        // players
+        for (var i = 0; i < 4; i++) {
         player = players.player(i);
         player.rules = game.currRules();
         s = player.nickname.padEnd(15) + player.hand.pointTotal() + "  ";
         s2 = s.padEnd(20);
         if (player.hand.isUnder()) s2 += "UNDER";
         if (player.hand.isBust()) s2 += "BUST";
-        if (player.hand.isBlackjack()) s2 += "BLACKJACK!";    
+        if (player.hand.isBlackjack()) s2 += "*BLACKJACK*";    
         this.output(s2);
         }
 
-    // dealer
-    s = "";
-    player = dealer;
-    s = player.nickname.padEnd(15) + player.hand.pointTotal() + "  ";
-    s2 = s.padEnd(20);
-    if (player.hand.isUnder()) s2 += "UNDER";
-    if (player.hand.isBust()) s2 += "BUST";
-    if (player.hand.isBlackjack()) s2 += "BLACKJACK!";    
-    this.output(s2);
+        // dealer
+        s = "";
+        player = dealer;
+        s = player.nickname.padEnd(15) + player.hand.pointTotal() + "  ";
+        s2 = s.padEnd(20);
+        if (player.hand.isUnder()) s2 += "UNDER";
+        if (player.hand.isBust()) s2 += "BUST";
+        if (player.hand.isBlackjack()) s2 += "*BLACKJACK*";    
+        this.output(s2);
+        this.output("");
+    }
 
     this.output("");
     this.output("TEST 10 COMPLETED.");
@@ -425,16 +444,33 @@ BJTester.prototype.runTest11 = function () {
     this.output("RUNNING TEST 11");
     this.output(new Date());
     this.output("");
-    this.output("testing...");
+    this.output("testing Tester as a Controller");
+    this.output("");
+
+    this.output(this.game.info());      // no need to create
+    this.output("calling ctrl.createObjects()");
+    this.ctrl.createObjects();          // actual app calls
+    this.output("calling ctrl.initObjects()");
+    this.ctrl.initObjects();
+    this.output("");
+
+    this.output(this.game.info());      // has props now
+
     this.output("");
     this.output("TEST 11 COMPLETED.");
 };
+
+
+
+
+
 
 BJTester.prototype.runTest12 = function () {
     this.output("RUNNING TEST 12");
     this.output(new Date());
     this.output("");
     this.output("testing...");
+    this.output("");
     this.output("");
     this.output("TEST 12 COMPLETED.");
 };
@@ -445,6 +481,7 @@ BJTester.prototype.runTest13 = function () {
     this.output("");
     this.output("testing...");
     this.output("");
+    this.output("");
     this.output("TEST 13 COMPLETED.");
 };
 
@@ -454,6 +491,7 @@ BJTester.prototype.runTest14 = function () {
     this.output("");
     this.output("testing...");
     this.output("");
+    this.output("");
     this.output("TEST 14 COMPLETED.");
 };
 
@@ -462,6 +500,7 @@ BJTester.prototype.runTest15 = function () {
     this.output(new Date());
     this.output("");
     this.output("testing...");
+    this.output("");
     this.output("");
     this.output("TEST 15 COMPLETED.");
 };
