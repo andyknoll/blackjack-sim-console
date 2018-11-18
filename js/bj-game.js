@@ -114,7 +114,7 @@ BJGame.prototype.initObjects = function() {
     var player = null;
     var rules  = null;
 
-    this.dealer.nickname = "Mr. Dealer";
+    this.dealer.nickname = "Scrooge";
     this.dealer.cash = 1000000;
 
     player = this.players.player(0);
@@ -130,7 +130,7 @@ BJGame.prototype.initObjects = function() {
     player.cash = 200;
 
     player = this.players.player(3);
-    player.nickname = "Scrooge";
+    player.nickname = "Pooey";
     player.cash = 200;
 
     rules = new Rules.BJNoviceRules("Novice Rules", this.rules);

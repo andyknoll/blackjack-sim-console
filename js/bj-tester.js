@@ -493,6 +493,7 @@ BJTester.prototype.runTest13 = function () {
     this.ctrl.initObjects();
 
     var game = this.game;
+    game.setCurrRules(1);
     var dealer = game.dealer;
     var player0 = game.players.player(0);
     var currRules = player0.currRules();
@@ -510,7 +511,26 @@ BJTester.prototype.runTest13 = function () {
 
     this.output("");
     this.output("Player deciding to hit or stay using Rules and Decision Matrix");
-    this.output(player0.hand.isHitting());
+    var isHitting = player0.hand.isHitting();
+    this.output(isHitting);
+    this.output("");
+
+    if (isHitting) {
+        this.output("Player is hitting - dealing one more card");
+        dealer.dealCardTo(player0);
+    } else {
+        this.output("Player is staying.");
+    }
+
+    this.output("");
+    this.output(player0.hand.cardFaceValues());
+    this.output("Total: " + player0.hand.pointTotal());
+
+    var s = "";
+    if (player0.hand.isUnder()) s = "UNDER";
+    if (player0.hand.isBust()) s = "BUST";
+    if (player0.hand.isBlackjack()) s = "*BLACKJACK*";    
+    this.output(s);
 
     this.output("");
     this.output("TEST 13 COMPLETED.");
@@ -520,9 +540,59 @@ BJTester.prototype.runTest14 = function () {
     this.output("RUNNING TEST 14");
     this.output(new Date());
     this.output("");
-    this.output("testing...");
+    this.output("testing rounds of one player WHILE staying or hitting");
     this.output("");
 
+    this.ctrl.createObjects();
+    this.ctrl.initObjects();
+
+    var game = this.game;
+    game.setCurrRules(1);
+    var dealer = game.dealer;
+    var player0 = game.players.player(0);
+    var currRules = player0.currRules();
+    var s = "";
+    this.output("using " + currRules.name());
+
+    dealer.shuffleDeck();
+
+    var round = 0;
+    var BJCount = 0;
+    while (BJCount <= 3) {
+        player0.clearHand();
+        round++;
+        this.output("");
+        this.output("Round " + round + ": " + dealer.nickname + " is dealing cards to " + player0.nickname);
+    
+        dealer.dealCardTo(player0);
+        dealer.dealCardTo(player0);
+        s = "Total: " + player0.hand.pointTotal();
+        this.output(s.padEnd(12) + player0.hand.cardFaceValues());
+    
+        var isHitting = player0.hand.isHitting();
+        //if (!isHitting) this.output("Player is staying.");
+    
+        while (isHitting) {
+            //this.output("Player is hitting - dealing one more card");
+            dealer.dealCardTo(player0);
+            s = "Total: " + player0.hand.pointTotal();
+            this.output(s.padEnd(12) + player0.hand.cardFaceValues());
+                isHitting = player0.hand.isHitting();
+            //if (!isHitting) this.output("Player is staying.");
+        }
+    
+        if (player0.hand.isUnder()) s = "UNDER";
+        if (player0.hand.isBust()) s = "BUST";
+        if (player0.hand.isBlackjack()) {
+            s = "*BLACKJACK*";    
+            BJCount++;
+        }
+        this.output(s);    
+    }
+
+    BJCount--;
+    this.output("");
+    this.output(BJCount + " Blackjacks in " + round + " rounds");
     this.output("");
     this.output("TEST 14 COMPLETED.");
 };

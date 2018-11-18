@@ -25,16 +25,16 @@ BJRuleSet.prototype = Object.create(AKObject.prototype);
 BJRuleSet.prototype.constructor = BJRuleSet;
 
 BJRuleSet.prototype.isHandUnder = function(hand) {
-    return hand.pointTotal() < 21;    
+    return hand.pointTotal() <= 21;    
 };
 
 BJRuleSet.prototype.isHandBust = function(hand) {
     return hand.pointTotal() > 21;
 };
 
-// not really - must be only first two cards!
+// 21 must be only in the first two cards
 BJRuleSet.prototype.isHandBlackjack = function(hand) {
-    return hand.pointTotal() == 21;    
+    return (hand.pointTotal() == 21) && (hand.count() == 2);
 };
 
 // THIS IS THE MAIN DECISION ALGORITHM
@@ -116,7 +116,6 @@ BJNoviceRules.prototype.createMatrix = function() {
         [ 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         [ 8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         [ 9, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-
         [10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -127,7 +126,6 @@ BJNoviceRules.prototype.createMatrix = function() {
         [17, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-
         [20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     ];
@@ -156,7 +154,6 @@ BJGreedyRules.prototype.createMatrix = function() {
         [ 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         [ 8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         [ 9, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-
         [10, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         [11, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         [12, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -164,11 +161,10 @@ BJGreedyRules.prototype.createMatrix = function() {
         [14, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         [15, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         [16, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [17, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [18, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [19, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-
-        [20, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [17, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     ];
 };
