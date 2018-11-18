@@ -89,10 +89,11 @@ BJConsoleView.prototype.outputGameInfo = function(game) {
 };
 
 BJConsoleView.prototype.outputGameProps = function(props) {
-    console.log("DISPLAYING PROPERTIES" + br);
+    console.log("VIEW DISPLAYING PROPS" + br);
     console.log(props.name + br);
     console.log(props.parent + br);
     console.log(props.className + br);
+    // cannot overwrite - will be back next call :-)
     props.name = "";
 };
 

@@ -125,8 +125,7 @@ BJHand.prototype.isBlackjack = function() {
 
 // now using Rules objects!
 BJHand.prototype.isHitting = function() {
-    //return true;       // for now
-    return this.rules.isHandHitting(this);
+    return this.currRules().isHandHitting(this);
 };
 
 

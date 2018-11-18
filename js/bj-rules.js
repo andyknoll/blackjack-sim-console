@@ -15,150 +15,221 @@
 var br = "\r\n";
 
 
-// BJRules "class"
-var BJRules = function(name, parent) {
+// BJRuleSet "class"
+var BJRuleSet = function(name, parent) {
     AKObject.call(this, name, parent);
-    this._className = "BJRules";
+    this._className = "BJRuleSet";
+    this.matrix = this.createMatrix();
 };
-BJRules.prototype = Object.create(AKObject.prototype);
-BJRules.prototype.constructor = BJRules;
+BJRuleSet.prototype = Object.create(AKObject.prototype);
+BJRuleSet.prototype.constructor = BJRuleSet;
 
-BJRules.prototype.isHandUnder = function(hand) {
+BJRuleSet.prototype.isHandUnder = function(hand) {
     return hand.pointTotal() < 21;    
 };
 
-BJRules.prototype.isHandBust = function(hand) {
+BJRuleSet.prototype.isHandBust = function(hand) {
     return hand.pointTotal() > 21;
 };
 
 // not really - must be only first two cards!
-BJRules.prototype.isHandBlackjack = function(hand) {
+BJRuleSet.prototype.isHandBlackjack = function(hand) {
     return hand.pointTotal() == 21;    
 };
 
 // THIS IS THE MAIN DECISION ALGORITHM
-// NEED TO SUPPORT RULES FOR 2 STYLES OF PLAY
-// NEED TO SUPPORT MULTIPLE HAND VALUES (ACES)
-
-BJRules.prototype.isHandHitting = function(hand) {
-    return true;    // FIX THIS - TEST ONLY
+BJRuleSet.prototype.isHandHitting = function(hand) {
+    var dealerCard = 10;             // TEST ONLY - FIX THIS!!!!!
+    var action = this.decideAction(hand.pointTotal(), dealerCard);
+    if (action == 0) return false;
+    if (action == 1) return true;
+    // could be more options like "Split", etc.
 };
+
+// returns 0 (STAY) or 1 (HIT)
+BJRuleSet.prototype.decideAction = function(playerPoints, dealerCard) {
+    // enforce range checks
+    if (playerPoints < 2) playerPoints = 2;     // hand is at least 2 Aces
+    if (playerPoints > 21) playerPoints = 21;
+    if (dealerCard < 1) dealerCard = 1;
+    if (dealerCard > 11) dealerCard = 11;
+    var action = this.matrix[playerPoints][dealerCard];
+    //var action = this.matrix[1][10];
+    return action;
+};
+
+// a grid of player hand values and dealer show cards
+// override this for different playing styles (e.g. Vegas)
+BJRuleSet.prototype.createMatrix = function() {
+    return [
+        [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11],
+        [ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [ 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [ 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [ 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [ 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [ 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [ 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [ 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [ 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+
+        [10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [17, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+
+        [20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ];
+};
+
+
+
+
+
+
+
+// BJNoviceRules "class"
+var BJNoviceRules = function(name, parent) {
+    BJRuleSet.call(this, name, parent);
+    this._className = "BJNoviceRules";
+};
+BJNoviceRules.prototype = Object.create(BJRuleSet.prototype);
+BJNoviceRules.prototype.constructor = BJNoviceRules;
+
+// could just use the base class version - all zeros!
+BJNoviceRules.prototype.createMatrix = function() {
+    return [
+        [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11],
+        [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [ 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [ 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [ 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [ 5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [ 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [ 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [ 8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [ 9, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+
+        [10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [17, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+
+        [20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ];
+};
+
+
+
+// BJGreedyRules "class"
+var BJGreedyRules = function(name, parent) {
+    BJRuleSet.call(this, name, parent);
+    this._className = "BJGreedyRules";
+};
+BJGreedyRules.prototype = Object.create(BJRuleSet.prototype);
+BJGreedyRules.prototype.constructor = BJGreedyRules;
+
+// all ones - player hits every time!
+BJGreedyRules.prototype.createMatrix = function() {
+    return [
+        [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11],
+        [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [ 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [ 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [ 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [ 5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [ 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [ 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [ 8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [ 9, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+
+        [10, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [11, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [12, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [13, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [14, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [15, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [16, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [17, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [18, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [19, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+
+        [20, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ];
+};
+
+
+
+
+
+
+
+
 
 
 
 
 // BJVegasRules "class"
 var BJVegasRules = function(name, parent) {
-    BJRules.call(this, name, parent);
+    BJRuleSet.call(this, name, parent);
     this._className = "BJVegasRules";
 };
-BJVegasRules.prototype = Object.create(BJRules.prototype);
+BJVegasRules.prototype = Object.create(BJRuleSet.prototype);
 BJVegasRules.prototype.constructor = BJVegasRules;
 
-/*
-// this is an inherited rule method - not needed
-BJVegasRules.prototype.isHandBust = function(hand) {
-    return hand.cardPointValues() > 21;
+
+
+// BJACRules "class" - Atlantic City
+var BJACRules = function(name, parent) {
+    BJRuleSet.call(this, name, parent);
+    this._className = "BJACRules";
 };
-*/
-
-
-
-// BJAtlanticRules "class"
-var BJAtlanticRules = function(name, parent) {
-    BJRules.call(this, name, parent);
-    this._className = "BJAtlanticRules";
-};
-BJAtlanticRules.prototype = Object.create(BJRules.prototype);
-BJAtlanticRules.prototype.constructor = BJAtlanticRules;
+BJACRules.prototype = Object.create(BJRuleSet.prototype);
+BJACRules.prototype.constructor = BJACRules;
 
 
 
 
 
 
-// BJRulesCollection "class"
-var BJRulesCollection = function(name, parent) {
+// BJRules "class"
+var BJRules = function(name, parent) {
     AKCollection.call(this, name, parent);
-    this._className = "BJRulesCollection";
+    this._className = "BJRules";
 };
-BJRulesCollection.prototype = Object.create(AKCollection.prototype);
-BJRulesCollection.prototype.constructor = BJRulesCollection;
+BJRules.prototype = Object.create(AKCollection.prototype);
+BJRules.prototype.constructor = BJRules;
 
 // getter
-BJRulesCollection.prototype.rule = function(idx) { return this.object(idx); };
+BJRules.prototype.ruleSet = function(idx) { return this.object(idx); };
 
-BJRulesCollection.prototype.addRules = function(rulesObj) {
-    return this.addObject(rulesObj);
+BJRules.prototype.addRuleSet = function(ruleSet) {
+    return this.addObject(ruleSet);
 };
-
-
-
-/*
-
-BJPlayerMoveMatrix = function() {
-
-// Default Moves
-
-p0 = [  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11 ]
-p0 = [  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [  2,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [  3,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [  4,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [  5,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [  7,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [  8,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [  9,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [ 10,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [ 11,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [ 12,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [ 13,  0,  0,  0,  0,  0,  1,  1,  1,  1,  1,  1 ]
-p0 = [ 14,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [ 15,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [ 16,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [ 17,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [ 18,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [ 19,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [ 20,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [ 21,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-
-// Vegas Moves
-
-p0 = [  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11 ]
-p0 = [  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [  2,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [  3,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [  4,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [  5,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [  7,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [  8,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [  9,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [ 10,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [ 11,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [ 12,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [ 13,  0,  0,  0,  0,  0,  1,  1,  1,  1,  1,  1 ]
-p0 = [ 14,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [ 15,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [ 16,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [ 17,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [ 18,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [ 19,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [ 20,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-p0 = [ 21,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
-
-matrix.getPlayerMove( 4, 8) = 0  // STAY
-matrix.getPlayerMove(13, 6) = 1  // HIT
-
-*/
 
 
 
 module.exports = { 
-    BJRules : BJRules,              // includes Matrix
-    BJVegasRules : BJVegasRules,
-    BJAtlanticRules : BJAtlanticRules,
-    BJRulesCollection : BJRulesCollection
+    BJRuleSet     : BJRuleSet,          // includes Matrix
+    BJNoviceRules : BJNoviceRules,
+    BJGreedyRules : BJGreedyRules,
+    BJVegasRules  : BJVegasRules,       // Las Vegas
+    BJACRules     : BJACRules,          // Atlantic City
+    BJRules       : BJRules
 }
     

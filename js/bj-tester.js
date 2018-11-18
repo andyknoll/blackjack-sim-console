@@ -68,22 +68,21 @@ BJTester.prototype.runTest1 = function () {
     this.output("RUNNING TEST 1");
     this.output(new Date());
     this.output("");
-    this.output("testing the main Game object");
+    this.output("testing the main Game object, getProps() and View output");
     this.output("");
 
-    this.output("creating BJGame object");
-    this.testGame = new BJGame("testGame", this);
-    //this.output(this.testGame.info());
-    this.view.outputGameProps(this.testGame.props);
+    this.output("calling view.outputGameProps(this.game.getProps())");
+    this.view.outputGameProps(this.game.getProps());
     this.output("");
 
     this.output("calling game.createObjects()");
     this.output("");
-    this.testGame.createObjects();
-    //this.view.outputGameInfo(this.testGame);
-    this.view.outputGameProps(this.testGame.props);
+    this.game.createObjects();
+    this.output("calling view.outputGameProps(this.game.getProps())");
+    this.view.outputGameProps(this.game.getProps());
     this.output("");
-    this.output(this.testGame.info());
+    this.output("calling standard output(this.game.info())");
+    this.output(this.game.info());
     this.output("");
 
     this.output("TEST 1 COMPLETED.");
@@ -96,15 +95,14 @@ BJTester.prototype.runTest2 = function () {
     this.output("testing main properties of the Game object");
     this.output("");
 
-    this.testGame = new BJGame("testGame", this);
-    this.testGame.createObjects();
-    this.testGame.initObjects();
+    this.game.createObjects();
+    this.game.initObjects();
 
-    this.output(this.testGame.deck.infoShort());
-    this.output(this.testGame.dealer.info());
-    this.output(this.testGame.players.info());
-    this.output(this.testGame.players.player(0).info());        // show 1 player
-    this.output(this.testGame.rules.info());
+    this.output(this.game.deck.infoShort());
+    this.output(this.game.dealer.info());
+    this.output(this.game.players.info());
+    this.output(this.game.players.player(0).info());        // show 1 player
+    this.output(this.game.rules.info());
 
     this.output("TEST 2 COMPLETED.");
 };
@@ -117,13 +115,14 @@ BJTester.prototype.runTest3 = function () {
     this.output("showing Dealer and Players details");
     this.output("");
 
-    this.testGame = new BJGame("testGame", this);
-    this.testGame.createObjects();
-    this.testGame.initObjects();
+    this.game.createObjects();
+    this.game.initObjects();
 
-    this.output(this.testGame.dealer.info());
+    this.output("showing Dealer object details");
+    this.output(this.game.dealer.info());
 
-    var players = this.testGame.players;
+    var players = this.game.players;
+    this.output("showing PLayers collection details");
     this.output(players.info());
 
     this.output(players.player(0).info());
@@ -139,18 +138,17 @@ BJTester.prototype.runTest4 = function () {
     this.output("RUNNING TEST 4");
     this.output(new Date());
     this.output("");
-    this.output("showing Rules details");
+    this.output("showing Rules and Decision Matrix details");
     this.output("");
 
-    this.testGame = new BJGame("testGame", this);
-    this.testGame.createObjects();
-    this.testGame.initObjects();
+    this.game.createObjects();
+    this.game.initObjects();
 
-    var rules = this.testGame.rules;
+    var rules = this.game.rules;
     this.output(rules.info());
 
-    this.output(rules.rule(0).info());
-    this.output(rules.rule(1).info());
+    this.output(rules.ruleSet(0).info());
+    this.output(rules.ruleSet(1).info());
 
     this.output("");
     this.output("TEST 4 COMPLETED.");
@@ -164,23 +162,21 @@ BJTester.prototype.runTest5 = function () {
     this.output("testing Deck.shuffle() and Dealer.dealCardTo()");
     this.output("");
 
-    this.testGame = new BJGame("testGame", this);
-    this.testGame.createObjects();
-    this.testGame.initObjects();
+    this.game.createObjects();
+    this.game.initObjects();
 
-    var game = this.testGame;
-    var dealer = game.dealer;
-    var deck = dealer.deck;
-    var player = game.players.player(0);
+    var dealer = this.game.dealer;
+    var deck   = dealer.deck;
+    var player = this.game.players.player(0);
 
     this.output(dealer.info());
     this.output(deck.infoShort());
-    this.output("showing first ten cards");
+    this.output("showing Deck's first ten cards before shuffling");
     this.output(deck.showRange(0, 9));
     this.output("shuffling deck");
     this.output("");
     dealer.shuffleDeck();
-    this.output("showing first ten cards");
+    this.output("showing Deck's first ten cards after shuffling");
     this.output(deck.showRange(0, 9));
 
     this.output("dealing first three cards to " + player.nickname);
@@ -201,7 +197,7 @@ BJTester.prototype.runTest5 = function () {
     this.output(dealer.nickname.padEnd(15) + dealer.hand.cardFaceValues());
     this.output("");
     
-    this.output("showing first ten cards again");
+    this.output("showing Deck's first ten cards again");
     this.output(deck.showRange(0, 9));
 
     this.output("");
@@ -215,15 +211,14 @@ BJTester.prototype.runTest6 = function () {
     this.output("testing dealer.dealFirstCards() and players.cardFaceValues()");
     this.output("");
 
-    this.testGame = new BJGame("testGame", this);
-    this.testGame.createObjects();
-    this.testGame.initObjects();
+    var game = this.game;
+    game.createObjects();
+    game.initObjects();
 
-    var game = this.testGame;
     var dealer = game.dealer;
     var players = game.players;
 
-    this.output("dealer dealing first cards");
+    this.output("dealer dealing first cards before shuffling");
     this.output("");
     dealer.dealFirstCards();
     this.output(players.cardFaceValues());
@@ -236,7 +231,7 @@ BJTester.prototype.runTest6 = function () {
     dealer.shuffleDeck();
     this.output("");
 
-    this.output("dealer dealing first cards again");
+    this.output("dealer dealing first cards after shuffling");
     this.output("");
     dealer.dealFirstCards();
     this.output(players.cardFaceValues());
@@ -251,15 +246,12 @@ BJTester.prototype.runTest7 = function () {
     this.output("RUNNING TEST 7");
     this.output(new Date());
     this.output("");
-    this.output("testing Hand values");
+    this.output("testing Hand values and dealer.dealCardsTo()");
     this.output("");
 
-    this.testGame = new BJGame("testGame", this);
-    this.testGame.createObjects();
-    this.testGame.initObjects();
-
-    var game = this.testGame;
-    var dealer = game.dealer;
+    this.game.createObjects();
+    this.game.initObjects();
+    var dealer = this.game.dealer;
 
     var numCards = 5;
     this.output("dealer dealing " + numCards + " card Hand to himself");
@@ -282,9 +274,8 @@ BJTester.prototype.runTest8 = function () {
     this.output("testing Ace values");
     this.output("");
 
-    this.testGame = new BJGame("testGame", this);
-    this.testGame.createObjects();
-    this.testGame.initObjects();
+    this.game.createObjects();
+    this.game.initObjects();
 
     var card = null;
     var hand = null;
@@ -305,12 +296,13 @@ BJTester.prototype.runTest8 = function () {
         hand.addCard(card);    
     }
 
-    this.output("showing Hand");
+    this.output("");
+    this.output("showing hand.cardFaceValues()");
     this.output("");
     this.output(hand.info());
     this.output(hand.cardFaceValues());
     this.output("");
-    this.output("Total points in this hand: " + hand.cardPointValues());
+    this.output("Total points in this hand: " + hand.pointTotal());
 
     this.output("");
     this.output("TEST 8 COMPLETED.");
@@ -323,11 +315,10 @@ BJTester.prototype.runTest9 = function () {
     this.output("testing 3-card Hands");
     this.output("");
 
-    this.testGame = new BJGame("testGame", this);
-    this.testGame.createObjects();
-    this.testGame.initObjects();
+    this.game.createObjects();
+    this.game.initObjects();
 
-    var game = this.testGame;
+    var game = this.game;
     var dealer = game.dealer;
     var players = game.players;
     var player = null;
@@ -346,12 +337,15 @@ BJTester.prototype.runTest9 = function () {
     dealer.dealCardTo(players.player(3));
     dealer.dealCardTo(dealer);
 
-    this.output("players.cardFaceValues()");
+    this.output("showing collection's players.cardFaceValues()");
     this.output("");
     this.output(players.cardValuesAndPointTotal());
     this.output(dealer.cardValuesAndPointTotal());
 
+    this.output("manually formatting player nickname and point totals");
+    this.output("");
     player = players.player(0);
+
     this.output(player.nickname.padEnd(15) + player.hand.pointTotal());
     player = players.player(1);
     this.output(player.nickname.padEnd(15) + player.hand.pointTotal());
@@ -375,9 +369,6 @@ BJTester.prototype.runTest10 = function () {
     this.output("testing 3-card Hands and outcomes");
     this.output("");
 
-    this.testGame = new BJGame("testGame", this);
-    //this.testGame.createObjects();
-    //this.testGame.initObjects();
     this.ctrl.createObjects();          // actual app calls
     this.ctrl.initObjects();
     this.output("");
@@ -434,23 +425,17 @@ BJTester.prototype.runTest10 = function () {
 
 
 
-
-
-
-
-
-
 BJTester.prototype.runTest11 = function () {
     this.output("RUNNING TEST 11");
     this.output(new Date());
     this.output("");
-    this.output("testing Tester as a Controller");
+    this.output("testing App's Game Controller and methods");
     this.output("");
 
     this.output(this.game.info());      // no need to create
-    this.output("calling ctrl.createObjects()");
+    this.output("calling CONTROLLER'S ctrl.createObjects()");
     this.ctrl.createObjects();          // actual app calls
-    this.output("calling ctrl.initObjects()");
+    this.output("calling CONTROLLER'S ctrl.initObjects()");
     this.ctrl.initObjects();
     this.output("");
 
@@ -461,10 +446,7 @@ BJTester.prototype.runTest11 = function () {
 };
 
 
-
-
-
-
+// Rules and Decision Matrix testing here
 BJTester.prototype.runTest12 = function () {
     this.output("RUNNING TEST 12");
     this.output(new Date());
@@ -472,86 +454,64 @@ BJTester.prototype.runTest12 = function () {
     this.output("testing Matrix and array syntx");
     this.output("");
 
-    var d0 = [0,  1,  2,  3,  4,  5];
-    var d1 = [1, 11, 12, 13, 14, 15];
-    var d2 = [2, 21, 22, 23, 24, 25];
-    var d3 = [3, 31, 32, 33, 34, 35];
-    var d4 = [4, 41, 42, 43, 44, 45];
-    var d5 = [5, 51, 52, 53, 54, 55];
+    this.ctrl.createObjects();          // actual app calls
+    this.ctrl.initObjects();
 
-    var pMoves = [d0, d1, d2, d3, d4, d5];
-
-    this.output("pMoves[]");
-    this.output(pMoves);
-
+    var currRules = this.game.currRules();
+    this.output("outputting game.currRules()");
     this.output("");
-    this.output("pMoves[3]");
-    this.output(pMoves[3]);
+    this.output(currRules.info());
 
-    this.output("");
-    this.output("pMoves[3, 2] - DOES NOT WORK");
-    this.output(pMoves[3, 2]);
+    this.output("outputting currRules.matrix[0][0] - should be 0");
+    this.output(currRules.matrix[0][0]);
 
-    this.output("");
-    this.output("pMoves[3][2] - THIS WORKS");
-    this.output(pMoves[3][2]);
+    this.output("outputting currRules.matrix[21][11] - should be 0");
+    this.output(currRules.matrix[21][11]);
 
-    this.output("");
-    this.output("pMoves[0][0] thru pMoves[5][5]");
-    this.output(pMoves[0][0]);
-    this.output(pMoves[1][1]);
-    this.output(pMoves[2][2]);
-    this.output(pMoves[3][3]);
-    this.output(pMoves[4][4]);
-    this.output(pMoves[5][5]);
+    this.output("outputting currRules.matrix[0][1] - should be 1");
+    this.output(currRules.matrix[0][1]);
 
-    var pMoves = [
-        [ 0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11],
-        [ 1, "H", "H", "H", "H", "H", "H", "H", "H", "H", "H", "H"],
-        [ 2, "H", "H", "H", "H", "H", "H", "H", "H", "H", "H", "H"],
-        [ 3, "H", "H", "H", "H", "H", "H", "H", "H", "H", "H", "H"],
-        [ 4, "H", "H", "H", "H", "H", "H", "H", "H", "H", "H", "H"],
-        [ 5, "H", "H", "H", "H", "H", "H", "H", "H", "H", "H", "H"],
-        [ 6, "H", "H", "H", "H", "H", "H", "H", "H", "H", "H", "H"],
-        [ 7, "H", "H", "H", "H", "H", "H", "H", "H", "H", "H", "H"],
-        [ 8, "H", "H", "H", "H", "H", "H", "H", "H", "H", "H", "H"],
-        [ 9, "H", "H", "H", "H", "H", "H", "H", "H", "H", "H", "H"],
-        [10, "H", "H", "H", "H", "H", "H", "H", "H", "H", "H", "H"],
-        [11, "H", "H", "H", "H", "H", "H", "H", "H", "H", "H", "H"],
-        [12, "H", "H", "H", "H", "H", "H", "H", "H", "H", "H", "H"],
-        [13, "H", "H", "H", "H", "H", "H", "H", "H", "H", "H", "H"],
-        [14, "S", "S", "S", "S", "S", "S", "S", "S", "S", "S", "S"],
-        [15, "S", "S", "S", "S", "S", "S", "S", "S", "S", "S", "S"],
-        [16, "S", "S", "S", "S", "S", "S", "S", "S", "S", "S", "S"],
-        [17, "S", "S", "S", "S", "S", "S", "S", "S", "S", "S", "S"],
-        [18, "S", "S", "S", "S", "S", "S", "S", "S", "S", "S", "S"],
-        [19, "S", "S", "S", "S", "S", "S", "S", "S", "S", "S", "S"],
-        [20, "S", "S", "S", "S", "S", "S", "S", "S", "S", "S", "S"],
-        [21, "S", "S", "S", "S", "S", "S", "S", "S", "S", "S", "S"],
-    ];
-
-   this.output("");
-   this.output("pMoves[0][0] - should be 0");
-   this.output(pMoves[0][0]);
-
-   this.output("");
-   this.output("pMoves[1][1] - should be H");
-   this.output(pMoves[1][1]);
-
-  this.output("");
-    this.output("pMoves[21][11] - should be S");
-    this.output(pMoves[21][11]);
+    this.output("outputting currRules.matrix[0][9] - should be 9");
+    this.output(currRules.matrix[0][9]);
 
     this.output("");
     this.output("TEST 12 COMPLETED.");
 };
 
+
+
+
+
 BJTester.prototype.runTest13 = function () {
     this.output("RUNNING TEST 13");
     this.output(new Date());
     this.output("");
-    this.output("testing...");
+    this.output("testing Player hit or stay using Decision Matrix");
     this.output("");
+
+    this.ctrl.createObjects();
+    this.ctrl.initObjects();
+
+    var game = this.game;
+    var dealer = game.dealer;
+    var player0 = game.players.player(0);
+    var currRules = player0.currRules();
+    this.output("using " + currRules.name());
+
+    this.output("");
+    this.output(dealer.nickname + " dealing two cards to " + player0.nickname);
+    this.output("");
+
+    dealer.shuffleDeck();
+    dealer.dealCardTo(player0);
+    dealer.dealCardTo(player0);
+    this.output(player0.hand.cardFaceValues());
+    this.output("Total: " + player0.hand.pointTotal());
+
+    this.output("");
+    this.output("Player deciding to hit or stay using Rules and Decision Matrix");
+    this.output(player0.hand.isHitting());
+
     this.output("");
     this.output("TEST 13 COMPLETED.");
 };
@@ -562,6 +522,7 @@ BJTester.prototype.runTest14 = function () {
     this.output("");
     this.output("testing...");
     this.output("");
+
     this.output("");
     this.output("TEST 14 COMPLETED.");
 };
@@ -572,6 +533,7 @@ BJTester.prototype.runTest15 = function () {
     this.output("");
     this.output("testing...");
     this.output("");
+
     this.output("");
     this.output("TEST 15 COMPLETED.");
 };

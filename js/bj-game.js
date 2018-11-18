@@ -61,17 +61,13 @@ BJGame = function(name, parent) {
     this.config = gameConfig;       // bring in the global
 
     // the main Game properties
-    this.deck    = null;
-    this.dealer  = null;
-    this.players = null;
-    this.rules   = null;
+    this.deck    = null;        // BJMultiDeck
+    this.dealer  = null;        // BJDealer
+    this.players = null;        // BJPlayers
+    this.rules   = null;        // BJRules
 
-    // for passing to Views
-    this.props = {
-        name : this.name(),
-        parent : this.parent().name(),
-        className : this.className()
-    };
+    // for passing to Views - test this more
+    this.props = {};
 };
 BJGame.prototype = Object.create(AKObject.prototype);
 BJGame.prototype.constructor = BJGame;
@@ -80,8 +76,15 @@ BJGame.prototype.constructor = BJGame;
 BJGame.prototype.playerCount = function() { return this.players.count(); };
 BJGame.prototype.currRules = function() { return this.rules.currObject(); };
 
-BJGame.props = {}
-
+// copy values for passing to the Views
+BJGame.prototype.getProps = function() {
+    this.props = {
+        name : this.name(),
+        parent : this.parent().name(),
+        className : this.className()
+    };
+    return this.props;
+};
 
 BJGame.prototype.info = function() {
 	var s = "";
@@ -100,7 +103,7 @@ BJGame.prototype.createObjects = function() {
     this.deck    = new Decks.BJMultiDeck("deck", this);
     this.dealer  = new Dealer.BJDealer("dealer", this, this.deck);   // pass Deck
     this.players = new Players.BJPlayers("players", this);
-    this.rules   = new Rules.BJRulesCollection("rules", this);
+    this.rules   = new Rules.BJRules("rules", this);
 
     this.deck.createAndAddDecks(4);         // using four decks
     this.players.createAndAddPlayers(4);    // four players
@@ -130,10 +133,10 @@ BJGame.prototype.initObjects = function() {
     player.nickname = "Scrooge";
     player.cash = 200;
 
-    rules = new Rules.BJVegasRules("Vagas Rules", this.rules);
-    this.rules.addRules(rules);
-    rules = new Rules.BJAtlanticRules("Atlantic Rules", this.rules);
-    this.rules.addRules(rules);
+    rules = new Rules.BJNoviceRules("Novice Rules", this.rules);
+    this.rules.addRuleSet(rules);
+    rules = new Rules.BJGreedyRules("Greedy Rules", this.rules);
+    this.rules.addRuleSet(rules);
     this.setCurrRules(0);
 };
 
