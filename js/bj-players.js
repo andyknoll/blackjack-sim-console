@@ -56,6 +56,10 @@ BJPlayer.prototype.cardValuesAndPointTotal = function() {
     return s;
 };
 
+BJPlayer.prototype.isHitting = function(upCardVal) {
+    return this.currRules().isHandHitting(this.hand, upCardVal);
+};
+
 
 
 

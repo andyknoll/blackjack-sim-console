@@ -24,6 +24,8 @@ var BJRuleSet = function(name, parent) {
 BJRuleSet.prototype = Object.create(AKObject.prototype);
 BJRuleSet.prototype.constructor = BJRuleSet;
 
+
+/*
 BJRuleSet.prototype.isHandUnder = function(hand) {
     return hand.pointTotal() <= 21;    
 };
@@ -36,26 +38,23 @@ BJRuleSet.prototype.isHandBust = function(hand) {
 BJRuleSet.prototype.isHandBlackjack = function(hand) {
     return (hand.pointTotal() == 21) && (hand.count() == 2);
 };
+*/
+
 
 // THIS IS THE MAIN DECISION ALGORITHM
-BJRuleSet.prototype.isHandHitting = function(hand) {
-    var dealerCard = 10;             // TEST ONLY - FIX THIS!!!!!
-    var action = this.decideAction(hand.pointTotal(), dealerCard);
+BJRuleSet.prototype.isHandHitting = function(hand, dealerCardVal) {
+    //var dealerCardVal = 10;             // TEST ONLY - FIX THIS!!!!!
+    var action = this.decideAction(hand.pointTotal(), dealerCardVal);
     if (action == 0) return false;
     if (action == 1) return true;
-    // could be more options like "Split", etc.
+    // could be more options like "Split", etc. in the future
 };
 
 // returns 0 (STAY) or 1 (HIT)
-BJRuleSet.prototype.decideAction = function(playerPoints, dealerCard) {
-    // enforce range checks
-    if (playerPoints < 2) playerPoints = 2;     // hand is at least 2 Aces
+BJRuleSet.prototype.decideAction = function(playerPoints, dealerCardVal) {
+    // must enforce range checks here...
     if (playerPoints > 21) playerPoints = 21;
-    if (dealerCard < 1) dealerCard = 1;
-    if (dealerCard > 11) dealerCard = 11;
-    var action = this.matrix[playerPoints][dealerCard];
-    //var action = this.matrix[1][10];
-    return action;
+    return this.matrix[playerPoints][dealerCardVal];
 };
 
 // a grid of player hand values and dealer show cards

@@ -59,14 +59,24 @@ BJDealer.prototype.dealCardsTo = function(player, numCards) {
 
 BJDealer.prototype.dealFirstCards = function() {
     var players = this.game().players;
-    for (var n = 0; n < 2; n++) {
+    for (var n = 0; n < 2; n++) {                     // each of 2 cards
         for (var p = 0; p < players.count(); p++) {
-            this.dealCardTo(players.player(p));       // only players 
+            this.dealCardTo(players.player(p));       // the players first
         }
-        this.dealCardTo(this);                        // now the Dealer 
+        this.dealCardTo(this);                        // finally the Dealer 
     }
 };
 
+BJDealer.prototype.upCard = function() { 
+    if (this.hand.count() < 2) return null;
+    return this.hand.card(1); 
+};
+
+// override for Dealer - always hits 16 or less
+BJDealer.prototype.isHitting = function() {
+    var points = this.hand.pointTotal();
+    return (points <= 16);
+};
 
 
 module.exports = { 

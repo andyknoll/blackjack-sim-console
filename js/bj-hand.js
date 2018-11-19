@@ -94,40 +94,22 @@ BJHand.prototype.pointTotal = function() {
     return total - deduct;
 };
 
-BJHand.prototype.setRules = function(rulesObject) {
-    this.rules = rulesObject;
-};
 
-
-// now using Rules objects!
+// no need to use Rules objects here
 BJHand.prototype.isUnder = function() {
-    //return this.pointTotal() < 21;
-    return this.currRules().isHandUnder(this);
+    return this.pointTotal() <= 21;
+    //return this.currRules().isHandUnder(this);
 };
 
-// now using Rules objects!
 BJHand.prototype.isBust = function() {
-    //return this.pointTotal() > 21;
-    return this.currRules().isHandBust(this);
+    return this.pointTotal() > 21;
+    //return this.currRules().isHandBust(this);
 };
 
-// now using Rules objects!
 BJHand.prototype.isBlackjack = function() {
-    //return this.pointTotal() == 21;
-    return this.currRules().isHandBlackjack(this);
+    return (this.pointTotal() == 21) && (this.count() == 2);
+    //return this.currRules().isHandBlackjack(this);
 };
-
-
-
-// THIS IS THE MAIN DECISION ALGORITHM
-// NEED TO SUPPORT RULES FOR 2 STYLES OF PLAY
-// NEED TO SUPPORT MULTIPLE HAND VALUES (ACES)
-
-// now using Rules objects!
-BJHand.prototype.isHitting = function() {
-    return this.currRules().isHandHitting(this);
-};
-
 
 
 

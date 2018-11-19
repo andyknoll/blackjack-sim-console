@@ -93,8 +93,9 @@ BJConsoleApp.prototype.output = function(s) {
 
 BJConsoleApp.prototype.run = function() {
     var args = process.argv;        // Node command line
+    var testNum = args[3];
     if (args[2] == "test") {
-        this.runTests(args[3]);     // runTests(n)
+        this.runTests(testNum);     // runTests(n)
     } else {
         this.output("");            // run actual game
         this.output("running '" + this.name() + "' @ " + new Date());
