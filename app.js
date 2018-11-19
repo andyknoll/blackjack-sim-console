@@ -75,26 +75,14 @@ BJConsoleApp.prototype.createControllers = function() {
     return new AppCtrls("ctrls", this);
 };
 
-// keep output destination unknown to the App code
-// view will output to console (or browser if web app)
-BJConsoleApp.prototype.output = function(s) {
-    this.views.output(s);    // to console in this case
-};
-
 
 BJConsoleApp.prototype.run = function() {
     var args = process.argv;        // Node command line
-    var testNum = args[3];
+    var testIdx = args[3];
     if (args[2] == "test") {
-        this.runTests(testNum);     // runTests(n)
+        this.runTests(testIdx);     // runTests(n)
     } else {
-        this.output("");            // run actual game
-        this.output("running '" + this.name() + "' @ " + new Date());
-        this.output("");
-        //this.output(this.info());
-        this.ctrls.bjCtrl.startGame();
-        this.output("");
-        this.output("completed simulation @ " + new Date());    
+        this.ctrls.bjCtrl.run();    // run the Blackjack controller
     }
 };
 

@@ -45,19 +45,17 @@ var Rules   = require('./bj-rules.js');
 // something like this...
 var gameConfig = {
     maxDecks   : 4,      // 1 thru 8
-    maxRounds  : 20,
+    maxRounds  : 2,
     startCash  : 200,
     roundAnte  : 15,
-    houseCash  : 5000000,
+    houseCash  : 1000000,
     ruleSet    : 0,
-    dealer : { nickname : "MR. SCROOGE" },
+    dealer : { nickname : "Scrooge (dealer)" },
     players : [
-        { nickname : "HUEY"  },
-        { nickname : "DEWEY" },
-        { nickname : "LOUIE" },
-        { nickname : "POOEY" },
-        { nickname : "CAROL" },
-        { nickname : "ANDY" },
+        { nickname : "Huey"   },
+        { nickname : "Dewey"  },
+        { nickname : "Louie"  },
+        { nickname : "Donald" }
     ]
 };
 
@@ -91,6 +89,7 @@ BJGame.prototype.currRules = function() { return this.rules.currObject(); };
 
 BJGame.prototype.configPlayerCount = function() { return this.config.players.length; };
 
+/*
 // copy values for passing to the Views - testing this out
 BJGame.prototype.getProps = function() {
     this.props = {
@@ -100,6 +99,7 @@ BJGame.prototype.getProps = function() {
     };
     return this.props;
 };
+*/
 
 BJGame.prototype.info = function() {
 	var s = "";
@@ -116,9 +116,14 @@ BJGame.prototype.info = function() {
     return s;
 };
 
+
+// "public" methods called by the BJ Controller
+
+
 // create all the main Game objects
 // some of these values are from the config object
 BJGame.prototype.createObjects = function() {
+    this.msg = "--BJGame.createObjects";
     this.deck    = new Decks.BJMultiDeck("deck", this);
     this.dealer  = new Dealer.BJDealer("dealer", this, this.deck);   // pass Deck
     this.players = new Players.BJPlayers("players", this);
@@ -130,13 +135,13 @@ BJGame.prototype.createObjects = function() {
 
 // init objects based on config object
 BJGame.prototype.initObjects = function() {
+    this.msg = "--BJGame.initObjects";
     var player = null;
     var rules  = null;
 
     this.dealer.nickname = this.config.dealer.nickname;
     this.dealer.cash = this.config.houseCash;
 
-    console.log("*** CONFIG *** " + this.config.players);
     for (var i = 0; i < this.configPlayerCount(); i++) {
         player = this.players.player(i);
         player.nickname = this.config.players[i].nickname;
@@ -158,11 +163,20 @@ BJGame.prototype.setCurrRules = function(idx) {
 
 
 
-// "public" methods called by controller
-BJGame.prototype.startGame = function() {
-    this.msg = "BJGame.startGame";
-    this.numRounds = 0;
+BJGame.prototype.startRound = function() {
+    this.currRound++;
+    this.msg = "--BJGame.startRound";
 };
+
+BJGame.prototype.completeRound = function() {
+    this.msg = "--BJGame.completeRound";
+};
+
+
+
+
+
+
 
 BJGame.prototype.shuffleDeck = function() {
     this.msg = "BJGame.shuffleDeck";

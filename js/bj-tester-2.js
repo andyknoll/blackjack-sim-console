@@ -131,7 +131,7 @@ BJTester.prototype.runTest2 = function () {
     this.output("RUNNING TEST 2");
     this.output(new Date());
     this.output("");
-    this.output("testing the BJConsoleView output");
+    this.output("testing the BJConsoleView Stats output");
     this.output("");
 
     this.ctrl.createObjects();      // actual app call

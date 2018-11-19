@@ -25,7 +25,7 @@
 var br = "\r\n";    // CRLF for text files
 //var br = "\r";        // CR only for screen
 
-var hr = "=======================================================";
+var hr = "=====================================================";
 
 
 // AppViews "class"
@@ -47,13 +47,6 @@ AppViews.prototype.info = function() {
     return s;
 };
 
-/*
-AppViews.prototype.output = function(txt) {
-    this.bjView.output(txt);
-};
-*/
-
-
 
 
 
@@ -71,13 +64,75 @@ BJConsoleView.prototype.output = function(txt) {
     console.log(txt);
 };
 
+
+// "public" methods called by the BJ Controller
+
+
 BJConsoleView.prototype.createObjects = function() {
-    this.output("BJConsoleView.createObjects");
+    this.output("--BJConsoleView.createObjects");
 };
 
 BJConsoleView.prototype.initObjects = function() {
-    this.output("BJConsoleView.initObjects");
+    this.output("--BJConsoleView.initObjects");
 };
+
+BJConsoleView.prototype.startRound = function() {
+    this.output("--BJConsoleView.startRound");
+};
+
+BJConsoleView.prototype.completeRound = function() {
+    this.output("--BJConsoleView.completeRound");
+};
+
+BJConsoleView.prototype.showFinalStats = function(game) { 
+    this.output("--BJConsoleView.showFinalStats");
+    var players = game.players;
+    var player = null;
+    var maxRounds = game.maxRounds.toString();
+    var s = "";
+    var name   = "";
+    var rounds = "";
+    var wins   = "";
+    var losses = "";
+    var cash   = "";
+
+    // output the heading
+    s += br + hr + br;
+    s += "Rounds: " + maxRounds.padEnd(12);
+    s += "G     W     L     Cash Remaining" + br;
+    s += br;
+
+    // show players' stats
+    for (var i = 0; i < players.count(); i++) {
+        player = players.player(i);
+        name   = player.nickname;
+        rounds = player.roundCount.toString();
+        wins   = player.winCount.toString();
+        losses = player.lossCount.toString();
+        cash   = "$ " + player.cash;
+        s += name.padEnd(20) + rounds.padEnd(6) + wins.padEnd(6) + losses.padEnd(15) + cash.padEnd(12) + br;
+    }
+
+    // show dealer's stats
+    player = game.dealer;
+    name   = player.nickname;
+    rounds = player.roundCount.toString();
+    wins   = player.winCount.toString();
+    losses = player.lossCount.toString();
+    cash   = "$ " + player.cash;
+    s += name.padEnd(20) + rounds.padEnd(6) + wins.padEnd(6) + losses.padEnd(11) + cash.padEnd(6) + br;
+    s += hr + br;
+    this.output(s);
+};
+
+
+
+
+
+
+
+
+
 
 
 // trying this - we can print individual props
@@ -150,40 +205,6 @@ BJConsoleView.prototype.showGameRoundStats = function(game) {
     var cash = "";
     s += hr + br;
     s += "Round: " + game.currRound + br;
-    s += "                    G     W     L     Cash Remaining" + br;
-    s += br;
-    for (var i = 0; i < players.count(); i++) {
-        player = players.player(i);
-        name   = player.nickname;
-        rounds = player.roundCount.toString();
-        wins   = player.winCount.toString();
-        losses = player.lossCount.toString();
-        cash   = "$ " + player.cash;
-        s += name.padEnd(20) + rounds.padEnd(6) + wins.padEnd(6) + losses.padEnd(6) + cash.padEnd(6) + br;
-    }
-    player = game.dealer;
-    name   = player.nickname;
-    rounds = player.roundCount.toString();
-    wins   = player.winCount.toString();
-    losses = player.lossCount.toString();
-    cash   = "$ " + player.cash;
-    s += name.padEnd(20) + rounds.padEnd(6) + wins.padEnd(6) + losses.padEnd(6) + cash.padEnd(6) + br;
-    s += hr + br;
-    this.output(s);
-};
-
-
-BJConsoleView.prototype.showGameFinalStats = function(game) { 
-    var players = game.players;
-    var player = null;
-    var s = "";
-    var name = "";
-    var games = "";
-    var wins = "";
-    var losses = "";
-    var cash = "";
-    s += hr + br;
-    s += "Rounds: " + game.MAX_ROUNDS + br;
     s += "                    G     W     L     Cash Remaining" + br;
     s += br;
     for (var i = 0; i < players.count(); i++) {

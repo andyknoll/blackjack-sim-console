@@ -77,56 +77,6 @@ BJController.prototype.info = function() {
     return s;
 };
 
-// the Controller starts the Blackjack Game
-BJController.prototype.startGame = function() {
-    this.output("Controller to Game object - startGame");   // to be interactive
-    this.game.startGame();
-    this.output(this.game.msg);
-
-    this.output("Controller to Game object - shuffleDeck");
-    this.game.shuffleDeck();
-    this.output(this.game.msg);
-    
-    // loop goes here...
-    // some players will run out of money
-    // must check for aces = 1 or 11
-    // must use rules for Hitting and Holding
-
-    var NUM_GAMES = 20;
-    for (var i = 0; i < NUM_GAMES; i++) {
-
-        this.output("============== ROUND " + (i+1) + " ==============");
-
-        this.output("Controller to Game object - initRound");
-        this.game.initRound();
-        //this.output(this.game.msg);
-        
-        this.output("Controller to Game object - dealCards");   // to be interactive
-        this.game.dealCards();
-        //this.output(this.game.msg);
-        
-        this.output("Controller to Game object - checkHands");  // to be interactive
-        this.game.checkHands();
-        //this.output(this.game.msg);
-        
-        this.output("Controller to Game object - calcScores");
-        this.game.calcScores();
-        //this.output(this.game.msg);
-        
-        this.output("Controller to Game object - calcStats");
-        this.game.calcStats();
-        //this.output(this.game.msg);    
-    }
-
-    this.output("");
-
-    this.output("Controller to Game object - calcFinalStats");
-    this.game.calcFinalStats();
-
-    this.output("Controller to View object - showFinalStats");
-    this.view.showFinalStats(this.game.numRounds);
-
-};
 
 // convenience method call
 BJController.prototype.output = function(txt) {
@@ -134,14 +84,74 @@ BJController.prototype.output = function(txt) {
 };
 
 // actual app methods - called by tester
+BJController.prototype.run = function() {
+    // called only once at app startup
+    this.output("");
+    this.output("running '" + this.app.name() + "' @ " + new Date());
+    this.output("");
+
+    this.createObjects();
+    this.initObjects();
+
+    this.playRounds();
+
+    this.showFinalStats();
+
+    this.output("");
+    this.output("completed simulation @ " + new Date());    
+};
+
+
+
 BJController.prototype.createObjects = function() {
+    this.output("BJController.createObjects");
     this.game.createObjects();
+    this.output(this.game.msg);
     this.view.createObjects();
+    this.output("");
 };
 
 BJController.prototype.initObjects = function() {
+    this.output("BJController.initObjects");
     this.game.initObjects();
+    this.output(this.game.msg);
     this.view.initObjects();
+    this.output("");
+};
+
+BJController.prototype.playRounds = function() {
+    this.output("BJController.playRounds");
+    this.output("");
+
+    for (var r = 1; r <= this.game.maxRounds; r++) {
+        this.startRound();
+        this.completeRound();    
+    }
+
+    this.output("");
+};
+
+
+BJController.prototype.startRound = function() {
+    this.output("BJController.startRound");
+    this.output("Round: " + (this.game.currRound+1));
+    this.game.startRound();
+    this.output(this.game.msg);
+    this.view.startRound();
+};
+
+BJController.prototype.completeRound = function() {
+    this.output("BJController.completeRound");
+    this.game.completeRound();
+    this.output(this.game.msg);
+    this.view.completeRound();
+    this.output("");
+};
+
+BJController.prototype.showFinalStats = function() {
+    this.output("BJController.showFinalStats");
+    this.view.showFinalStats(this.game);
+    this.output("");
 };
 
 
