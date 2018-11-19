@@ -20,12 +20,15 @@
 
 var BJGame = require('./bj-game.js');
 
+var br = "\r\n";        // CRLF for output
+
 // AppModels "class"
 var AppModels = function(name, parent) {
     AKCollection.call(this, name, parent);
     this._className = "AppModels";
 
     this.bjGame = new BJGame("bjGame", this);
+    this.addObject(this.bjGame);
 
     // the varous Game model objects are defined in their own files
     // Cards, Decks, Players, etc. - they are all props of this single Game
@@ -36,7 +39,7 @@ AppModels.prototype.constructor = AppModels;
 AppModels.prototype.info = function() {
 	var s = "";
     s += AKCollection.prototype.info.call(this);
-    s += ".bjGame: " + this.bjGame.name() + br;
+    //s += ".bjGame: " + this.bjGame.name() + br;
     return s;
 };
 

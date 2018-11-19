@@ -40,16 +40,7 @@ var AppModels = require('./js/app-models.js');
 var AppViews  = require('./js/app-views.js');
 var AppCtrls  = require('./js/app-ctrls.js');
 
-var BJTester  = require('./js/bj-tester.js');
-
-// something like this...
-var appConfig = {
-    playerCount : 5,
-    deckCount   : 1,      // 1 thru 8
-    startCash   : 200,
-    gameAnte    : 15,
-    gameCount   : 20
-};
+var BJTester  = require('./js/bj-tester-2.js');
 
 
 var br = "\r\n";    // CRLF

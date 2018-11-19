@@ -22,6 +22,8 @@
 
 *****************************************************************************/
 
+var br = "\r\n";        // CRLF for output
+
 // AppCtrls "class"
 var AppCtrls = function(name, parent) {
     AKCollection.call(this, name, parent);
@@ -32,6 +34,8 @@ var AppCtrls = function(name, parent) {
     this.views = this.app.views;        // can access app's Views
 
     this.bjCtrl = new BJController("bjCtrl", this);
+    this.addObject(this.bjCtrl);
+
 };
 AppCtrls.prototype = Object.create(AKCollection.prototype);
 AppCtrls.prototype.constructor = AppCtrls;
@@ -41,9 +45,7 @@ AppCtrls.prototype.info = function() {
     s += AKCollection.prototype.info.call(this);
     s += ".models: " + this.models.name() + br;
     s += ".views: "  + this.views.name() + br;
-    s += ".bjCtrl: " + this.bjCtrl.name() + br;
-    s += br;
-    s += this.bjCtrl.info();
+    //s += ".bjCtrl: " + this.bjCtrl.name() + br;
     return s;
 };
 

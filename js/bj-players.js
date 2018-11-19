@@ -18,6 +18,10 @@ var BJPlayer = function(name, parent) {
     this.nickname = "";
     this.cash = 0;
     this.hand = new BJHand(this.name() + "_hand", this);
+
+    this.roundCount = 0;
+    this.winCount = 0;
+    this.lossCount = 0;
 };
 BJPlayer.prototype = Object.create(AKObject.prototype);
 BJPlayer.prototype.constructor = BJPlayer;
@@ -41,6 +45,14 @@ BJPlayer.prototype.clearHand = function() {
     this.hand.clear();
 };
 
+BJPlayer.prototype.isHitting = function(upCardVal) {
+    return this.currRules().isHandHitting(this.hand, upCardVal);
+};
+
+
+
+// THESE SHOULD BE VIEW METHODS!
+/*
 BJPlayer.prototype.cardFaceValues = function() {
     var s = this.nickname.padEnd(15) + this.hand.cardFaceValues() + br;
     return s;
@@ -55,11 +67,7 @@ BJPlayer.prototype.cardValuesAndPointTotal = function() {
     var s = this.nickname.padEnd(15) + this.hand.cardValues() + this.hand.pointTotal() + br;
     return s;
 };
-
-BJPlayer.prototype.isHitting = function(upCardVal) {
-    return this.currRules().isHandHitting(this.hand, upCardVal);
-};
-
+*/
 
 
 

@@ -1,6 +1,6 @@
 /*****************************************************************************
 
-    bj-tester.js
+    bj-tester-1.js
 
     Andy Knoll
     November 2018
@@ -576,15 +576,18 @@ BJTester.prototype.runTest14 = function () {
         dealer.dealCardTo(dealer);
         dealer.dealCardTo(dealer);
 
-        this.output(player0.hand.cardFaceValues());
+        //this.output(player0.cardFaceValues());
+        this.view.showCardFaceValues(player0);
         
         upCardVal = dealer.upCard().value;
         while (player0.isHitting(upCardVal)) {
             //this.output("Player is hitting - dealing one more card");
             dealer.dealCardTo(player0);
-            this.output(player0.hand.cardFaceValues());
+            //this.output(player0.cardFaceValues());
+            this.view.showCardFaceValues(player0);
         }
         
+        // replace with evalHand()
         this.output("Total: " + player0.hand.pointTotal());
         if (player0.hand.isUnder()) s = "UNDER";
         if (player0.hand.isBust()) s = "BUST";

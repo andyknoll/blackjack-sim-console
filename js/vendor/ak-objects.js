@@ -90,6 +90,7 @@ AKMvcApp.prototype.info = function() {
     s += ".views: "  + this.views + br;
     s += ".ctrls: "  + this.ctrls + br;
     // new properties go here...
+    return s;
 };
 
 

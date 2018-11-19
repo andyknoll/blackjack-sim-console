@@ -44,11 +44,21 @@ var Rules   = require('./bj-rules.js');
 
 // something like this...
 var gameConfig = {
-    playerCount : 5,
-    deckCount   : 1,      // 1 thru 8
-    startCash   : 200,
-    gameAnte    : 15,
-    gameCount   : 20
+    maxDecks   : 4,      // 1 thru 8
+    maxRounds  : 20,
+    startCash  : 200,
+    roundAnte  : 15,
+    houseCash  : 5000000,
+    ruleSet    : 0,
+    dealer : { nickname : "MR. SCROOGE" },
+    players : [
+        { nickname : "HUEY"  },
+        { nickname : "DEWEY" },
+        { nickname : "LOUIE" },
+        { nickname : "POOEY" },
+        { nickname : "CAROL" },
+        { nickname : "ANDY" },
+    ]
 };
 
 
@@ -56,8 +66,6 @@ var gameConfig = {
 BJGame = function(name, parent) {
     AKObject.call(this, name, parent);
     this._className = "BJGame";
-    this.msg = "";
-    this.numRounds = 0;
     this.config = gameConfig;       // bring in the global
 
     // the main Game properties
@@ -68,6 +76,11 @@ BJGame = function(name, parent) {
 
     // for passing to Views - test this more
     this.props = {};
+    this.currRound = 0;
+    this.maxRounds = this.config.maxRounds;
+    this.maxDecks  = this.config.maxDecks;
+    this.ruleSet   = this.config.ruleSet;
+    this.msg = "";      // for passing info
 };
 BJGame.prototype = Object.create(AKObject.prototype);
 BJGame.prototype.constructor = BJGame;
@@ -76,7 +89,9 @@ BJGame.prototype.constructor = BJGame;
 BJGame.prototype.playerCount = function() { return this.players.count(); };
 BJGame.prototype.currRules = function() { return this.rules.currObject(); };
 
-// copy values for passing to the Views
+BJGame.prototype.configPlayerCount = function() { return this.config.players.length; };
+
+// copy values for passing to the Views - testing this out
 BJGame.prototype.getProps = function() {
     this.props = {
         name : this.name(),
@@ -90,54 +105,50 @@ BJGame.prototype.info = function() {
 	var s = "";
     s += AKObject.prototype.info.call(this);
     // new properties go here...
-    s += ".deck: "    + this.deck + br;
-    s += ".dealer: "  + this.dealer + br;
-    s += ".players: " + this.players + br;
-    s += ".rules: "   + this.rules + br;
+    s += ".deck: "       + this.deck + br;
+    s += ".dealer: "     + this.dealer + br;
+    s += ".players: "    + this.players + br;
+    s += ".rules: "      + this.rules + br;
+    s += ".maxDecks: "   + this.maxDecks + br;
+    s += ".maxRounds: "  + this.maxRounds + br;    
+    s += "playerCount: " + this.configPlayerCount() + br;    
+    s += "currRules: "   + this.currRules().name() + br;    
     return s;
 };
 
 // create all the main Game objects
-// can we get some of these values from the config object?
+// some of these values are from the config object
 BJGame.prototype.createObjects = function() {
     this.deck    = new Decks.BJMultiDeck("deck", this);
     this.dealer  = new Dealer.BJDealer("dealer", this, this.deck);   // pass Deck
     this.players = new Players.BJPlayers("players", this);
     this.rules   = new Rules.BJRules("rules", this);
 
-    this.deck.createAndAddDecks(4);         // using four decks
-    this.players.createAndAddPlayers(4);    // four players
+    this.deck.createAndAddDecks(this.maxDecks);                      // using four decks
+    this.players.createAndAddPlayers(this.configPlayerCount());      // four players
 };
 
-// can we get some of these values from the config object?
+// init objects based on config object
 BJGame.prototype.initObjects = function() {
     var player = null;
     var rules  = null;
 
-    this.dealer.nickname = "Scrooge";
-    this.dealer.cash = 1000000;
+    this.dealer.nickname = this.config.dealer.nickname;
+    this.dealer.cash = this.config.houseCash;
 
-    player = this.players.player(0);
-    player.nickname = "Huey";
-    player.cash = 200;
-
-    player = this.players.player(1);
-    player.nickname = "Dewey";
-    player.cash = 200;
-
-    player = this.players.player(2);
-    player.nickname = "Louey";
-    player.cash = 200;
-
-    player = this.players.player(3);
-    player.nickname = "Pooey";
-    player.cash = 200;
+    console.log("*** CONFIG *** " + this.config.players);
+    for (var i = 0; i < this.configPlayerCount(); i++) {
+        player = this.players.player(i);
+        player.nickname = this.config.players[i].nickname;
+        player.cash = this.config.startCash;
+    }
 
     rules = new Rules.BJNoviceRules("Novice Rules", this.rules);
     this.rules.addRuleSet(rules);
     rules = new Rules.BJGreedyRules("Greedy Rules", this.rules);
     this.rules.addRuleSet(rules);
-    this.setCurrRules(0);
+
+    this.setCurrRules(this.ruleSet);
 };
 
 BJGame.prototype.setCurrRules = function(idx) {
