@@ -14,7 +14,7 @@
         Hand
         Rules
 
-    In this case there is a single BJGame Model which contains all others
+    In this case there is a single BJGame Model which contains all others.
     
 *****************************************************************************/
 

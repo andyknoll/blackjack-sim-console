@@ -17,11 +17,13 @@ var BJPlayer = function(name, parent) {
     this._className = "BJPlayer";
     this.nickname = "";
     this.cash = 0;
+    this.inAnte = 0;
     this.hand = new BJHand(this.name() + "_hand", this);
 
+    this.isBusted   = false;      // set each round
     this.roundCount = 0;
-    this.winCount = 0;
-    this.lossCount = 0;
+    this.winCount   = 0;
+    this.lossCount  = 0;
 };
 BJPlayer.prototype = Object.create(AKObject.prototype);
 BJPlayer.prototype.constructor = BJPlayer;
@@ -41,12 +43,27 @@ BJPlayer.prototype.info = function() {
     return s;
 };
 
+// should be an initPlayer() method
+
 BJPlayer.prototype.clearHand = function() {
     this.hand.clear();
+    this.isBusted = false;
+    this.inAnte = 0;
 };
 
-BJPlayer.prototype.isHitting = function(upCardVal) {
-    return this.currRules().isHandHitting(this.hand, upCardVal);
+// move from avail cash to ante
+// can still accept a deal if ante
+BJPlayer.prototype.anteUp = function() {
+    var anteAmt = this.game().anteAmount;
+    if (this.cash >= anteAmt) {
+        this.cash = this.cash - anteAmt;
+        this.inAnte = anteAmt;  // instead of Boolean
+    }
+};
+
+BJPlayer.prototype.isHitting = function() {
+    var upCard = this.game().dealer.upCard();
+    return this.currRules().isHandHitting(this.hand, upCard.value);
 };
 
 
@@ -128,9 +145,14 @@ BJPlayers.prototype.cardValuesAndPointTotal = function() {
 
 // remember to do this before each game
 BJPlayers.prototype.clearHands = function() {
-    var player = null;
     for (var p = 0; p < this.count(); p++) {
         this.player(p).clearHand();
+    }
+};
+
+BJPlayers.prototype.anteAllUp = function() {
+    for (var p = 0; p < this.count(); p++) {
+        this.player(p).anteUp();
     }
 };
 

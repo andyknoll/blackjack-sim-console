@@ -43,7 +43,6 @@ BJRuleSet.prototype.isHandBlackjack = function(hand) {
 
 // THIS IS THE MAIN DECISION ALGORITHM
 BJRuleSet.prototype.isHandHitting = function(hand, dealerCardVal) {
-    //var dealerCardVal = 10;             // TEST ONLY - FIX THIS!!!!!
     var action = this.decideAction(hand.pointTotal(), dealerCardVal);
     if (action == 0) return false;
     if (action == 1) return true;
@@ -52,8 +51,8 @@ BJRuleSet.prototype.isHandHitting = function(hand, dealerCardVal) {
 
 // returns 0 (STAY) or 1 (HIT)
 BJRuleSet.prototype.decideAction = function(playerPoints, dealerCardVal) {
-    // must enforce range checks here...
-    if (playerPoints > 21) playerPoints = 21;
+    // must enforce over range checks here...
+    if (playerPoints > 21) return 0;
     return this.matrix[playerPoints][dealerCardVal];
 };
 

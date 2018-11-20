@@ -25,7 +25,7 @@
 var br = "\r\n";    // CRLF for text files
 //var br = "\r";        // CR only for screen
 
-var hr = "=====================================================";
+var hr = "==================================================";
 
 
 // AppViews "class"
@@ -54,6 +54,7 @@ AppViews.prototype.info = function() {
 var BJConsoleView = function(name, parent) {
     AKObject.call(this, name, parent);
     this._className = "BJConsoleView";
+    this.msg = "";
 };
 BJConsoleView.prototype = Object.create(AKObject.prototype);
 BJConsoleView.prototype.constructor = BJConsoleView;
@@ -68,24 +69,152 @@ BJConsoleView.prototype.output = function(txt) {
 // "public" methods called by the BJ Controller
 
 
+// called only once at app startup
 BJConsoleView.prototype.createObjects = function() {
-    this.output("--BJConsoleView.createObjects");
+    this.msg = "--BJConsoleView.createObjects";
 };
 
+// called only once at app startup
 BJConsoleView.prototype.initObjects = function() {
-    this.output("--BJConsoleView.initObjects");
+    this.msg = "--BJConsoleView.initObjects";
 };
 
-BJConsoleView.prototype.startRound = function() {
-    this.output("--BJConsoleView.startRound");
+
+
+// called many times - once each loop
+BJConsoleView.prototype.startRound = function(game) {
+    this.msg = "--BJConsoleView.startRound";
+    this.output("Playing Round " + (game.currRound));
+    this.output("using " + game.currRules().name());
 };
+
+BJConsoleView.prototype.clearAllHands = function() {
+    this.msg = "--BJConsoleView.clearAllHands";
+    this.output("Players and Dealer clearing hands.")
+};
+
+BJConsoleView.prototype.shuffleDeck = function() {
+    this.msg = "--BJConsoleView.shuffleDeck";
+    this.output("Dealer shuffling deck.")
+};
+
+BJConsoleView.prototype.anteAllUp = function() {
+    this.msg = "--BJConsoleView.anteAllUp";
+    this.output("Players putting in their chips.")
+};
+
+BJConsoleView.prototype.dealFirstCards = function() {
+    this.msg = "--BJConsoleView.dealFirstCards";
+    this.output("Dealer dealing first two cards.")
+    this.output("")
+};
+
+BJConsoleView.prototype.dealPlayerCard = function(player) {
+    this.msg = "--BJGame.dealPlayerCard";
+    //this.output("Dealing a card to " + player.nickname);
+    this.showCardFaceValues(player);
+};
+
+/*
+BJConsoleView.prototype.dealPlayerFirstCards = function(player) {
+    this.msg = "--BJGame.dealPlayerFirstCards";
+    //this.output("Dealing first cards to " + player.nickname);
+    this.showCardFaceValues(player);
+};
+*/
+
+BJConsoleView.prototype.showDealerUpCard = function(upCard) {
+    this.msg = "--BJConsoleView.showDealerUpCard";
+    this.output("")
+    this.output("Dealer's up card is:  " + upCard.faceValue());
+};
+
+
+
+
+
+BJConsoleView.prototype.checkForBusts = function() {
+    this.msg = "--BJConsoleView.checkForBusts";
+    this.output("")
+    this.output("Checking all Players for bust hands")
+};
+
+BJConsoleView.prototype.setPlayerIsBusted = function(player) {
+    this.msg = "--BJConsoleView.setPlayerIsBusted";
+    // show any graphics here
+    this.output(player.nickname + " BUST!");
+};
+
+
+BJConsoleView.prototype.playFirstHands = function() {
+    this.output("")
+    this.msg = "--BJConsoleView.playFirstHands";
+    this.output("Playing all Players hands...")
+};
+
+BJConsoleView.prototype.playPlayerHand = function(player) {
+    this.msg = "--BJConsoleView.playPlayerHand";
+    this.output("Playing hand for " + player.nickname);
+};
+
+BJConsoleView.prototype.playRemainingHands = function() {
+    this.output("")
+    this.msg = "--BJConsoleView.playRemainingHands";
+    this.output("Playing remaining Players hands...")
+};
+
+
+
 
 BJConsoleView.prototype.completeRound = function() {
-    this.output("--BJConsoleView.completeRound");
+    this.msg = "--BJConsoleView.completeRound";
 };
 
+
+BJConsoleView.prototype.showRoundStats = function(game) { 
+    //this.output("--BJConsoleView.showRoundStats");
+    var players = game.players;
+    var player = null;
+    var currRound = game.currRound.toString();
+    var s = "";
+    var name   = "";
+    var rounds = "";
+    var wins   = "";
+    var losses = "";
+    var cash   = "";
+
+    // output the heading
+    s += br + hr + br;
+    s += "Round: " + currRound.padEnd(13) + "G     W     L   Cash Remaining" + br;
+    s += br;
+
+    // show players' stats
+    for (var i = 0; i < players.count(); i++) {
+        player = players.player(i);
+        name   = player.nickname;
+        rounds = player.roundCount.toString();
+        wins   = player.winCount.toString();
+        losses = player.lossCount.toString();
+        cash   = player.cash;
+        s += name.padEnd(20) + rounds.padEnd(6) + wins.padEnd(6) + losses.padEnd(10) + lpad(cash, 8, " ") + br;
+    }
+
+    // show dealer's stats
+    player = game.dealer;
+    name   = player.nickname;
+    rounds = player.roundCount.toString();
+    wins   = player.winCount.toString();
+    losses = player.lossCount.toString();
+    cash   = player.cash;
+    // dealer's cash starts more to the left
+    s += name.padEnd(20) + rounds.padEnd(6) + wins.padEnd(6) + losses.padEnd(10) + lpad(cash, 8, " ") + br;
+    s += hr;
+    this.output(s);
+};
+
+// this is the longest method in this View object!
 BJConsoleView.prototype.showFinalStats = function(game) { 
-    this.output("--BJConsoleView.showFinalStats");
+    //this.output("--BJConsoleView.showFinalStats");
     var players = game.players;
     var player = null;
     var maxRounds = game.maxRounds.toString();
@@ -98,8 +227,9 @@ BJConsoleView.prototype.showFinalStats = function(game) {
 
     // output the heading
     s += br + hr + br;
-    s += "Rounds: " + maxRounds.padEnd(12);
-    s += "G     W     L     Cash Remaining" + br;
+    s += "Final stats for Blackjack simulation" + br;
+    s += hr + br;
+    s += "Rounds: " + maxRounds.padEnd(12) + "G     W     L       Final Cash" + br;
     s += br;
 
     // show players' stats
@@ -109,8 +239,8 @@ BJConsoleView.prototype.showFinalStats = function(game) {
         rounds = player.roundCount.toString();
         wins   = player.winCount.toString();
         losses = player.lossCount.toString();
-        cash   = "$ " + player.cash;
-        s += name.padEnd(20) + rounds.padEnd(6) + wins.padEnd(6) + losses.padEnd(15) + cash.padEnd(12) + br;
+        cash   = player.cash;
+        s += name.padEnd(20) + rounds.padEnd(6) + wins.padEnd(6) + losses.padEnd(10) + lpad(cash, 8, " ") + br;
     }
 
     // show dealer's stats
@@ -119,9 +249,48 @@ BJConsoleView.prototype.showFinalStats = function(game) {
     rounds = player.roundCount.toString();
     wins   = player.winCount.toString();
     losses = player.lossCount.toString();
-    cash   = "$ " + player.cash;
-    s += name.padEnd(20) + rounds.padEnd(6) + wins.padEnd(6) + losses.padEnd(11) + cash.padEnd(6) + br;
+    cash   = player.cash;
+    // dealer's cash starts more to the left
+    s += name.padEnd(20) + rounds.padEnd(6) + wins.padEnd(6) + losses.padEnd(10) + lpad(cash, 8, " ") + br;
     s += hr + br;
+
+    // determine house outcome and pretty output
+    var profit = game.dealer.cash - game.houseCash;
+    if (profit > 0) {
+        s += "The house is ahead by $" + profit;
+    } else if (profit < 0) {
+        s += "The house lost $" + Math.abs(profit);
+    } else {
+        s += "The house came out even";
+    }
+    s += " after " + maxRounds + " rounds." + br;
+    s += hr + br;
+    this.output(s);
+};
+
+
+// general purpose formatter
+function lpad(value, numChars, char) {
+    var result = new Array(numChars+1).join(char);
+    return (result + value).slice(-numChars);
+}
+
+
+
+
+// these were originally Model methods - moved here to View
+BJConsoleView.prototype.showCardFaceValues = function(player) {
+    var s = player.nickname.padEnd(16) + player.hand.cardFaceValues();
+    this.output(s);
+};
+
+BJConsoleView.prototype.showCardValues = function(player) {
+    var s = player.nickname.padEnd(16) + player.hand.cardValues();
+    this.output(s);
+};
+
+BJConsoleView.prototype.showCardValuesAndPointTotal = function(player) {
+    var s = player.nickname.padEnd(16) + player.hand.cardValues() + player.hand.pointTotal();
     this.output(s);
 };
 
@@ -131,24 +300,7 @@ BJConsoleView.prototype.showFinalStats = function(game) {
 
 
 
-
-
-
-
-// trying this - we can print individual props
-BJConsoleView.prototype.outputGameInfo = function(game) {
-    /*
-    console.log(game.name());
-    console.log(game.parent().name());
-    console.log(game.className());
-    console.log(game.deck.name());
-    console.log(game.dealer.name());
-    console.log(game.players.name());
-    console.log(game.rules.name());
-    */
-    console.log(game.info());
-};
-
+// test method - pass in copies of props for safety
 BJConsoleView.prototype.outputGameProps = function(props) {
     console.log("VIEW DISPLAYING PROPS" + br);
     console.log(props.name + br);
@@ -156,22 +308,6 @@ BJConsoleView.prototype.outputGameProps = function(props) {
     console.log(props.className + br);
     // cannot overwrite - will be back next call :-)
     props.name = "";
-};
-
-// THIS WAS ORIGINALLY A MODEL METHOD - moved to View
-BJConsoleView.prototype.showCardFaceValues = function(player) {
-    var s = player.nickname.padEnd(15) + player.hand.cardFaceValues() + br;
-    console.log(s);
-};
-
-BJConsoleView.prototype.showCardValues = function(player) {
-    var s = player.nickname.padEnd(15) + player.hand.cardValues() + br;
-    console.log(s);
-};
-
-BJConsoleView.prototype.showCardValuesAndPointTotal = function(player) {
-    var s = player.nickname.padEnd(15) + player.hand.cardValues() + player.hand.pointTotal() + br;
-    console.log(s);
 };
 
 
@@ -193,40 +329,6 @@ BJConsoleView.prototype.showPlayerFinalStats = function(player) {
     s += "Losses:    " + player.lossCount + br;
     this.output(s);
 };
-
-BJConsoleView.prototype.showGameRoundStats = function(game) { 
-    var players = game.players;
-    var player = null;
-    var s = "";
-    var name = "";
-    var games = "";
-    var wins = "";
-    var losses = "";
-    var cash = "";
-    s += hr + br;
-    s += "Round: " + game.currRound + br;
-    s += "                    G     W     L     Cash Remaining" + br;
-    s += br;
-    for (var i = 0; i < players.count(); i++) {
-        player = players.player(i);
-        name   = player.nickname;
-        rounds = player.roundCount.toString();
-        wins   = player.winCount.toString();
-        losses = player.lossCount.toString();
-        cash   = "$ " + player.cash;
-        s += name.padEnd(20) + rounds.padEnd(6) + wins.padEnd(6) + losses.padEnd(6) + cash.padEnd(6) + br;
-    }
-    player = game.dealer;
-    name   = player.nickname;
-    rounds = player.roundCount.toString();
-    wins   = player.winCount.toString();
-    losses = player.lossCount.toString();
-    cash   = "$ " + player.cash;
-    s += name.padEnd(20) + rounds.padEnd(6) + wins.padEnd(6) + losses.padEnd(6) + cash.padEnd(6) + br;
-    s += hr + br;
-    this.output(s);
-};
-
 
 
 module.exports = AppViews;

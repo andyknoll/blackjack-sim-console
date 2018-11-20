@@ -9,7 +9,7 @@
 
     THIS IS THE CONSOLE APP WHICH HOSTS THE GAME OBJECT
 
-    This App object implements a tiny MVC approach where only the
+    This App object implements a micro-MVC approach where only the
     Controller object can access the Models and Views.
 
     This maintains separation between the logic and UI (console).
@@ -24,17 +24,15 @@
         Game
             Card
             Deck
-            Players (+ Dealer)
+            Dealer
+            Player
+            Players
             Hand
             Rules
-
-
-
-    Players - 2 down
-    Dealer  - 1 down 1 up
-
     
 *****************************************************************************/
+
+//var AKObjects = require('./js/vendor/ak-objects.js');
 
 var AppModels = require('./js/app-models.js');
 var AppViews  = require('./js/app-views.js');

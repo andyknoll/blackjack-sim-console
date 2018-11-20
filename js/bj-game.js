@@ -20,37 +20,23 @@
 
 *****************************************************************************/
 
-// The Duck Tales guys are going to the casino and they want to simulate 20 games of black jack.
-// Each player starts with 200 dollars.  Each game is $15.
-// If they lose all their money they can no longer play.
-// Simulate the outcome.
-// At the end output the player and how much they each won / lost.
-
-// RULES
-// Number of Decks between 1-8
-// Dealer Hits on 16 and Below
-// Scrooge, Huey, Dewey and Louie.
-
 var br = "\n";
-
-var AKObjects = require('./vendor/ak-objects.js');
 
 var Decks   = require('./bj-decks.js');
 var Dealer  = require('./bj-dealer.js');
 var Players = require('./bj-players.js');
 var Rules   = require('./bj-rules.js');
 
-//var BJHand  = require('./bj-hand.js');
 
-// something like this...
+// the Game config object - global settings
 var gameConfig = {
     maxDecks   : 4,      // 1 thru 8
-    maxRounds  : 2,
+    maxRounds  : 1,
     startCash  : 200,
-    roundAnte  : 15,
+    anteAmount : 15,
     houseCash  : 1000000,
-    ruleSet    : 0,
-    dealer : { nickname : "Scrooge (dealer)" },
+    ruleSet    : 1,
+    dealer : { nickname : "Dealer Scrooge" },
     players : [
         { nickname : "Huey"   },
         { nickname : "Dewey"  },
@@ -74,10 +60,12 @@ BJGame = function(name, parent) {
 
     // for passing to Views - test this more
     this.props = {};
-    this.currRound = 0;
-    this.maxRounds = this.config.maxRounds;
-    this.maxDecks  = this.config.maxDecks;
-    this.ruleSet   = this.config.ruleSet;
+    this.currRound  = 0;
+    this.maxRounds  = this.config.maxRounds;
+    this.maxDecks   = this.config.maxDecks;
+    this.ruleSet    = this.config.ruleSet;
+    this.houseCash  = this.config.houseCash;
+    this.anteAmount = this.config.anteAmount;
     this.msg = "";      // for passing info
 };
 BJGame.prototype = Object.create(AKObject.prototype);
@@ -111,6 +99,8 @@ BJGame.prototype.info = function() {
     s += ".rules: "      + this.rules + br;
     s += ".maxDecks: "   + this.maxDecks + br;
     s += ".maxRounds: "  + this.maxRounds + br;    
+    s += ".houseCash: "  + this.houseCash + br;    
+    s += ".anteAmount: " + this.anteAmount + br;    
     s += "playerCount: " + this.configPlayerCount() + br;    
     s += "currRules: "   + this.currRules().name() + br;    
     return s;
@@ -163,49 +153,87 @@ BJGame.prototype.setCurrRules = function(idx) {
 
 
 
+// called many times - once each loop
 BJGame.prototype.startRound = function() {
     this.currRound++;
     this.msg = "--BJGame.startRound";
 };
+
+BJGame.prototype.clearAllHands = function() {
+    this.msg = "--BJGame.clearAllHands";
+    this.players.clearHands();
+    this.dealer.clearHand();
+};
+
+BJGame.prototype.shuffleDeck = function() {
+    this.msg = "--BJGame.shuffleDeck";
+    this.dealer.shuffleDeck();    
+};
+
+BJGame.prototype.anteAllUp = function() {
+    this.msg = "--BJGame.anteAllUp";
+    this.players.anteAllUp();
+};
+
+BJGame.prototype.dealFirstCards = function() {
+    this.msg = "--BJGame.dealFirstCards";
+};
+
+BJGame.prototype.dealPlayerCard = function(player) {
+    this.msg = "--BJGame.dealPlayerCard";
+    this.dealer.dealCardTo(player);    
+};
+
+/*
+BJGame.prototype.dealPlayerFirstCards = function(player) {
+    this.msg = "--BJGame.dealPlayerFirstCards";
+};
+*/
+
+
+
+BJGame.prototype.checkForBusts = function() {
+    this.msg = "--BJGame.checkForBusts";
+};
+
+BJGame.prototype.checkPlayerForBust = function(player) {
+    this.msg = "--BJGame.checkPlayerForBust";
+    return player.hand.isBust();
+};
+
+BJGame.prototype.setPlayerIsBusted = function(player) {
+    this.msg = "--BJGame.setPlayerIsBusted";
+    return player.isBusted = true;
+};
+
+BJGame.prototype.playFirstHands = function() {
+    this.msg = "--BJGame.playFirstHands";
+};
+
+BJGame.prototype.playPlayerHand = function(player) {
+    this.msg = "--BJGame.playPlayerHand";
+    /*
+    while (player.isHitting()) {
+        this.dealer.dealCardTo(player);
+        if (player.hand.isBust()) {
+            // BUSTED!
+            console.log("BUSTED!!!");
+        }
+    }
+    */
+};
+
+BJGame.prototype.playRemainingHands = function() {
+    this.msg = "--BJGame.playRemainingHands";
+};
+
+
 
 BJGame.prototype.completeRound = function() {
     this.msg = "--BJGame.completeRound";
 };
 
 
-
-
-
-
-
-BJGame.prototype.shuffleDeck = function() {
-    this.msg = "BJGame.shuffleDeck";
-};
-
-BJGame.prototype.initRound = function() {
-    this.msg = "BJGame.initRound";
-};
-
-BJGame.prototype.dealCards = function() {
-    this.msg = "BJGame.dealCards";
-};
-
-BJGame.prototype.checkHands = function() {
-    this.msg = "BJGame.checkHands";
-};
-
-BJGame.prototype.calcScores = function() {
-    this.msg = "BJGame.calcScores";
-};
-
-BJGame.prototype.calcStats = function() {
-    this.msg = "BJGame.calcStats";
-    this.numRounds++;
-};
-
-BJGame.prototype.calcFinalStats = function() {
-    this.msg += "BJGame.calcFinalStats \r\n";
-};
 
 
 module.exports = BJGame;
