@@ -44,6 +44,7 @@ BJRuleSet.prototype.isHandBlackjack = function(hand) {
 // THIS IS THE MAIN DECISION ALGORITHM
 BJRuleSet.prototype.isHandHitting = function(hand, dealerCardVal) {
     var action = this.decideAction(hand.pointTotal(), dealerCardVal);
+    console.log("ACTION = " + action + " " + hand.pointTotal() + " " + dealerCardVal)
     if (action == 0) return false;
     if (action == 1) return true;
     // could be more options like "Split", etc. in the future

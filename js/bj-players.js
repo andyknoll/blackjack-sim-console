@@ -63,7 +63,7 @@ BJPlayer.prototype.anteUp = function() {
 
 BJPlayer.prototype.isHitting = function() {
     var upCard = this.game().dealer.upCard();
-    return this.currRules().isHandHitting(this.hand, upCard.value);
+    return this.currRules().isHandHitting(this.hand, upCard.pointValue());
 };
 
 

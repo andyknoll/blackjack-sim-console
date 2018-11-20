@@ -249,17 +249,15 @@ BJController.prototype.playPlayerHand = function(player) {
 
     console.log("FIRST SCAN...");
     console.log(player.hand.pointTotal());
+    
     if (player.hand.isBust()) {
-        // BUSTED!
         console.log("BUSTED!!!");       // TO DO: call the View here
     }
     if (player.hand.isBlackjack()) {
-        // BUSTED!
         console.log("BLACKJACK!!!");
     }
     if (player.hand.isUnder()) {
-        // BUSTED!
-        console.log("UNDER");
+        //console.log("UNDER");
     }
 
     while (player.isHitting()) {
@@ -268,16 +266,13 @@ BJController.prototype.playPlayerHand = function(player) {
         this.view.showCardFaceValues(player);
 
         if (player.hand.isBust()) {
-            // BUSTED!
             console.log("BUSTED!!!");
         }
         if (player.hand.isBlackjack()) {
-            // BUSTED!
             console.log("BLACKJACK!!!");
         }
         if (player.hand.isUnder()) {
-            // BUSTED!
-            console.log("UNDER");
+            //console.log("UNDER");
         }
     }
     console.log("STAYING");
