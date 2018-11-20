@@ -218,9 +218,9 @@ BJController.prototype.dealPlayerCard = function(player) {
 BJController.prototype.playAllHands = function() {
     //this.output("BJController.playAllHands");
     // each Player and Dealer
-    this.game.playFirstHands();
+    this.game.playAllHands();
     this.debug(this.game.msg);
-    this.view.playFirstHands();
+    this.view.playAllHands();
     this.debug(this.view.msg);
     for (var i = 0; i < this.game.players.count(); i++) {
         var player = this.game.players.player(i);
