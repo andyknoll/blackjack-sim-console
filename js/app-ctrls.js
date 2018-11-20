@@ -143,13 +143,13 @@ BJController.prototype.playRounds = function() {
 BJController.prototype.playRound = function() {
     //this.output("BJController.playRound - Round: " + (this.game.currRound+1));
     this.startRound();              // shuffle, anteUp, deal, etc.
-    this.clearAllHands();
-    this.shuffleDeck();
-    this.anteAllUp();
-    this.dealFirstCards();
-    this.playFirstHands();          // some will Hit or Stay
-    //this.checkForBusts();           // take money or Dealer pays all
-    //this.playRemainingHands();      // only Players still in
+    this.clearAllHands();           // remove cards from last round
+    this.shuffleDeck();             // all decks' cards
+    this.anteAllUp();               // subtract from players cash
+    this.dealFirstCards();          // two cards to everyone
+    this.playAllHands();            // some will Hit or Stay
+    //this.checkForBusts();         // take money or Dealer pays all
+    //this.playRemainingHands();    // only Players still in
     this.completeRound();           // finish up, tally scores
 };
 
@@ -201,20 +201,11 @@ BJController.prototype.dealFirstCards = function() {
             if (player.inAnte > 0) this.dealPlayerCard(player);
         }
         this.dealPlayerCard(dealer);      // and the Dealer too
+        this.output("");
     }
 
     this.view.showDealerUpCard(dealer.upCard());
 };
-
-/*
-BJController.prototype.dealPlayerFirstCards = function(player) {
-    //this.output("BJController.dealPlayerFirstCards");
-    this.game.dealPlayerFirstCards(player);
-    this.debug(this.game.msg);
-    this.view.dealPlayerFirstCards(player);
-    this.debug(this.view.msg);
-};
-*/
 
 BJController.prototype.dealPlayerCard = function(player) {
     //this.output("BJController.dealPlayerCard");
@@ -224,8 +215,8 @@ BJController.prototype.dealPlayerCard = function(player) {
     this.debug(this.view.msg);
 };
 
-BJController.prototype.playFirstHands = function() {
-    //this.output("BJController.playFirstHands");
+BJController.prototype.playAllHands = function() {
+    //this.output("BJController.playAllHands");
     // each Player and Dealer
     this.game.playFirstHands();
     this.debug(this.game.msg);
@@ -247,7 +238,6 @@ BJController.prototype.playPlayerHand = function(player) {
     this.view.playPlayerHand(player);
     this.debug(this.view.msg);
 
-    console.log("FIRST SCAN...");
     console.log(player.hand.pointTotal());
     
     if (player.hand.isBust()) {

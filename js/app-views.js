@@ -71,60 +71,52 @@ BJConsoleView.prototype.output = function(txt) {
 
 // called only once at app startup
 BJConsoleView.prototype.createObjects = function() {
-    this.msg = "--BJConsoleView.createObjects";
+    this.msg = "BJConsoleView.createObjects";
 };
 
 // called only once at app startup
 BJConsoleView.prototype.initObjects = function() {
-    this.msg = "--BJConsoleView.initObjects";
+    this.msg = "BJConsoleView.initObjects";
 };
 
 
 
 // called many times - once each loop
 BJConsoleView.prototype.startRound = function(game) {
-    this.msg = "--BJConsoleView.startRound";
+    this.msg = "BJConsoleView.startRound";
     this.output("Playing Round " + (game.currRound));
     this.output("using " + game.currRules().name());
 };
 
 BJConsoleView.prototype.clearAllHands = function() {
-    this.msg = "--BJConsoleView.clearAllHands";
+    this.msg = "BJConsoleView.clearAllHands";
     this.output("Players and Dealer clearing hands.")
 };
 
 BJConsoleView.prototype.shuffleDeck = function() {
-    this.msg = "--BJConsoleView.shuffleDeck";
+    this.msg = "BJConsoleView.shuffleDeck";
     this.output("Dealer shuffling deck.")
 };
 
 BJConsoleView.prototype.anteAllUp = function() {
-    this.msg = "--BJConsoleView.anteAllUp";
+    this.msg = "BJConsoleView.anteAllUp";
     this.output("Players putting in their chips.")
 };
 
 BJConsoleView.prototype.dealFirstCards = function() {
-    this.msg = "--BJConsoleView.dealFirstCards";
+    this.msg = "BJConsoleView.dealFirstCards";
     this.output("Dealer dealing first two cards.")
     this.output("")
 };
 
 BJConsoleView.prototype.dealPlayerCard = function(player) {
-    this.msg = "--BJGame.dealPlayerCard";
+    this.msg = "BJGame.dealPlayerCard";
     //this.output("Dealing a card to " + player.nickname);
     this.showCardFaceValues(player);
 };
 
-/*
-BJConsoleView.prototype.dealPlayerFirstCards = function(player) {
-    this.msg = "--BJGame.dealPlayerFirstCards";
-    //this.output("Dealing first cards to " + player.nickname);
-    this.showCardFaceValues(player);
-};
-*/
-
 BJConsoleView.prototype.showDealerUpCard = function(upCard) {
-    this.msg = "--BJConsoleView.showDealerUpCard";
+    this.msg = "BJConsoleView.showDealerUpCard";
     this.output("")
     this.output("Dealer's up card is:  " + upCard.faceValue());
 };
@@ -134,32 +126,32 @@ BJConsoleView.prototype.showDealerUpCard = function(upCard) {
 
 
 BJConsoleView.prototype.checkForBusts = function() {
-    this.msg = "--BJConsoleView.checkForBusts";
+    this.msg = "BJConsoleView.checkForBusts";
     this.output("")
     this.output("Checking all Players for bust hands")
 };
 
 BJConsoleView.prototype.setPlayerIsBusted = function(player) {
-    this.msg = "--BJConsoleView.setPlayerIsBusted";
+    this.msg = "BJConsoleView.setPlayerIsBusted";
     // show any graphics here
     this.output(player.nickname + " BUST!");
 };
 
 
-BJConsoleView.prototype.playFirstHands = function() {
+BJConsoleView.prototype.playAllHands = function() {
     this.output("")
-    this.msg = "--BJConsoleView.playFirstHands";
+    this.msg = "BJConsoleView.playAllHands";
     this.output("Playing all Players hands...")
 };
 
 BJConsoleView.prototype.playPlayerHand = function(player) {
-    this.msg = "--BJConsoleView.playPlayerHand";
+    this.msg = "BJConsoleView.playPlayerHand";
     this.output("Playing hand for " + player.nickname);
 };
 
 BJConsoleView.prototype.playRemainingHands = function() {
     this.output("")
-    this.msg = "--BJConsoleView.playRemainingHands";
+    this.msg = "BJConsoleView.playRemainingHands";
     this.output("Playing remaining Players hands...")
 };
 
@@ -167,7 +159,7 @@ BJConsoleView.prototype.playRemainingHands = function() {
 
 
 BJConsoleView.prototype.completeRound = function() {
-    this.msg = "--BJConsoleView.completeRound";
+    this.msg = "BJConsoleView.completeRound";
 };
 
 

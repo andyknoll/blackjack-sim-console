@@ -113,7 +113,7 @@ BJGame.prototype.info = function() {
 // create all the main Game objects
 // some of these values are from the config object
 BJGame.prototype.createObjects = function() {
-    this.msg = "--BJGame.createObjects";
+    this.msg = "BJGame.createObjects";
     this.deck    = new Decks.BJMultiDeck("deck", this);
     this.dealer  = new Dealer.BJDealer("dealer", this, this.deck);   // pass Deck
     this.players = new Players.BJPlayers("players", this);
@@ -125,7 +125,7 @@ BJGame.prototype.createObjects = function() {
 
 // init objects based on config object
 BJGame.prototype.initObjects = function() {
-    this.msg = "--BJGame.initObjects";
+    this.msg = "BJGame.initObjects";
     var player = null;
     var rules  = null;
 
@@ -156,81 +156,68 @@ BJGame.prototype.setCurrRules = function(idx) {
 // called many times - once each loop
 BJGame.prototype.startRound = function() {
     this.currRound++;
-    this.msg = "--BJGame.startRound";
+    this.msg = "BJGame.startRound";
 };
 
 BJGame.prototype.clearAllHands = function() {
-    this.msg = "--BJGame.clearAllHands";
+    this.msg = "BJGame.clearAllHands";
     this.players.clearHands();
     this.dealer.clearHand();
 };
 
 BJGame.prototype.shuffleDeck = function() {
-    this.msg = "--BJGame.shuffleDeck";
+    this.msg = "BJGame.shuffleDeck";
     this.dealer.shuffleDeck();    
 };
 
 BJGame.prototype.anteAllUp = function() {
-    this.msg = "--BJGame.anteAllUp";
+    this.msg = "BJGame.anteAllUp";
     this.players.anteAllUp();
 };
 
 BJGame.prototype.dealFirstCards = function() {
-    this.msg = "--BJGame.dealFirstCards";
+    this.msg = "BJGame.dealFirstCards";
 };
 
 BJGame.prototype.dealPlayerCard = function(player) {
-    this.msg = "--BJGame.dealPlayerCard";
+    this.msg = "BJGame.dealPlayerCard";
     this.dealer.dealCardTo(player);    
 };
-
-/*
-BJGame.prototype.dealPlayerFirstCards = function(player) {
-    this.msg = "--BJGame.dealPlayerFirstCards";
-};
-*/
 
 
 
 BJGame.prototype.checkForBusts = function() {
-    this.msg = "--BJGame.checkForBusts";
+    this.msg = "BJGame.checkForBusts";
 };
 
 BJGame.prototype.checkPlayerForBust = function(player) {
-    this.msg = "--BJGame.checkPlayerForBust";
+    this.msg = "BJGame.checkPlayerForBust";
     return player.hand.isBust();
 };
 
 BJGame.prototype.setPlayerIsBusted = function(player) {
-    this.msg = "--BJGame.setPlayerIsBusted";
+    this.msg = "BJGame.setPlayerIsBusted";
     return player.isBusted = true;
 };
 
-BJGame.prototype.playFirstHands = function() {
-    this.msg = "--BJGame.playFirstHands";
+
+
+BJGame.prototype.playAllHands = function() {
+    this.msg = "BJGame.playAllHands";
 };
 
 BJGame.prototype.playPlayerHand = function(player) {
-    this.msg = "--BJGame.playPlayerHand";
-    /*
-    while (player.isHitting()) {
-        this.dealer.dealCardTo(player);
-        if (player.hand.isBust()) {
-            // BUSTED!
-            console.log("BUSTED!!!");
-        }
-    }
-    */
+    this.msg = "BJGame.playPlayerHand";
 };
 
 BJGame.prototype.playRemainingHands = function() {
-    this.msg = "--BJGame.playRemainingHands";
+    this.msg = "BJGame.playRemainingHands";
 };
 
 
 
 BJGame.prototype.completeRound = function() {
-    this.msg = "--BJGame.completeRound";
+    this.msg = "BJGame.completeRound";
 };
 
 

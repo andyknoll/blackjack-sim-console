@@ -44,7 +44,7 @@ BJRuleSet.prototype.isHandBlackjack = function(hand) {
 // THIS IS THE MAIN DECISION ALGORITHM
 BJRuleSet.prototype.isHandHitting = function(hand, dealerCardVal) {
     var action = this.decideAction(hand.pointTotal(), dealerCardVal);
-    console.log("ACTION = " + action + " " + hand.pointTotal() + " " + dealerCardVal)
+    //console.log("ACTION = " + action + " " + hand.pointTotal() + " " + dealerCardVal)
     if (action == 0) return false;
     if (action == 1) return true;
     // could be more options like "Split", etc. in the future
@@ -71,7 +71,6 @@ BJRuleSet.prototype.createMatrix = function() {
         [ 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [ 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [ 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-
         [10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -82,7 +81,6 @@ BJRuleSet.prototype.createMatrix = function() {
         [17, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-
         [20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     ];
@@ -170,15 +168,6 @@ BJGreedyRules.prototype.createMatrix = function() {
 
 
 
-
-
-
-
-
-
-
-
-
 // BJVegasRules "class"
 var BJVegasRules = function(name, parent) {
     BJRuleSet.call(this, name, parent);
@@ -220,9 +209,9 @@ BJRules.prototype.addRuleSet = function(ruleSet) {
 
 
 module.exports = { 
-    BJRuleSet     : BJRuleSet,          // includes Matrix
-    BJNoviceRules : BJNoviceRules,
-    BJGreedyRules : BJGreedyRules,
+    BJRuleSet     : BJRuleSet,          // includes matrix
+    BJNoviceRules : BJNoviceRules,      // mostly stays
+    BJGreedyRules : BJGreedyRules,      // mostly hits
     BJVegasRules  : BJVegasRules,       // Las Vegas
     BJACRules     : BJACRules,          // Atlantic City
     BJRules       : BJRules
