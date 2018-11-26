@@ -32,7 +32,7 @@
     
 *****************************************************************************/
 
-//var AKObjects = require('./js/vendor/ak-objects.js');
+// var AKObjects = require('./js/vendor/ak-objects.js');     // why not?
 
 var AppModels = require('./js/app-models.js');
 var AppViews  = require('./js/app-views.js');
@@ -60,7 +60,10 @@ BJConsoleApp.prototype.info = function() {
     return s;
 };
 
-// override in cutom apps
+
+
+// override these in custom apps like this one
+// create the three MVC collections as custom classes
 BJConsoleApp.prototype.createModels = function() { 
     return new AppModels("models", this);
 };
@@ -74,14 +77,15 @@ BJConsoleApp.prototype.createControllers = function() {
 };
 
 
+
+
 BJConsoleApp.prototype.run = function() {
     var args = process.argv;        // Node command line
-    var testIdx = args[3];
-    if (args[2] == "test") {
-        this.runTests(testIdx);     // runTests(n)
-    } else {
-        this.ctrls.bjCtrl.run();    // run the Blackjack controller
+    var numRounds = args[2];
+    if (!isNaN(numRounds)) {
+        this.models.bjGame.maxRounds = numRounds;
     }
+    this.ctrls.bjCtrl.run();    // run the Blackjack controller
 };
 
 BJConsoleApp.prototype.runTests = function(n) {

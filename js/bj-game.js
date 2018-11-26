@@ -7,14 +7,6 @@
 
     Blackjack simulation game - command line version.
 
-    Modules (objects) :
-
-        Card
-        Deck
-        Players (+ Dealer)
-        Hand
-        Game
-
     This is the single Model in the Blackjack App and contains all others.
     It is created by and belongs to the app's Models collection.
 

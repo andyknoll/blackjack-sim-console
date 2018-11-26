@@ -7,12 +7,21 @@
 
     Blackjack simulation game - command line version.
 
-    Game
-        Card
-        Deck
-        Players (+ Dealer)
-        Hand
-        Rules
+    Modules (objects) :
+
+        App
+            AppModels
+            AppViews
+            AppCtrls
+
+        Game
+            Card
+            Deck
+            Dealer
+            Player
+            Players
+            Hand
+            Rules
 
     In this case there is a single BJGame Model which contains all others.
     
@@ -27,6 +36,7 @@ var AppModels = function(name, parent) {
     AKCollection.call(this, name, parent);
     this._className = "AppModels";
 
+    // this is the main BJGame object!
     this.bjGame = new BJGame("bjGame", this);
     this.addObject(this.bjGame);
 
