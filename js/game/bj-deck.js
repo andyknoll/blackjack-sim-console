@@ -43,13 +43,9 @@ BJDeck.prototype._createDeck = function() {
     }
 };
 
-BJDeck.prototype.info = function() {
-	var s = "";
-    s += AKObjects.AKCollection.prototype.info.call(this);
-    return s;
-};
 
-// overridden to cshow Card values
+// overridden to show Card values - not names
+// called by base info() method
 BJDeck.prototype.childInfo = function(obj, idx) {
     var brackets = "  [" + idx + "] ";
     var s = brackets.padEnd(8) + obj.faceValue() + br;

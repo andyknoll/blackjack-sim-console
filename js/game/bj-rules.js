@@ -93,7 +93,6 @@ BJRuleSet.prototype.createMatrix = function() {
 
 
 
-
 // BJNoviceRules "class"
 var BJNoviceRules = function(name, parent) {
     BJRuleSet.call(this, name, parent);
