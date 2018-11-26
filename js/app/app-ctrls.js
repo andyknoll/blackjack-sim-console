@@ -25,7 +25,7 @@
 
 *****************************************************************************/
 
-var BJController = require('./bj-controller.js');
+var BJController = require("../game/bj-controller.js");
 
 var br = "\r\n";        // CRLF for output
 

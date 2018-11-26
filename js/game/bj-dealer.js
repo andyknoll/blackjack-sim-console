@@ -7,7 +7,7 @@
 
 *****************************************************************************/
 
-var Players = require('./bj-players.js');
+var BJPlayer = require("./bj-player.js");
 
 var br = "\r\n";
 
@@ -15,11 +15,11 @@ var br = "\r\n";
 // BJDealer "class" - inherits from BJPlayer
 // must provide Deck to constructor (injection?)
 var BJDealer = function(name, parent, deck) {
-    Players.BJPlayer.call(this, name, parent);
+    BJPlayer.call(this, name, parent);
     this._className = "BJDealer";
     this.deck = deck;
 };
-BJDealer.prototype = Object.create(Players.BJPlayer.prototype);
+BJDealer.prototype = Object.create(BJPlayer.prototype);
 BJDealer.prototype.constructor = BJDealer;
 
 // getters
@@ -28,7 +28,7 @@ BJDealer.prototype.deckCount = function() { return this.deck.count(); }
 
 BJDealer.prototype.info = function() {
 	var s = "";
-    s += Players.BJPlayer.prototype.info.call(this);
+    s += BJPlayer.prototype.info.call(this);
     s += ".deck: " + this.deck + br;
     s += ".deckCount: " + this.deckCount() + br;
     return s;
@@ -72,7 +72,5 @@ BJDealer.prototype.isHitting = function() {
 };
 
 
-module.exports = { 
-    BJDealer : BJDealer
-}
+module.exports = BJDealer;
 

@@ -32,14 +32,13 @@
     
 *****************************************************************************/
 
-// var AKObjects = require('./js/vendor/ak-objects.js');     // why not?
+// var AKObjects = require("./js/lib/ak-objects.js");     // why not?
 
-var AppModels = require('./js/app-models.js');
-var AppViews  = require('./js/app-views.js');
-var AppCtrls  = require('./js/app-ctrls.js');
+var AppModels = require("./js/app/app-models.js");
+var AppViews  = require("./js/app/app-views.js");
+var AppCtrls  = require("./js/app/app-ctrls.js");
 
-var BJTester  = require('./js/bj-tester-2.js');
-
+// var BJTester  = require("./js/tests/bj-tester-2.js");
 
 var br = "\r\n";    // CRLF
 

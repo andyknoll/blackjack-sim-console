@@ -27,7 +27,7 @@
     
 *****************************************************************************/
 
-var BJGame = require('./bj-game.js');
+var BJGame = require("../game/bj-game.js");
 
 var br = "\r\n";        // CRLF for output
 

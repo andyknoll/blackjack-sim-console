@@ -25,7 +25,7 @@
             
 *****************************************************************************/
 
-var BJConsoleView = require('./bj-view.js');
+var BJConsoleView = require("../game/bj-view.js");
 
 // AppViews "class"
 var AppViews = function(name, parent) {

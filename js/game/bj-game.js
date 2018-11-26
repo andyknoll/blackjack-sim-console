@@ -14,21 +14,22 @@
 
 var br = "\n";
 
-var Decks   = require('./bj-decks.js');
-var Dealer  = require('./bj-dealer.js');
-var Players = require('./bj-players.js');
-var Rules   = require('./bj-rules.js');
+var BJMultiDeck = require("./bj-multideck.js");
+var BJDealer    = require("./bj-dealer.js");
+var BJPlayers   = require("./bj-players.js");
 
+// many classes in this files
+var Rules = require("./bj-rules.js");
 
 // the Game config object - global settings
 var gameConfig = {
     maxDecks   : 4,      // 1 thru 8
     maxRounds  : 1,
     startCash  : 200,
-    anteAmount : 15,
-    houseCash  : 1000000,
+    anteAmount : 20,
+    houseCash  : 0,
     ruleSet    : 1,
-    dealer : { nickname : "Dealer Scrooge" },
+    dealer : { nickname : "Scrooge" },
     players : [
         { nickname : "Huey"   },
         { nickname : "Dewey"  },
@@ -106,9 +107,9 @@ BJGame.prototype.info = function() {
 // some of these values are from the config object
 BJGame.prototype.createObjects = function() {
     this.msg = "BJGame.createObjects";
-    this.deck    = new Decks.BJMultiDeck("deck", this);
-    this.dealer  = new Dealer.BJDealer("dealer", this, this.deck);   // pass Deck
-    this.players = new Players.BJPlayers("players", this);
+    this.deck    = new BJMultiDeck("deck", this);
+    this.dealer  = new BJDealer("dealer", this, this.deck);   // pass Deck
+    this.players = new BJPlayers("players", this);
     this.rules   = new Rules.BJRules("rules", this);
 
     this.deck.createAndAddDecks(this.maxDecks);                      // using four decks
