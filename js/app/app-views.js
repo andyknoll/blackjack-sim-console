@@ -32,6 +32,7 @@ var AppViews = function(name, parent) {
     AKCollection.call(this, name, parent);
     this._className = "AppViews";
 
+    // only one View for this game
     this.bjView = new BJConsoleView("bjView", this);
     this.addObject(this.bjView);
 

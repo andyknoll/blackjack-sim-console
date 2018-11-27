@@ -47,6 +47,7 @@ BJConsoleApp = function(name, parent) {
     AKMvcApp.call(this, name, parent);
     this._className = "BJConsoleApp";
     this.msg = "";
+    this.DEBUG = false;
 };
 BJConsoleApp.prototype = Object.create(AKMvcApp.prototype);
 BJConsoleApp.prototype.constructor = BJConsoleApp;

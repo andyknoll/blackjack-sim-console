@@ -17,6 +17,7 @@ var br = "\n";
 var BJMultiDeck = require("./bj-multideck.js");
 var BJDealer    = require("./bj-dealer.js");
 var BJPlayers   = require("./bj-players.js");
+var BJHand      = require("./bj-hand.js");
 
 // many classes in this files
 var Rules = require("./bj-rules.js");
@@ -58,6 +59,7 @@ BJGame = function(name, parent) {
     this.maxDecks   = this.config.maxDecks;
     this.ruleSet    = this.config.ruleSet;
     this.houseCash  = this.config.houseCash;
+    this.startCash  = this.config.startCash;
     this.anteAmount = this.config.anteAmount;
     this.msg = "";      // for passing info
 };
@@ -93,6 +95,7 @@ BJGame.prototype.info = function() {
     s += ".maxDecks: "   + this.maxDecks + br;
     s += ".maxRounds: "  + this.maxRounds + br;    
     s += ".houseCash: "  + this.houseCash + br;    
+    s += ".startCash: "  + this.houseCash + br;    
     s += ".anteAmount: " + this.anteAmount + br;    
     s += "playerCount: " + this.configPlayerCount() + br;    
     s += "currRules: "   + this.currRules().name() + br;    
@@ -145,6 +148,13 @@ BJGame.prototype.setCurrRules = function(idx) {
 
 
 
+BJGame.prototype.initRounds = function() {
+    this.msg = "BJGame.initRounds";
+    this.currRound = 0;
+    this.players.initRounds();
+    this.dealer.initRounds();
+};
+
 
 // called many times - once each loop
 BJGame.prototype.startRound = function() {
@@ -152,11 +162,13 @@ BJGame.prototype.startRound = function() {
     this.msg = "BJGame.startRound";
 };
 
+
 BJGame.prototype.clearAllHands = function() {
     this.msg = "BJGame.clearAllHands";
     this.players.clearHands();
     this.dealer.clearHand();
 };
+
 
 BJGame.prototype.shuffleDeck = function() {
     this.msg = "BJGame.shuffleDeck";
@@ -179,21 +191,6 @@ BJGame.prototype.dealPlayerCard = function(player) {
 
 
 
-BJGame.prototype.checkForBusts = function() {
-    this.msg = "BJGame.checkForBusts";
-};
-
-BJGame.prototype.checkPlayerForBust = function(player) {
-    this.msg = "BJGame.checkPlayerForBust";
-    return player.hand.isBust();
-};
-
-BJGame.prototype.setPlayerIsBusted = function(player) {
-    this.msg = "BJGame.setPlayerIsBusted";
-    return player.isBusted = true;
-};
-
-
 
 BJGame.prototype.playAllHands = function() {
     this.msg = "BJGame.playAllHands";
@@ -203,11 +200,41 @@ BJGame.prototype.playPlayerHand = function(player) {
     this.msg = "BJGame.playPlayerHand";
 };
 
-BJGame.prototype.playRemainingHands = function() {
-    this.msg = "BJGame.playRemainingHands";
+BJGame.prototype.scorePlayerHand = function(player, dealer) {
+    this.msg = "BJGame.scorePlayerHand";
+    var playerHand = player.hand;
+    var dealerHand = dealer.hand;
+    //console.log("SCORING: " + player.nickname);
+    //console.log("STATUS: " + player.hand.getStatus());
+
+    if (playerHand.getStatus() == BJHand.OVER) {
+        // player bust - dealer wins
+        console.log("SCORING: " + player.nickname + " BUSTED")
+        player.lossCount++;
+        //player.cash -= this.anteAmount;   // already paid ante
+        dealer.winCount++;
+        dealer.cash += this.anteAmount;
+    } else if (playerHand.pointTotal() > dealerHand.pointTotal()) {
+        // player wins
+        console.log("SCORING: " + player.nickname + " WON")
+        player.winCount++;
+        player.cash += (this.anteAmount * 2);
+        dealer.lossCount++;
+        dealer.cash -= this.anteAmount;
+    } else if (playerHand.pointTotal() < dealerHand.pointTotal()) {
+        // dealer wins
+        console.log("SCORING: " + player.nickname + " LOST")
+        player.lossCount++;
+        dealer.winCount++;
+        dealer.cash += this.anteAmount;
+    } else {
+        // draw
+        console.log("SCORING: " + player.nickname + " TIED")
+        player.cash += this.anteAmount;     // gets back the ante
+        player.tieCount++;
+        dealer.tieCount++;
+    }
 };
-
-
 
 BJGame.prototype.completeRound = function() {
     this.msg = "BJGame.completeRound";

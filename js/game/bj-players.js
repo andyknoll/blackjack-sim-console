@@ -16,6 +16,7 @@ var br = "\r\n";
 var BJPlayers = function(name, parent) {
     AKCollection.call(this, name, parent);
     this._className = "BJPlayers";
+    this.game = parent;
 };
 BJPlayers.prototype = Object.create(AKCollection.prototype);
 BJPlayers.prototype.constructor = BJPlayers;
@@ -65,18 +66,34 @@ BJPlayers.prototype.cardValuesAndPointTotal = function() {
     return s;
 };
 
-// remember to do this before each game
+BJPlayers.prototype.anteAllUp = function() {
+    for (var p = 0; p < this.count(); p++) {
+        this.player(p).anteUp();
+    }
+};
+
+// called before every new round
 BJPlayers.prototype.clearHands = function() {
     for (var p = 0; p < this.count(); p++) {
         this.player(p).clearHand();
     }
 };
 
-BJPlayers.prototype.anteAllUp = function() {
+
+// called once before each batch of rounds
+BJPlayers.prototype.initRounds = function() {
     for (var p = 0; p < this.count(); p++) {
-        this.player(p).anteUp();
+        this.player(p).initRounds();
     }
 };
+
+BJPlayers.prototype.allBroke = function() {
+    for (var p = 0; p < this.count(); p++) {
+        if (!this.player(p).isBroke()) return false;
+    }
+    return true;
+};
+
 
 /***
 BJPlayers.prototype.cardValues = function() {
@@ -89,6 +106,8 @@ BJPlayers.prototype.cardValues = function() {
     s += this.dealer.nickname.padEnd(15) + this.dealer.hand.cardValues() + br;
     return s;
 };
+
+
 ***/
 
 

@@ -11,10 +11,12 @@
 
 *****************************************************************************/
 
+var BJHand = require("./bj-hand.js");       // is this cheating?
+
 var br = "\r\n";    // CRLF for text files
 //var br = "\r";        // CR only for screen
 
-var hr = "==================================================";
+var hr = "============================================================";    // 60 chars
 
 
 // BJConsoleView "class"
@@ -47,6 +49,10 @@ BJConsoleView.prototype.initObjects = function() {
 };
 
 
+BJConsoleView.prototype.initRounds = function() {
+    this.msg = "BJConsoleView.initRounds";
+};
+
 
 // called many times - once each loop
 BJConsoleView.prototype.startRound = function(game) {
@@ -77,7 +83,7 @@ BJConsoleView.prototype.dealFirstCards = function() {
 };
 
 BJConsoleView.prototype.dealPlayerCard = function(player) {
-    this.msg = "BJGame.dealPlayerCard";
+    this.msg = "BJConsoleView.dealPlayerCard";
     //this.output("Dealing a card to " + player.nickname);
     this.showCardFaceValues(player);
 };
@@ -89,20 +95,16 @@ BJConsoleView.prototype.showDealerUpCard = function(upCard) {
 };
 
 
-
-
-
-BJConsoleView.prototype.checkForBusts = function() {
-    this.msg = "BJConsoleView.checkForBusts";
-    this.output("")
-    this.output("Checking all Players for bust hands")
+BJConsoleView.prototype.showHandStatus = function(status) {
+    if (status == BJHand.BLACKJACK) {
+        this.output("Hand status is BLACKJACK");
+    } else if (status == BJHand.OVER) {
+        this.output("Hand status is OVER");
+    } else {
+        this.output("Hand status is UNDER");
+    }
 };
 
-BJConsoleView.prototype.setPlayerIsBusted = function(player) {
-    this.msg = "BJConsoleView.setPlayerIsBusted";
-    // show any graphics here
-    this.output(player.nickname + " BUST!");
-};
 
 
 BJConsoleView.prototype.playAllHands = function() {
@@ -113,15 +115,13 @@ BJConsoleView.prototype.playAllHands = function() {
 
 BJConsoleView.prototype.playPlayerHand = function(player) {
     this.msg = "BJConsoleView.playPlayerHand";
+    this.output("");
     this.output("Playing hand for " + player.nickname);
 };
 
-BJConsoleView.prototype.playRemainingHands = function() {
-    this.output("")
-    this.msg = "BJConsoleView.playRemainingHands";
-    this.output("Playing remaining Players hands...")
+BJConsoleView.prototype.scorePlayerHand = function(player, dealer) {
+    this.msg = "BJConsoleView.scorePlayerHand";
 };
-
 
 
 
@@ -136,32 +136,35 @@ BJConsoleView.prototype.showRoundStats = function(game) {
     var player = null;
     var currRound = game.currRound.toString();
     var s = "";
+    /*
     var name   = "";
     var rounds = "";
     var wins   = "";
     var losses = "";
     var cash   = "";
+    */
 
     // output the heading
     s += br + hr + br;
-    s += "Round: " + currRound.padEnd(13) + "G     W     L   Cash Remaining" + br;
+    s += "Round: " + currRound.padEnd(13) + "G     W     L     T Cash Remaining" + br;
     s += br;
 
     // show players' stats
     for (var i = 0; i < players.count(); i++) {
         player = players.player(i);
-        name   = player.nickname;
-        rounds = player.roundCount.toString();
-        wins   = player.winCount.toString();
-        losses = player.lossCount.toString();
-        cash   = player.cash;
-        s += name.padEnd(20) + rounds.padEnd(6) + wins.padEnd(6) + losses.padEnd(10) + lpad(cash, 8, " ") + br;
+        var name   = player.nickname;
+        var rounds = player.roundCount().toString();
+        var wins   = player.winCount.toString();
+        var losses = player.lossCount.toString();
+        var ties   = player.tieCount.toString();
+        var cash   = player.cash;
+        s += name.padEnd(20) + rounds.padEnd(6) + wins.padEnd(6) + losses.padEnd(10) + lpad(cash, 8, " ") + br;     // TO DO: add tieCOunt!
     }
 
     // show dealer's stats
     player = game.dealer;
     name   = player.nickname;
-    rounds = player.roundCount.toString();
+    rounds = player.roundCount().toString();
     wins   = player.winCount.toString();
     losses = player.lossCount.toString();
     cash   = player.cash;
@@ -176,41 +179,42 @@ BJConsoleView.prototype.showFinalStats = function(game) {
     //this.output("--BJConsoleView.showFinalStats");
     var players = game.players;
     var player = null;
-    var maxRounds = game.maxRounds.toString();
+    var numRounds = game.currRound.toString();
     var s = "";
-    var name   = "";
-    var rounds = "";
-    var wins   = "";
-    var losses = "";
-    var cash   = "";
 
     // output the heading
     s += br + hr + br;
     s += "Final stats for Blackjack simulation" + br;
     s += hr + br;
-    s += "Rounds: " + maxRounds.padEnd(12) + "G     W     L       Final Cash" + br;
+    s += "Rounds:   " + numRounds.padEnd(10) + "G     W     L     T       AVG       Cash" + br;
     s += br;
 
     // show players' stats
     for (var i = 0; i < players.count(); i++) {
         player = players.player(i);
-        name   = player.nickname;
-        rounds = player.roundCount.toString();
-        wins   = player.winCount.toString();
-        losses = player.lossCount.toString();
-        cash   = player.cash;
-        s += name.padEnd(20) + rounds.padEnd(6) + wins.padEnd(6) + losses.padEnd(10) + lpad(cash, 8, " ") + br;
+        var name   = player.nickname;
+        var rounds = player.roundCount().toString();
+        var wins   = player.winCount.toString();
+        var losses = player.lossCount.toString();
+        var ties   = player.tieCount.toString();
+        var pct    = player.winPercent();
+        var cash   = player.cash;
+        s += name.padEnd(20) + rounds.padEnd(6) + wins.padEnd(6) + losses.padEnd(6) + ties.padEnd(6);
+        s += pct.toFixed(3) + lpad(cash, 11, " ") + br;
     }
 
     // show dealer's stats
     player = game.dealer;
     name   = player.nickname;
-    rounds = player.roundCount.toString();
+    rounds = player.roundCount().toString();
     wins   = player.winCount.toString();
     losses = player.lossCount.toString();
+    ties   = player.tieCount.toString();
+    pct    = player.winPercent();
     cash   = player.cash;
     // dealer's cash starts more to the left
-    s += name.padEnd(20) + rounds.padEnd(6) + wins.padEnd(6) + losses.padEnd(10) + lpad(cash, 8, " ") + br;
+    s += name.padEnd(20) + rounds.padEnd(6) + wins.padEnd(6) + losses.padEnd(6) + ties.padEnd(6);
+    s += pct.toFixed(3) + lpad(cash, 11, " ") + br;
     s += hr + br;
 
     // determine house outcome and pretty output
@@ -222,7 +226,7 @@ BJConsoleView.prototype.showFinalStats = function(game) {
     } else {
         s += "The house came out even";
     }
-    s += " after " + maxRounds + " rounds." + br;
+    s += " after " + numRounds + " rounds." + br;
     s += hr + br;
     this.output(s);
 };

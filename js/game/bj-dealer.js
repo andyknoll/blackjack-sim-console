@@ -71,6 +71,13 @@ BJDealer.prototype.isHitting = function() {
     return (points <= 16);
 };
 
+// called once before each batch of rounds
+// override for Dealer - use house cash
+BJDealer.prototype.initRounds = function() {
+    BJPlayer.prototype.initRounds.call(this);       // call base version
+    this.cash = this.game().houseCash;
+};
+
 
 module.exports = BJDealer;
 

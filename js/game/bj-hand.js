@@ -5,7 +5,7 @@
     Andy Knoll
     November 2018
 
-    A Hand is owned by a Player.
+    A Hand is a collection of Card objects. It is owned by a Player.
 
 *****************************************************************************/
 
@@ -15,7 +15,7 @@ var br = "\r\n";
 var BJHand = function(name, parent) {
     AKCollection.call(this, name, parent);
     this._className = "BJHand";
-    this.numAces = 0;
+    //this.numAces = 0;
     this.player = parent;
 };
 BJHand.prototype = Object.create(AKCollection.prototype);
@@ -29,26 +29,19 @@ BJHand.prototype.currRules = function() { return this.player.currRules(); };
 BJHand.prototype.info = function() {
 	var s = "";
     s += AKCollection.prototype.info.call(this);
-    s += br;
-
-    /*
-    if (this.rules)
-        s += ".rules: " + this.rules.name() + br;
-    else
-        s += ".rules: null" + br;
-    */
-   
-    s += ".count: " + this.count() + br;
-    s += ".numAces: " + this.numAces + br;
+    s += ".count: "      + this.count() + br;
     s += ".pointTotal: " + this.pointTotal() + br;
+    s += ".currRules: "  + this.currRules.name() + br;
+    //s += ".numAces: " + this.numAces + br;        // not used
     return s;
 };
 
 BJHand.prototype.addCard = function(card) {
-    if (card.value == "A") this.numAces++;
+    if (card.value == "A") this.numAces++;  // is this still needed?
     return this.addObject(card);
 };
 
+// is this needed?
 BJHand.prototype.clear = function() {
     this.numAces = 0;
     return AKCollection.prototype.clear.call(this);     // super
@@ -62,6 +55,7 @@ BJHand.prototype.childInfo = function(card, idx) {
     return s;
 };
 
+// this should be a View method!
 BJHand.prototype.cardFaceValues = function() {
     var s = "";
     for (var i = 0; i < this.count(); i++) {
@@ -70,6 +64,7 @@ BJHand.prototype.cardFaceValues = function() {
     return s;
 };
 
+// this should be a View method!
 BJHand.prototype.cardValues = function() {
     var s = "";
     for (var i = 0; i < this.count(); i++) {
@@ -95,6 +90,7 @@ BJHand.prototype.pointTotal = function() {
 };
 
 
+/*
 // no need to use Rules objects here
 BJHand.prototype.isUnder = function() {
     return this.pointTotal() <= 21;
@@ -110,8 +106,38 @@ BJHand.prototype.isBlackjack = function() {
     return (this.pointTotal() == 21) && (this.count() == 2);
     //return this.currRules().isHandBlackjack(this);
 };
+*/
 
 
+// new 11/26/2018
+BJHand.prototype.getStatus = function() {
+    var points = this.pointTotal();
+    var status = BJHand.UNDER;
+    if ((points == 21) && (this.count() == 2)) {
+        status = BJHand.BLACKJACK;
+    } else if (points > 21) {
+        status = BJHand.OVER;
+    }
+    return  status;
+};
+
+// MUST USE THE RULES HERE!!!
+BJHand.prototype.decideAction = function() {
+    var action = BJHand.STAY;
+    if (this.pointTotal() <= 13) {  // REMOVE THIS!!!
+        action = BJHand.HIT;
+    }
+    return action;
+};
+
+// status codes
+BJHand.UNDER     = 0;
+BJHand.OVER      = 1;
+BJHand.BLACKJACK = 2;
+
+// action codes
+BJHand.STAY = 0;
+BJHand.HIT  = 1;
 
 
 module.exports = BJHand;
