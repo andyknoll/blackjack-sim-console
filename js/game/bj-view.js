@@ -164,18 +164,12 @@ BJConsoleView.prototype.completeRound = function() {
 
 // called many times to show an "animated" screen of play
 BJConsoleView.prototype.showRoundProgress = function(game) {
-    var self = this;
-    /*
-    setTimeout(function() {
-        console.clear();
-        self.showRoundProgressScreen(game);
-    }, 1000);
-    */
+    if (game.maxRounds > 1) return;     // only show progress for single round
     for (var i = 0; i < 1000000000; i++) {
-       // console.clear();    // CPU heavy!
+       // CPU heavy!
     }
     console.clear();
-    self.showRoundProgressScreen(game);
+    this.showRoundProgressScreen(game);
 };
 
 // called many times by the timer above to show an "animated" screen

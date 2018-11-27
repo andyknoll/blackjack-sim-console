@@ -67,7 +67,7 @@ BJController.prototype.run = function() {
     this.createObjects();
     this.initObjects();
     this.playRounds();      // loops many games until completion
-    this.showFinalStats();
+    //this.showFinalStats();
 
     this.output("");
     this.output("completed simulation @ " + new Date());    
@@ -120,6 +120,7 @@ BJController.prototype.playRounds = function() {
             this.output("");
         }
     }
+    this.showFinalStats();
 };
 
 // called once before each batch of rounds

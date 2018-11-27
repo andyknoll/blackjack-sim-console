@@ -121,10 +121,16 @@ BJHand.prototype.getStatus = function() {
     return  status;
 };
 
-// MUST USE THE RULES HERE!!!
+// MUST USE THE RULES GRID HERE!!!
 BJHand.prototype.decideAction = function() {
     var action = BJHand.STAY;
-    if (this.pointTotal() <= 13) {  // REMOVE THIS!!!
+    var game = this.player.game();
+    if (this.player == game.dealer) {
+        if (this.pointTotal() <= 16) action = BJHand.HIT;
+        return action;
+    }
+    // now use the grid for Players
+    if (this.pointTotal() <= Math.floor(Math.random() * 40)) {
         action = BJHand.HIT;
     }
     return action;
