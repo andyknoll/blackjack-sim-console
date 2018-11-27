@@ -91,7 +91,7 @@ BJConsoleView.prototype.dealPlayerCard = function(player) {
 BJConsoleView.prototype.showDealerUpCard = function(upCard) {
     this.msg = "BJConsoleView.showDealerUpCard";
     this.output("")
-    this.output("Dealer's up card is:  " + upCard.faceValue());
+    this.output("Dealer's upcard is:  " + upCard.faceValue());
 };
 
 
@@ -106,23 +106,55 @@ BJConsoleView.prototype.showHandStatus = function(status) {
 };
 
 
-
-BJConsoleView.prototype.playAllHands = function() {
-    this.output("")
-    this.msg = "BJConsoleView.playAllHands";
-    this.output("Playing all Players hands...")
-};
-
-BJConsoleView.prototype.playPlayerHand = function(player) {
-    this.msg = "BJConsoleView.playPlayerHand";
+BJConsoleView.prototype.decidePlayerHitOrStay = function(player) {
+    this.msg = "BJConsoleView.decidePlayerHitOrStay";
     this.output("");
-    this.output("Playing hand for " + player.nickname);
+    this.output(player.nickname + " is playing hand...");
+    //this.output("Current hand points: " + player.hand.pointTotal());
 };
+
+BJConsoleView.prototype.showPlayerIsBusted = function(player) {
+    this.msg = "BJConsoleView.showPlayerIsBusted";
+    this.output(player.nickname + " BUSTED!");
+};
+    
+BJConsoleView.prototype.showDealerIsBusted = function(dealer) {
+    this.msg = "BJConsoleView.showDealerIsBusted";
+    this.output(dealer.nickname + " BUSTED!");
+};
+    
+
+BJConsoleView.prototype.showPlayerHandAction = function(player, action) {
+    var s = player.nickname;
+    switch (action) {
+        case BJHand.STAY :
+            s += " is staying"
+            break;
+        case BJHand.HIT :
+            s += " is hitting"
+            break;
+    }
+    this.output(s + " with " + player.hand.pointTotal());
+};
+
 
 BJConsoleView.prototype.scorePlayerHand = function(player, dealer) {
     this.msg = "BJConsoleView.scorePlayerHand";
-};
+    var playerHand = player.hand;
+    var dealerHand = dealer.hand;
+    var s = player.nickname;
 
+    if (dealerHand.getStatus() == BJHand.OVER) {
+        s = dealer.nickname + " BUSTED - " + player.nickname + " WON";
+    } else if (playerHand.pointTotal() > dealerHand.pointTotal()) {
+        s += " WON";
+    } else if (playerHand.pointTotal() < dealerHand.pointTotal()) {
+        s += " LOST";
+    } else {
+        s += " TIED";
+    }
+    this.output("SCORING: " + s + " with " + playerHand.pointTotal());
+};
 
 
 BJConsoleView.prototype.completeRound = function() {

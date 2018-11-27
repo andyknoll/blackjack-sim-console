@@ -41,8 +41,9 @@ BJPlayer.prototype.winPercent = function() {
     return this.winCount / (this.winCount + this.lossCount);
 };
 
+// must count the cash in the ante too
 BJPlayer.prototype.isBroke = function() { 
-    return this.cash < this.game().anteAmount;
+    return (this.cash + this.inAnte) < this.game().anteAmount;
 };
 
 

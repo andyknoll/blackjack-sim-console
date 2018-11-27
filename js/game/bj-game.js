@@ -189,17 +189,17 @@ BJGame.prototype.dealPlayerCard = function(player) {
     this.dealer.dealCardTo(player);    
 };
 
-
-
-
-BJGame.prototype.playAllHands = function() {
-    this.msg = "BJGame.playAllHands";
+// player busted - dealer wins
+BJGame.prototype.scorePlayerIsBusted = function(player) {
+    this.msg = "BJGame.scorePlayerIsBusted";
+    player.isBusted = true;     // this round only
+    player.lossCount++;
+    // player.cash -= this.anteAmount;   // no - already paid into ante
+    this.dealer.winCount++;
+    this.dealer.cash += this.anteAmount;
 };
 
-BJGame.prototype.playPlayerHand = function(player) {
-    this.msg = "BJGame.playPlayerHand";
-};
-
+// only the non-busted players still in this round
 BJGame.prototype.scorePlayerHand = function(player, dealer) {
     this.msg = "BJGame.scorePlayerHand";
     var playerHand = player.hand;
@@ -207,29 +207,29 @@ BJGame.prototype.scorePlayerHand = function(player, dealer) {
     //console.log("SCORING: " + player.nickname);
     //console.log("STATUS: " + player.hand.getStatus());
 
-    if (playerHand.getStatus() == BJHand.OVER) {
-        // player bust - dealer wins
-        console.log("SCORING: " + player.nickname + " BUSTED")
-        player.lossCount++;
-        //player.cash -= this.anteAmount;   // already paid ante
-        dealer.winCount++;
-        dealer.cash += this.anteAmount;
-    } else if (playerHand.pointTotal() > dealerHand.pointTotal()) {
-        // player wins
-        console.log("SCORING: " + player.nickname + " WON")
+    if (dealerHand.getStatus() == BJHand.OVER) {
+        // dealer bust - player wins
+        //console.log("SCORING: " + dealer.nickname + " BUSTED")
         player.winCount++;
-        player.cash += (this.anteAmount * 2);
+        player.cash += (this.anteAmount * 2);       // ante plus winnings
+        dealer.lossCount++;
+        dealer.cash -= this.anteAmount;
+    } else if (playerHand.pointTotal() > dealerHand.pointTotal()) {
+        // player hand wins
+        //console.log("SCORING: " + player.nickname + " WON")
+        player.winCount++;
+        player.cash += (this.anteAmount * 2);       // ante plus winnings
         dealer.lossCount++;
         dealer.cash -= this.anteAmount;
     } else if (playerHand.pointTotal() < dealerHand.pointTotal()) {
-        // dealer wins
-        console.log("SCORING: " + player.nickname + " LOST")
-        player.lossCount++;
+        // dealer hand wins
+        //console.log("SCORING: " + player.nickname + " LOST")
+        player.lossCount++;     // cash already lost in ante
         dealer.winCount++;
         dealer.cash += this.anteAmount;
     } else {
         // draw
-        console.log("SCORING: " + player.nickname + " TIED")
+        //console.log("SCORING: " + player.nickname + " TIED")
         player.cash += this.anteAmount;     // gets back the ante
         player.tieCount++;
         dealer.tieCount++;
