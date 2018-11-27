@@ -170,12 +170,15 @@ BJConsoleView.prototype.completeRound = function() {
 
 
 // called many times to show an "animated" screen of play
+// mostly testing for the web version - use setTimeout()
 BJConsoleView.prototype.showRoundProgress = function(game) {
     if (game.maxRounds > 1) return;     // only show progress for single round
+    /*
     for (var i = 0; i < 1000000000; i++) {
        // CPU heavy!
     }
     console.clear();
+    */
     this.showRoundProgressScreen(game);
 };
 
@@ -203,22 +206,24 @@ BJConsoleView.prototype.showRoundProgressScreen = function(game) {
         var name   = player.nickname;
         var hand   = player.hand;
         var points = hand.pointTotal().toString();
-
         var action = hand.decideAction();
-        var act    = "";
+        var act = "";
 
         if (action == 0) act = "STAY";
         if (action == 1) act = "HIT";
-        if (hand.count() < 2) act = "DEAL";
+        if (hand.count() <= 2) act = "DEAL";
         if (player.outcome != "") act = player.outcome;     // set after scoring
         s += name.padEnd(20) + hand.cardFaceValues().padEnd(30) + act.padEnd(8) + lpad(points, 2, " ") + br;
     }
-
     s += hr;
     this.output(s);
-
 };
 
+// general purpose number formatter
+function lpad(value, numChars, char) {
+    var result = new Array(numChars+1).join(char);
+    return (result + value).slice(-numChars);
+};
 
 BJConsoleView.prototype.showFinalStats = function(game) { 
     //this.output("--BJConsoleView.showFinalStats");
@@ -265,7 +270,7 @@ BJConsoleView.prototype.showFinalStats = function(game) {
     // determine house outcome and pretty output
     var profit = game.dealer.cash - game.houseCash;
     if (profit > 0) {
-        s += "The house is ahead by $" + profit;
+        s += "The house is up by $" + profit;
     } else if (profit < 0) {
         s += "The house lost $" + Math.abs(profit);
     } else {
@@ -276,24 +281,26 @@ BJConsoleView.prototype.showFinalStats = function(game) {
     this.output(s);
 };
 
-
-// general purpose formatter
-function lpad(value, numChars, char) {
-    var result = new Array(numChars+1).join(char);
-    return (result + value).slice(-numChars);
-}
-
-
-
-
 // these were originally Model methods - moved here to View
 BJConsoleView.prototype.showCardFaceValues = function(player) {
-    var s = player.nickname.padEnd(16) + player.hand.cardFaceValues();
+    var hand = player.hand;
+    var vals = "";
+    var s = "";
+    for (var i = 0; i < hand.count(); i++) {
+        vals += hand.card(i).faceValue().padEnd(5) + " ";
+    }
+    s = player.nickname.padEnd(16) + vals;
     this.debug(s);
 };
 
 BJConsoleView.prototype.showCardValues = function(player) {
-    var s = player.nickname.padEnd(16) + player.hand.cardValues();
+    var hand = player.hand;
+    var vals = "";
+    var s = "";
+    for (var i = 0; i < hand.count(); i++) {
+        vals += hand.card(i).value.padEnd(5) + " ";
+    }
+    s = player.nickname.padEnd(16) + vals;
     this.debug(s);
 };
 
@@ -303,7 +310,7 @@ BJConsoleView.prototype.showCardValuesAndPointTotal = function(player) {
 };
 
 
-
+/*
 // test method - pass in copies of props for safety
 BJConsoleView.prototype.outputGameProps = function(props) {
     console.log("VIEW DISPLAYING PROPS" + br);
@@ -313,26 +320,6 @@ BJConsoleView.prototype.outputGameProps = function(props) {
     // cannot overwrite - will be back next call :-)
     props.name = "";
 };
-
-
-BJConsoleView.prototype.showPlayerGameStats = function(player) { 
-    var s = "";
-    s += "Game Stats for "  + player.nickname + br;
-    s += "Hand:      " + br;
-    s += "Points:    " + br;
-    s += "Outcome:   " + br;
-    this.output(s);
-};
-
-BJConsoleView.prototype.showPlayerFinalStats = function(player) { 
-    var s = "";
-    s += "Final Stats for "  + player.nickname + br;
-    s += "Cash:      " + player.cash + br;
-    s += "Rounds:    " + player.roundCount + br;
-    s += "Wins:      " + player.winCount + br;
-    s += "Losses:    " + player.lossCount + br;
-    this.output(s);
-};
-
+*/
 
 module.exports = BJConsoleView;

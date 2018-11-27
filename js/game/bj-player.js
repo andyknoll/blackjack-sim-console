@@ -15,16 +15,18 @@ var br = "\r\n";
 var BJPlayer = function(name, parent) {
     AKObject.call(this, name, parent);
     this._className = "BJPlayer";
-    this.nickname = "";
-    this.cash = 0;
-    this.inAnte = 0;
+
+    // each Player owns a Hand
     this.hand = new BJHand(this.name() + "_hand", this);
 
-    this.isBusted   = false;      // set each round
-    this.winCount   = 0;
-    this.lossCount  = 0;
-    this.tieCount   = 0;
-    this.outcome    = "";
+    this.nickname  = "";    // not same as object name()
+    this.cash      = 0;
+    this.inAnte    = 0;
+    this.winCount  = 0;
+    this.lossCount = 0;
+    this.tieCount  = 0;
+    this.outcome   = "";
+    this.isBusted  = false;      // set each round
 };
 BJPlayer.prototype = Object.create(AKObject.prototype);
 BJPlayer.prototype.constructor = BJPlayer;
@@ -37,17 +39,6 @@ BJPlayer.prototype.roundCount = function() {
     return this.winCount + this.lossCount + this.tieCount;
 };
 
-// do not count ties in result
-BJPlayer.prototype.winPercent = function() { 
-    return this.winCount / (this.winCount + this.lossCount);
-};
-
-// must count the cash in the ante too
-BJPlayer.prototype.isBroke = function() { 
-    return (this.cash + this.inAnte) < this.game().anteAmount;
-};
-
-
 BJPlayer.prototype.info = function() {
 	var s = "";
     s += AKObject.prototype.info.call(this);
@@ -58,13 +49,23 @@ BJPlayer.prototype.info = function() {
     return s;
 };
 
-// should be an initPlayer() method
+// do not count ties in result
+BJPlayer.prototype.winPercent = function() { 
+    // avoid NaN divide by zero from ties
+    if (this.winCount + this.lossCount == 0) return 0; 
+    return this.winCount / (this.winCount + this.lossCount);
+};
+
+// must count the cash in the ante too
+BJPlayer.prototype.isBroke = function() { 
+    return (this.cash + this.inAnte) < this.game().anteAmount;
+};
 
 BJPlayer.prototype.clearHand = function() {
     this.hand.clear();
+    this.inAnte   = 0;
     this.isBusted = false;
-    this.inAnte = 0;
-    this.outcome = "";
+    this.outcome  = "";
 };
 
 // move from avail cash to ante
@@ -79,42 +80,17 @@ BJPlayer.prototype.anteUp = function() {
     }
 };
 
-BJPlayer.prototype.isHitting = function() {
-    var upCard = this.game().dealer.upCard();
-    return this.currRules().isHandHitting(this.hand, upCard.pointValue());
-};
-
 // called once before each batch of rounds
 BJPlayer.prototype.initRounds = function() {
-    this.clearHand();
-    this.inAnte = 0;                // ???
     this.cash = this.game().startCash;
-    this.isBusted   = false;        // set each round // still using this ???
-    this.winCount   = 0;
-    this.lossCount  = 0;
-    this.tieCount   = 0;
-    this.outcome    = "";
+    this.clearHand();
+    this.inAnte    = 0;
+    this.winCount  = 0;
+    this.lossCount = 0;
+    this.tieCount  = 0;
+    this.outcome   = "";
+    this.isBusted  = false;
 };
-
-
-
-// THESE SHOULD BE VIEW METHODS!
-/*
-BJPlayer.prototype.cardFaceValues = function() {
-    var s = this.nickname.padEnd(15) + this.hand.cardFaceValues() + br;
-    return s;
-};
-
-BJPlayer.prototype.cardValues = function() {
-    var s = this.nickname.padEnd(15) + this.hand.cardValues() + br;
-    return s;
-};
-
-BJPlayer.prototype.cardValuesAndPointTotal = function() {
-    var s = this.nickname.padEnd(15) + this.hand.cardValues() + this.hand.pointTotal() + br;
-    return s;
-};
-*/
 
 
 module.exports = BJPlayer;

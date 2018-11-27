@@ -27,36 +27,13 @@ BJRuleSet.prototype = Object.create(AKObject.prototype);
 BJRuleSet.prototype.constructor = BJRuleSet;
 
 
-/*
-BJRuleSet.prototype.isHandUnder = function(hand) {
-    return hand.pointTotal() <= 21;    
-};
-
-BJRuleSet.prototype.isHandBust = function(hand) {
-    return hand.pointTotal() > 21;
-};
-
-// 21 must be only in the first two cards
-BJRuleSet.prototype.isHandBlackjack = function(hand) {
-    return (hand.pointTotal() == 21) && (hand.count() == 2);
-};
-*/
-
-
-// THIS IS THE MAIN DECISION ALGORITHM
-BJRuleSet.prototype.isHandHitting = function(hand, dealerCardVal) {
-    var action = this.decideAction(hand.pointTotal(), dealerCardVal);
-    //console.log("ACTION = " + action + " " + hand.pointTotal() + " " + dealerCardVal)
-    if (action == 0) return false;
-    if (action == 1) return true;
-    // could be more options like "Split", etc. in the future
-};
-
-// returns 0 (STAY) or 1 (HIT)
-BJRuleSet.prototype.decideAction = function(playerPoints, dealerCardVal) {
+// THIS IS THE MAIN DECISION ALGORITHM - called by Hand.decideAction()
+// returns 0 (STAY) or 1 (HIT) or more in the future
+BJRuleSet.prototype.decideAction = function(playerPoints, upCardVal) {
+    //console.log("decideAction POINTS: " + playerPoints + "   UPCARD: " + upCardVal);
     // must enforce over range checks here...
     if (playerPoints > 21) return 0;
-    return this.matrix[playerPoints][dealerCardVal];
+    return this.matrix[playerPoints][upCardVal];
 };
 
 // a grid of player hand values and dealer show cards
@@ -114,9 +91,9 @@ BJNoviceRules.prototype.createMatrix = function() {
         [ 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         [ 8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         [ 9, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [10, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [11, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [12, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         [13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -190,9 +167,7 @@ BJACRules.prototype.constructor = BJACRules;
 
 
 
-
-
-// BJRules "class"
+// BJRules "class" - collection of RuleSets
 var BJRules = function(name, parent) {
     AKCollection.call(this, name, parent);
     this._className = "BJRules";

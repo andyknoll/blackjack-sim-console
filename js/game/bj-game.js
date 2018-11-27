@@ -29,7 +29,7 @@ var gameConfig = {
     startCash  : 200,
     anteAmount : 20,
     houseCash  : 0,
-    ruleSet    : 1,
+    ruleSet    : 1,     // Novice, Greedy, Vegas, AC
     dealer : { nickname : "Scrooge" },
     players : [
         { nickname : "Huey"   },
@@ -136,6 +136,7 @@ BJGame.prototype.initObjects = function() {
         player.cash = this.config.startCash;
     }
 
+    // this could come "pre-packaged"
     rules = new Rules.BJNoviceRules("Novice Rules", this.rules);
     this.rules.addRuleSet(rules);
     rules = new Rules.BJGreedyRules("Greedy Rules", this.rules);

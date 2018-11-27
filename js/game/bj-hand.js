@@ -55,25 +55,6 @@ BJHand.prototype.childInfo = function(card, idx) {
     return s;
 };
 
-// this should be a View method!
-BJHand.prototype.cardFaceValues = function() {
-    var s = "";
-    for (var i = 0; i < this.count(); i++) {
-        s += this.card(i).faceValue().padEnd(5) + " ";
-    }
-    return s;
-};
-
-// this should be a View method!
-BJHand.prototype.cardValues = function() {
-    var s = "";
-    for (var i = 0; i < this.count(); i++) {
-        s += this.card(i).value.padEnd(5) + " ";
-    }
-    return s;
-};
-
-
 // special cases if there is one or more than one Ace
 BJHand.prototype.pointTotal = function() {
     var total = 0;
@@ -90,26 +71,6 @@ BJHand.prototype.pointTotal = function() {
 };
 
 
-/*
-// no need to use Rules objects here
-BJHand.prototype.isUnder = function() {
-    return this.pointTotal() <= 21;
-    //return this.currRules().isHandUnder(this);
-};
-
-BJHand.prototype.isBust = function() {
-    return this.pointTotal() > 21;
-    //return this.currRules().isHandBust(this);
-};
-
-BJHand.prototype.isBlackjack = function() {
-    return (this.pointTotal() == 21) && (this.count() == 2);
-    //return this.currRules().isHandBlackjack(this);
-};
-*/
-
-
-// new 11/26/2018
 BJHand.prototype.getStatus = function() {
     var points = this.pointTotal();
     var status = BJHand.UNDER;
@@ -123,27 +84,32 @@ BJHand.prototype.getStatus = function() {
 
 // MUST USE THE RULES GRID HERE!!!
 BJHand.prototype.decideAction = function() {
-    var action = BJHand.STAY;
     var game = this.player.game();
-    if (this.player == game.dealer) {
-        if (this.pointTotal() <= 16) action = BJHand.HIT;
-        return action;
+    var dealer = game.dealer;
+    var upCardVal = dealer.upCard().pointValue();
+    var player = this.player;
+    var points = player.hand.pointTotal();
+
+    // no need to use Rules grid for Dealer
+    if (player == dealer) {
+        // Dealer always hits on 16 and below
+        if (this.pointTotal() <= 16) return BJHand.HIT;
     }
-    // now use the grid for Players
-    if (this.pointTotal() <= Math.floor(Math.random() * 40)) {
-        action = BJHand.HIT;
-    }
+
+    // now use the rules grid for Players
+    var action = this.currRules().decideAction(points, upCardVal);
+    //console.log("CURR RULES ACTION RETURNED: " + action);
     return action;
 };
 
 // status codes
-BJHand.UNDER     = 0;
-BJHand.OVER      = 1;
+BJHand.UNDER = 0;
+BJHand.OVER = 1;
 BJHand.BLACKJACK = 2;
 
 // action codes
 BJHand.STAY = 0;
-BJHand.HIT  = 1;
+BJHand.HIT = 1;
 
 
 module.exports = BJHand;
