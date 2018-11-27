@@ -162,19 +162,70 @@ BJConsoleView.prototype.completeRound = function() {
 };
 
 
+// called many times to show an "animated" screen of play
+BJConsoleView.prototype.showRoundProgress = function(game) {
+    var self = this;
+    /*
+    setTimeout(function() {
+        console.clear();
+        self.showRoundProgressScreen(game);
+    }, 1000);
+    */
+    for (var i = 0; i < 1000000000; i++) {
+       // console.clear();    // CPU heavy!
+    }
+    console.clear();
+    self.showRoundProgressScreen(game);
+};
+
+// called many times by the timer above to show an "animated" screen
+BJConsoleView.prototype.showRoundProgressScreen = function(game) { 
+    var players = game.players;
+    var count = players.count();
+    var currRound = game.currRound.toString();
+    var player = null;
+    var s = "";
+
+    // output the heading
+    s += hr;
+    s += br;
+    s += "Round: " + currRound.padEnd(13) + "C1    C2    C3    C4    C5    CURR   PTS" + br;
+    s += br;
+
+    // show players' progress
+    for (var i = 0; i <= count; i++) {
+        if (i == count)
+            player = game.dealer;
+        else
+            player = players.player(i);
+
+        var name   = player.nickname;
+        var hand   = player.hand;
+        var points = hand.pointTotal().toString();
+
+        var action = hand.decideAction();
+        var act    = "";
+
+        if (action == 0) act = "STAY";
+        if (action == 1) act = "HIT";
+        if (hand.count() < 2) act = "DEAL";
+        if (player.outcome != "") act = player.outcome;     // set after scoring
+        s += name.padEnd(20) + hand.cardFaceValues().padEnd(30) + act.padEnd(8) + lpad(points, 2, " ") + br;
+    }
+
+    s += hr;
+    this.output(s);
+
+};
+
+
+/*
 BJConsoleView.prototype.showRoundStats = function(game) { 
     //this.output("--BJConsoleView.showRoundStats");
     var players = game.players;
     var player = null;
     var currRound = game.currRound.toString();
     var s = "";
-    /*
-    var name   = "";
-    var rounds = "";
-    var wins   = "";
-    var losses = "";
-    var cash   = "";
-    */
 
     // output the heading
     s += br + hr + br;
@@ -205,6 +256,8 @@ BJConsoleView.prototype.showRoundStats = function(game) {
     s += hr;
     this.output(s);
 };
+*/
+
 
 // this is the longest method in this View object!
 BJConsoleView.prototype.showFinalStats = function(game) { 

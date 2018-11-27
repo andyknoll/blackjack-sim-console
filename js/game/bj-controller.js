@@ -194,7 +194,9 @@ BJController.prototype.dealFirstCards = function() {
     for (var c = 0; c < 2; c++) {
         for (var i = 0; i < this.game.players.count(); i++) {
             var player = this.game.players.player(i);
-            if (!player.isBroke()) this.dealPlayerCard(player);
+            if (!player.isBroke()) {
+                this.dealPlayerCard(player);
+            }
         }
         this.dealPlayerCard(dealer);      // and the Dealer too
         this.output("");
@@ -209,6 +211,7 @@ BJController.prototype.dealPlayerCard = function(player) {
     this.debug(this.game.msg);
     this.view.dealPlayerCard(player);
     this.debug(this.view.msg);
+    this.view.showRoundProgress(this.game);      // show card progress in view
 };
 
 BJController.prototype.decidePlayersHitOrStay = function() {
@@ -229,17 +232,19 @@ BJController.prototype.decidePlayerHitOrStay = function(player) {
     var action = hand.decideAction();       // must cache for view
 
     this.view.decidePlayerHitOrStay(player);
-    this.view.showCardFaceValues(player);
+    //this.view.showCardFaceValues(player);
+    this.view.showRoundProgress(this.game);          // show card progress in view
 
     while ((status == BJHand.UNDER) && (action == BJHand.HIT)) {
-        this.view.showPlayerHandAction(player, action);
+        //this.view.showPlayerHandAction(player, action);
         this.dealPlayerCard(player);        // updates both model and view
 
         status = hand.getStatus();
         action = hand.decideAction();       // keep deciding if under
     }
     this.decidePlayerBusted(player);
-    if (!player.isBusted) this.view.showPlayerHandAction(player, action);
+    //if (!player.isBusted) this.view.showPlayerHandAction(player, action);
+    this.view.showRoundProgress(this.game);          // show STAY in view
     this.view.output("");
 };
 
@@ -258,6 +263,7 @@ BJController.prototype.decidePlayerBusted = function(player) {
     if (player.hand.getStatus() == BJHand.OVER) {
         this.game.scorePlayerIsBusted(player);
         this.view.showPlayerIsBusted(player);
+        this.view.showRoundProgress(this.game);          // show progress in view
     }
 };
 
@@ -270,6 +276,7 @@ BJController.prototype.decideDealerBusted = function() {
     var dealer = this.game.dealer;
     if (dealer.hand.getStatus() == BJHand.OVER) {
         this.view.showDealerIsBusted(dealer);
+        this.view.showRoundProgress(this.game);          // show progress in view
         // scoring dealer bust will be next
     }
 };
@@ -290,8 +297,9 @@ BJController.prototype.scorePlayersHands = function() {
 BJController.prototype.scorePlayerHand = function(player, dealer) {
     this.game.scorePlayerHand(player, dealer);
     this.debug(this.game.msg);
-    this.view.scorePlayerHand(player, dealer);
+    //this.view.scorePlayerHand(player, dealer);
     this.debug(this.view.msg);
+    this.view.showRoundProgress(this.game);          // show progress in view
 };
 
 
@@ -320,7 +328,6 @@ BJController.prototype.showFinalStats = function() {
     this.view.showFinalStats(this.game);
     this.output("");
 };
-
 
 
 module.exports = BJController;

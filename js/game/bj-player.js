@@ -24,6 +24,7 @@ var BJPlayer = function(name, parent) {
     this.winCount   = 0;
     this.lossCount  = 0;
     this.tieCount   = 0;
+    this.outcome    = "";
 };
 BJPlayer.prototype = Object.create(AKObject.prototype);
 BJPlayer.prototype.constructor = BJPlayer;
@@ -63,6 +64,7 @@ BJPlayer.prototype.clearHand = function() {
     this.hand.clear();
     this.isBusted = false;
     this.inAnte = 0;
+    this.outcome = "";
 };
 
 // move from avail cash to ante
@@ -91,6 +93,7 @@ BJPlayer.prototype.initRounds = function() {
     this.winCount   = 0;
     this.lossCount  = 0;
     this.tieCount   = 0;
+    this.outcome    = "";
 };
 
 

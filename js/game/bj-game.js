@@ -194,6 +194,7 @@ BJGame.prototype.scorePlayerIsBusted = function(player) {
     this.msg = "BJGame.scorePlayerIsBusted";
     player.isBusted = true;     // this round only
     player.lossCount++;
+    player.outcome = "BUST";
     // player.cash -= this.anteAmount;   // no - already paid into ante
     this.dealer.winCount++;
     this.dealer.cash += this.anteAmount;
@@ -204,35 +205,37 @@ BJGame.prototype.scorePlayerHand = function(player, dealer) {
     this.msg = "BJGame.scorePlayerHand";
     var playerHand = player.hand;
     var dealerHand = dealer.hand;
-    //console.log("SCORING: " + player.nickname);
-    //console.log("STATUS: " + player.hand.getStatus());
 
     if (dealerHand.getStatus() == BJHand.OVER) {
         // dealer bust - player wins
-        //console.log("SCORING: " + dealer.nickname + " BUSTED")
         player.winCount++;
         player.cash += (this.anteAmount * 2);       // ante plus winnings
+        player.outcome = "WON";
         dealer.lossCount++;
         dealer.cash -= this.anteAmount;
+        dealer.outcome = "LOST";
     } else if (playerHand.pointTotal() > dealerHand.pointTotal()) {
         // player hand wins
-        //console.log("SCORING: " + player.nickname + " WON")
         player.winCount++;
         player.cash += (this.anteAmount * 2);       // ante plus winnings
+        player.outcome = "WON";
         dealer.lossCount++;
         dealer.cash -= this.anteAmount;
+        dealer.outcome = "LOST";
     } else if (playerHand.pointTotal() < dealerHand.pointTotal()) {
         // dealer hand wins
-        //console.log("SCORING: " + player.nickname + " LOST")
         player.lossCount++;     // cash already lost in ante
+        player.outcome = "LOST";
         dealer.winCount++;
         dealer.cash += this.anteAmount;
+        dealer.outcome = "WON";
     } else {
         // draw
-        //console.log("SCORING: " + player.nickname + " TIED")
         player.cash += this.anteAmount;     // gets back the ante
         player.tieCount++;
+        player.outcome = "PUSH";
         dealer.tieCount++;
+        dealer.outcome = "PUSH";
     }
 };
 
