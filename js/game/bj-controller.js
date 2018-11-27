@@ -20,7 +20,7 @@ var BJHand = require("./bj-hand.js");   // for status and action codes
 var br = "\r\n";        // CRLF for output
 
 
-// BJController "class"
+// BJController "class" - parent is AppCtrls
 // can access Game model and Game view
 var BJController = function(name, parent) {
     AKObject.call(this, name, parent);
@@ -52,7 +52,7 @@ BJController.prototype.output = function(txt) {
 
 // convenience method call
 BJController.prototype.debug = function(txt) {
-    if (this.app.DEBUG) this.view.output("DEBUG: " + txt);
+    if (this.app.DEBUG) this.view.debug("DEBUG: " + txt);
 };
 
 
@@ -79,22 +79,20 @@ BJController.prototype.run = function() {
 
 // called only once at app startup
 BJController.prototype.createObjects = function() {
-    //this.output("BJController.createObjects");
+    this.debug("BJController.createObjects");
     this.game.createObjects();
     this.debug(this.game.msg);
     this.view.createObjects();
     this.debug(this.view.msg);
-    //this.output("");
 };
 
 // called only once at app startup
 BJController.prototype.initObjects = function() {
-    //this.output("BJController.initObjects");
+    this.debug("BJController.initObjects");
     this.game.initObjects();
     this.debug(this.game.msg);
     this.view.initObjects();
     this.debug(this.view.msg);
-    //this.output("");
 };
 
 
@@ -105,19 +103,14 @@ BJController.prototype.initObjects = function() {
 
 // loop the rounds many times
 BJController.prototype.playRounds = function() {
-    //this.output("BJController.playRounds");
-    //this.output("");
-
+    this.debug("BJController.playRounds");
     this.initRounds();      // clear out all totals
-
     // replace this for loop with playNext or similar?
     for (var i = 1; i <= this.game.maxRounds; i++) {
         if (this.game.players.allBroke()) {
-            //this.output("ALL PLAYERS BROKE - SKIPPING ROUND");
         } else {
-            //this.output("SOME PLAYERS STILL IN - PLAYING ROUND");
             this.playSingleRound();
-            this.output("");
+            this.debug("");
         }
     }
     this.showFinalStats();
@@ -125,24 +118,21 @@ BJController.prototype.playRounds = function() {
 
 // called once before each batch of rounds
 BJController.prototype.initRounds = function() {
-    //this.output("BJController.initRounds");
+    this.debug("BJController.initRounds");
     this.game.initRounds();
-    this.debug(this.game.msg);
     this.view.initRounds(this.game);
-    this.debug(this.view.msg);
-    this.output("");
+    this.debug("");
 };
 
 // called many times - once each loop
 BJController.prototype.playSingleRound = function() {
-    //this.output("BJController.playSingleRound - Round: " + (this.game.currRound+1));
+    this.debug("BJController.playSingleRound - Round: " + (this.game.currRound+1));
     this.startRound();              // shuffle, anteUp, deal, etc.
     this.clearAllHands();           // remove cards from last round
     this.shuffleDeck();             // all decks' cards
     this.anteAllUp();               // subtract from players cash
     this.dealFirstCards();          // two cards to everyone
     this.decidePlayersHitOrStay();  // before dealer gets third card
-    //this.decidePlayersBusted();   // weed out the busted players first
     this.decideDealerHitOrStay();   // to Dealer only - might bust
     this.decideDealerBusted();      // Dealer only - all win
     this.scorePlayersHands();       // remaining players and dealer
@@ -151,46 +141,36 @@ BJController.prototype.playSingleRound = function() {
 
 // this would be event driven in an interactive game!
 BJController.prototype.startRound = function() {
-    //this.output("BJController.startRound");
+    this.debug("BJController.startRound");
     this.game.startRound();
-    this.debug(this.game.msg);
     this.view.startRound(this.game);
-    this.debug(this.view.msg);
 };
 
 
 BJController.prototype.clearAllHands = function() {
-    //this.output("BJController.clearAllHands");
+    this.debug("BJController.clearAllHands");
     this.game.clearAllHands();
-    this.debug(this.game.msg);
     this.view.clearAllHands();
-    this.debug(this.view.msg);
 };
 
 BJController.prototype.shuffleDeck = function() {
-    //this.output("BJController.shuffleDeck");
+    this.debug("BJController.shuffleDeck");
     this.game.shuffleDeck();
-    this.debug(this.game.msg);
     this.view.shuffleDeck();
-    this.debug(this.view.msg);
 };
 
 BJController.prototype.anteAllUp = function() {
-    //this.output("BJController.anteAllUp");
+    this.debug("BJController.anteAllUp");
     this.game.anteAllUp();
-    this.debug(this.game.msg);
     this.view.anteAllUp();
-    this.debug(this.view.msg);
 };
 
 // Controller should do this - not the Dealer!
 BJController.prototype.dealFirstCards = function() {
-    //this.output("BJController.dealFirstCards");
+    this.debug("BJController.dealFirstCards");
     var dealer = this.game.dealer;
     this.game.dealFirstCards();
-    this.debug(this.game.msg);
     this.view.dealFirstCards();
-    this.debug(this.view.msg);
 
     for (var c = 0; c < 2; c++) {
         for (var i = 0; i < this.game.players.count(); i++) {
@@ -200,23 +180,20 @@ BJController.prototype.dealFirstCards = function() {
             }
         }
         this.dealPlayerCard(dealer);      // and the Dealer too
-        this.output("");
+        this.debug("");
     }
-
     this.view.showDealerUpCard(dealer.upCard());
 };
 
 BJController.prototype.dealPlayerCard = function(player) {
-    //this.output("BJController.dealPlayerCard");
+    this.debug("BJController.dealPlayerCard");
     this.game.dealPlayerCard(player);
-    this.debug(this.game.msg);
     this.view.dealPlayerCard(player);
-    this.debug(this.view.msg);
     this.view.showRoundProgress(this.game);      // show card progress in view
 };
 
 BJController.prototype.decidePlayersHitOrStay = function() {
-    //this.output("BJController.decidePlayersHitOrStay");
+    this.debug("BJController.decidePlayersHitOrStay");
     var players = this.game.players;
     for (var i = 0; i < players.count(); i++) {
         var player = this.game.players.player(i);
@@ -226,8 +203,7 @@ BJController.prototype.decidePlayersHitOrStay = function() {
 
 // HIT or STAY according to strategy
 BJController.prototype.decidePlayerHitOrStay = function(player) {
-    //this.output("BJController.decidePlayerHitOrStay");
-    // each Player and Dealer
+    this.debug("BJController.decidePlayerHitOrStay");
     var hand = player.hand;
     var status = hand.getStatus();
     var action = hand.decideAction();       // must cache for view
@@ -239,28 +215,17 @@ BJController.prototype.decidePlayerHitOrStay = function(player) {
     while ((status == BJHand.UNDER) && (action == BJHand.HIT)) {
         //this.view.showPlayerHandAction(player, action);
         this.dealPlayerCard(player);        // updates both model and view
-
         status = hand.getStatus();
         action = hand.decideAction();       // keep deciding if under
     }
     this.decidePlayerBusted(player);
     //if (!player.isBusted) this.view.showPlayerHandAction(player, action);
     this.view.showRoundProgress(this.game);          // show STAY in view
-    this.view.output("");
+    this.debug("");
 };
-
-/*
-BJController.prototype.decidePlayersBusted = function() {
-    // check for busts in players - not dealer
-    var players = this.game.players;
-    for (var i = 0; i < players.count(); i++) {
-        var player = players.player(i);
-        this.decidePlayerBusted(player);
-    }
-};
-*/
 
 BJController.prototype.decidePlayerBusted = function(player) {
+    this.debug("BJController.decidePlayerBusted");
     if (player.hand.getStatus() == BJHand.OVER) {
         this.game.scorePlayerIsBusted(player);
         this.view.showPlayerIsBusted(player);
@@ -270,10 +235,12 @@ BJController.prototype.decidePlayerBusted = function(player) {
 
 
 BJController.prototype.decideDealerHitOrStay = function() {
+    this.debug("BJController.decideDealerHitOrStay");
     this.decidePlayerHitOrStay(this.game.dealer);
 };
 
 BJController.prototype.decideDealerBusted = function() {
+    this.debug("BJController.decideDealerBusted");
     var dealer = this.game.dealer;
     if (dealer.hand.getStatus() == BJHand.OVER) {
         this.view.showDealerIsBusted(dealer);
@@ -282,10 +249,9 @@ BJController.prototype.decideDealerBusted = function() {
     }
 };
 
-
+// this includes the dealer too
 BJController.prototype.scorePlayersHands = function() {
-    //this.output("BJController.scorePlayersHands");
-    // each Player and Dealer
+    this.debug("BJController.scorePlayersHands");
     for (var i = 0; i < this.game.players.count(); i++) {
         var player = this.game.players.player(i);
         if (!player.isBroke() && !player.isBusted) {
@@ -296,39 +262,23 @@ BJController.prototype.scorePlayersHands = function() {
 };
 
 BJController.prototype.scorePlayerHand = function(player, dealer) {
+    this.debug("BJController.scorePlayerHand");
     this.game.scorePlayerHand(player, dealer);
-    this.debug(this.game.msg);
     //this.view.scorePlayerHand(player, dealer);
-    this.debug(this.view.msg);
     this.view.showRoundProgress(this.game);          // show progress in view
 };
 
 
-
-
-
-
-
-
-
 BJController.prototype.completeRound = function() {
-    //this.output("BJController.completeRound");
-    // calculate round stats
+    this.debug("BJController.completeRound");
     this.game.completeRound();
-    this.debug(this.game.msg);
-    // show round stats
     this.view.completeRound();
-    this.debug(this.view.msg);
-
-    //console.clear();
-    //this.view.showRoundStats(this.game);
 };
 
 BJController.prototype.showFinalStats = function() {
-    this.output("BJController.showFinalStats");
+    this.debug("BJController.showFinalStats");
     this.view.showFinalStats(this.game);
-    this.output("");
+    this.debug("");
 };
-
 
 module.exports = BJController;

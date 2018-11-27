@@ -41,6 +41,7 @@ var gameConfig = {
 
 
 // BJGame - inherits from AKObject
+// parent is AppModels
 BJGame = function(name, parent) {
     AKObject.call(this, name, parent);
     this._className = "BJGame";
@@ -85,6 +86,7 @@ BJGame.prototype.getProps = function() {
 */
 
 BJGame.prototype.info = function() {
+    this.msg = "BJGame.info";
 	var s = "";
     s += AKObject.prototype.info.call(this);
     // new properties go here...
@@ -158,8 +160,8 @@ BJGame.prototype.initRounds = function() {
 
 // called many times - once each loop
 BJGame.prototype.startRound = function() {
-    this.currRound++;
     this.msg = "BJGame.startRound";
+    this.currRound++;
 };
 
 
@@ -224,14 +226,14 @@ BJGame.prototype.scorePlayerHand = function(player, dealer) {
         dealer.outcome = "LOST";
     } else if (playerHand.pointTotal() < dealerHand.pointTotal()) {
         // dealer hand wins
-        player.lossCount++;     // cash already lost in ante
+        player.lossCount++;                     // cash already lost in ante
         player.outcome = "LOST";
         dealer.winCount++;
         dealer.cash += this.anteAmount;
         dealer.outcome = "WON";
     } else {
         // draw
-        player.cash += this.anteAmount;     // gets back the ante
+        player.cash += this.anteAmount;         // gets back the ante
         player.tieCount++;
         player.outcome = "PUSH";
         dealer.tieCount++;
@@ -242,8 +244,6 @@ BJGame.prototype.scorePlayerHand = function(player, dealer) {
 BJGame.prototype.completeRound = function() {
     this.msg = "BJGame.completeRound";
 };
-
-
 
 
 module.exports = BJGame;

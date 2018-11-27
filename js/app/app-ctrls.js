@@ -50,7 +50,7 @@ AppCtrls.prototype.info = function() {
     s += AKCollection.prototype.info.call(this);
     s += ".models: " + this.models.name() + br;
     s += ".views: "  + this.views.name() + br;
-    //s += ".bjCtrl: " + this.bjCtrl.name() + br;
+    s += ".bjCtrl: " + this.bjCtrl.name() + br;
     return s;
 };
 

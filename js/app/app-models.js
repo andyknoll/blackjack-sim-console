@@ -49,7 +49,7 @@ AppModels.prototype.constructor = AppModels;
 AppModels.prototype.info = function() {
 	var s = "";
     s += AKCollection.prototype.info.call(this);
-    //s += ".bjGame: " + this.bjGame.name() + br;
+    s += ".bjGame: " + this.bjGame.name() + br;
     return s;
 };
 

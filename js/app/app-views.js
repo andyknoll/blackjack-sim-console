@@ -43,7 +43,7 @@ AppViews.prototype.constructor = AppViews;
 AppViews.prototype.info = function() {
 	var s = "";
     s += AKCollection.prototype.info.call(this);
-    //s += ".bjView: " + this.bjView.name() + br;
+    s += ".bjView: " + this.bjView.name() + br;
     return s;
 };
 

@@ -24,6 +24,7 @@
         Game
             Card
             Deck
+            MultiDeck
             Dealer
             Player
             Players
