@@ -172,13 +172,12 @@ BJConsoleView.prototype.completeRound = function() {
 // called many times to show an "animated" screen of play
 // mostly testing for the web version - use setTimeout()
 BJConsoleView.prototype.showRoundProgress = function(game) {
-    if (game.maxRounds > 1) return;     // only show progress for single round
-    /*
-    for (var i = 0; i < 1000000000; i++) {
-       // CPU heavy!
-    }
-    console.clear();
-    */
+    //if (game.maxRounds > 1) return;     // only show progress for single round
+    //this.showRoundProgressScreen(game);
+};
+
+// only called at end of each Round
+BJConsoleView.prototype.showRoundStats = function(game) {
     this.showRoundProgressScreen(game);
 };
 
@@ -193,7 +192,7 @@ BJConsoleView.prototype.showRoundProgressScreen = function(game) {
     // output the heading
     s += hr;
     s += br;
-    s += "Round: " + currRound.padEnd(13) + "C1    C2    C3    C4    C5    CURR   PTS" + br;
+    s += "Round: " + currRound.padEnd(7) + "C1    C2    C3    C4    C5    C6    CURR   PTS" + br;
     s += br;
 
     // show players' progress
@@ -206,14 +205,19 @@ BJConsoleView.prototype.showRoundProgressScreen = function(game) {
         var name   = player.nickname;
         var hand   = player.hand;
         var points = hand.pointTotal().toString();
-        var action = hand.decideAction();
-        var act = "";
+        var act    = "";
 
-        if (action == 0) act = "STAY";
-        if (action == 1) act = "HIT";
-        if (hand.count() <= 2) act = "DEAL";
+        if (hand.count() <= 2) {
+            act = "DEAL";
+        } else {
+            var action = hand.decideAction();
+            if (action == 0) act = "STAY";
+            if (action == 1) act = "HIT";
+        }
+
         if (player.outcome != "") act = player.outcome;     // set after scoring
-        s += name.padEnd(20) + hand.cardFaceValues().padEnd(30) + act.padEnd(8) + lpad(points, 2, " ") + br;
+        if (player == game.dealer) act = "";
+        s += this.showCardFaceValues(player).padEnd(50) + act.padEnd(8) + lpad(points, 2, " ") + br;
     }
     s += hr;
     this.output(s);
@@ -289,8 +293,9 @@ BJConsoleView.prototype.showCardFaceValues = function(player) {
     for (var i = 0; i < hand.count(); i++) {
         vals += hand.card(i).faceValue().padEnd(5) + " ";
     }
-    s = player.nickname.padEnd(16) + vals;
+    s = player.nickname.padEnd(14) + vals;
     this.debug(s);
+    return s;
 };
 
 BJConsoleView.prototype.showCardValues = function(player) {
@@ -300,13 +305,15 @@ BJConsoleView.prototype.showCardValues = function(player) {
     for (var i = 0; i < hand.count(); i++) {
         vals += hand.card(i).value.padEnd(5) + " ";
     }
-    s = player.nickname.padEnd(16) + vals;
+    s = player.nickname.padEnd(14) + vals;
     this.debug(s);
+    return s;
 };
 
 BJConsoleView.prototype.showCardValuesAndPointTotal = function(player) {
-    var s = player.nickname.padEnd(16) + player.hand.cardValues() + player.hand.pointTotal();
+    var s = player.nickname.padEnd(14) + player.hand.cardValues() + player.hand.pointTotal();
     this.debug(s);
+    return s;
 };
 
 

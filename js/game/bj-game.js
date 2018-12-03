@@ -30,12 +30,12 @@ var gameConfig = {
     anteAmount : 20,
     houseCash  : 0,
     ruleSet    : 1,     // Novice, Greedy, Vegas, AC
-    dealer : { nickname : "Scrooge" },
+    dealer : { nickname : "Mr. Dealer" },
     players : [
-        { nickname : "Huey"   },
-        { nickname : "Dewey"  },
-        { nickname : "Louie"  },
-        { nickname : "Donald" }
+        { nickname : "C. Barrows" },
+        { nickname : "B. Moran"  },
+        { nickname : "J. Dillenger"  },
+        { nickname : "V. Corleone"  }
     ]
 };
 

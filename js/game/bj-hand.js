@@ -70,7 +70,6 @@ BJHand.prototype.pointTotal = function() {
     return total - deduct;
 };
 
-
 BJHand.prototype.getStatus = function() {
     var points = this.pointTotal();
     var status = BJHand.UNDER;

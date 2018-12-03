@@ -87,6 +87,7 @@ BJConsoleApp.prototype.run = function() {
     var args = process.argv;        // Node command line
     var numRounds = args[2];
     if (!isNaN(numRounds)) {
+        if (numRounds < 0) numrounds = 0;
         this.models.bjGame.maxRounds = numRounds;
     }
     this.ctrls.bjCtrl.run();    // run the Blackjack controller

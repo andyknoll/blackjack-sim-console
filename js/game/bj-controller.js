@@ -133,10 +133,12 @@ BJController.prototype.playSingleRound = function() {
     this.clearAllHands();           // remove cards from last round
     this.shuffleDeck();             // all decks' cards
     this.anteAllUp();               // subtract from players cash
+
     this.dealFirstCards();          // two cards to everyone
     this.decidePlayersHitOrStay();  // before dealer gets third card
     this.decideDealerHitOrStay();   // to Dealer only - might bust
     this.decideDealerBusted();      // Dealer only - all win
+
     this.scorePlayersHands();       // remaining players and dealer
     this.completeRound();           // finish up, tally scores
 };
@@ -274,6 +276,7 @@ BJController.prototype.completeRound = function() {
     //this.debug("BJController.completeRound");
     this.game.completeRound();
     this.view.completeRound();
+    this.view.showRoundStats(this.game);          // show stats for this Round
 };
 
 BJController.prototype.showFinalStats = function() {
