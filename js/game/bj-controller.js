@@ -73,10 +73,6 @@ BJController.prototype.run = function() {
     this.output("completed simulation @ " + new Date());    
 };
 
-
-
-
-
 // called only once at app startup
 BJController.prototype.createObjects = function() {
     //this.debug("BJController.createObjects");
@@ -94,12 +90,6 @@ BJController.prototype.initObjects = function() {
     this.view.initObjects();
     this.debug(this.view.msg);
 };
-
-
-
-
-
-
 
 // loop the rounds many times
 BJController.prototype.playRounds = function() {

@@ -15,7 +15,6 @@ var br = "\r\n";
 var BJHand = function(name, parent) {
     AKCollection.call(this, name, parent);
     this._className = "BJHand";
-    //this.numAces = 0;
     this.player = parent;
 };
 BJHand.prototype = Object.create(AKCollection.prototype);
@@ -32,19 +31,12 @@ BJHand.prototype.info = function() {
     s += ".count: "      + this.count() + br;
     s += ".pointTotal: " + this.pointTotal() + br;
     s += ".currRules: "  + this.currRules.name() + br;
-    //s += ".numAces: " + this.numAces + br;        // not used
     return s;
 };
 
 BJHand.prototype.addCard = function(card) {
     if (card.value == "A") this.numAces++;  // is this still needed?
     return this.addObject(card);
-};
-
-// is this needed?
-BJHand.prototype.clear = function() {
-    this.numAces = 0;
-    return AKCollection.prototype.clear.call(this);     // super
 };
 
 // overridden to show face values
