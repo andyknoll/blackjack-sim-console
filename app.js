@@ -31,6 +31,8 @@
             Hand
             Rules
     
+    TO DO: add Game state (DEALING, PLAYING, etc.)
+
 *****************************************************************************/
 
 // var AKObjects = require("./js/lib/ak-objects.js");     // why not?
