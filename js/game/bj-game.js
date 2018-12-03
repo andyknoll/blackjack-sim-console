@@ -25,17 +25,17 @@ var Rules = require("./bj-rules.js");
 // the Game config object - global settings
 var gameConfig = {
     maxDecks   : 4,      // 1 thru 8
-    maxRounds  : 1,
+    maxRounds  : 20,
     startCash  : 200,
     anteAmount : 20,
     houseCash  : 0,
     ruleSet    : 1,     // Novice, Greedy, Vegas, AC
-    dealer : { nickname : "Mr. Dealer" },
+    dealer : { nickname : "Dealer" },
     players : [
-        { nickname : "C. Barrows" },
-        { nickname : "B. Moran"  },
-        { nickname : "J. Dillenger"  },
-        { nickname : "V. Corleone"  }
+        { nickname : "Barrows"   },
+        { nickname : "Moran"     },
+        { nickname : "Dillenger" },
+        { nickname : "Corleone"  }
     ]
 };
 
@@ -154,7 +154,7 @@ BJGame.prototype.setCurrRules = function(idx) {
 
 BJGame.prototype.initRounds = function() {
     this.msg = "BJGame.initRounds";
-    this.status = BJGame.IDLE;
+    this.status = BJGame.STOPPED;
     this.currRound = 0;
     this.players.initRounds();
     this.dealer.initRounds();
@@ -163,7 +163,7 @@ BJGame.prototype.initRounds = function() {
 
 // called many times - once each loop
 BJGame.prototype.startRound = function() {
-    if (this.status != BJGame.IDLE) return false;
+    if (this.status != BJGame.STOPPED) return false;
     this.msg = "BJGame.startRound";
     this.status = BJGame.STARTING;
     this.currRound++;
@@ -274,16 +274,15 @@ BJGame.prototype.scorePlayerHand = function(player, dealer) {
 BJGame.prototype.completeRound = function() {
     if (this.status != BJGame.SCORING) return false;
     this.msg = "BJGame.completeRound";
-    this.status = BJGame.COMPLETE;
+    this.status = BJGame.STOPPED;
     return true;
 };
 
 
 // status codes
-BJGame.IDLE     = 0;
+BJGame.STOPPED  = 0;
 BJGame.STARTING = 1;
-BJGame.PLAYING  = 3;
-BJGame.SCORING  = 4;
-BJGame.COMPLETE = 5;
+BJGame.PLAYING  = 2;
+BJGame.SCORING  = 3;
 
 module.exports = BJGame;
