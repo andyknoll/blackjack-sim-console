@@ -255,6 +255,8 @@ BJController.prototype.decideDealerBusted = function() {
 // this includes the dealer too
 BJController.prototype.scorePlayersHands = function() {
     //this.debug("BJController.scorePlayersHands");
+    this.game.scorePlayersHands();
+    this.view.scorePlayersHands();
     for (var i = 0; i < this.game.players.count(); i++) {
         var player = this.game.players.player(i);
         if (!player.isBroke() && !player.isBusted) {
@@ -281,6 +283,7 @@ BJController.prototype.completeRound = function() {
 
 BJController.prototype.showFinalStats = function() {
     //this.debug("BJController.showFinalStats");
+    this.game.status = BJGame.IDLE;
     this.view.showFinalStats(this.game);
     this.debug("");
 };

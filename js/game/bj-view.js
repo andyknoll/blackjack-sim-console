@@ -145,6 +145,11 @@ BJConsoleView.prototype.showPlayerHandAction = function(player, action) {
 };
 
 
+BJConsoleView.prototype.scorePlayersHands = function() {
+    this.msg = "BJConsoleView.scorePlayersHands";
+};
+
+
 BJConsoleView.prototype.scorePlayerHand = function(player, dealer) {
     this.msg = "BJConsoleView.scorePlayerHand";
     var playerHand = player.hand;

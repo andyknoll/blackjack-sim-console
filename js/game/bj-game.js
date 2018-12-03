@@ -56,6 +56,7 @@ BJGame = function(name, parent) {
     // for passing to Views - test this more
     this.props = {};
     this.currRound  = 0;
+    this.status     = 0;
     this.maxRounds  = this.config.maxRounds;
     this.maxDecks   = this.config.maxDecks;
     this.ruleSet    = this.config.ruleSet;
@@ -153,6 +154,7 @@ BJGame.prototype.setCurrRules = function(idx) {
 
 BJGame.prototype.initRounds = function() {
     this.msg = "BJGame.initRounds";
+    this.status = BJGame.IDLE;
     this.currRound = 0;
     this.players.initRounds();
     this.dealer.initRounds();
@@ -161,39 +163,62 @@ BJGame.prototype.initRounds = function() {
 
 // called many times - once each loop
 BJGame.prototype.startRound = function() {
+    if (this.status != BJGame.IDLE) return false;
     this.msg = "BJGame.startRound";
+    this.status = BJGame.STARTING;
     this.currRound++;
+    return true;
 };
 
 
 BJGame.prototype.clearAllHands = function() {
+    if (this.status != BJGame.STARTING) return false;
     this.msg = "BJGame.clearAllHands";
     this.players.clearHands();
     this.dealer.clearHand();
+    return true;
 };
 
 
 BJGame.prototype.shuffleDeck = function() {
+    if (this.status != BJGame.STARTING) return false;
     this.msg = "BJGame.shuffleDeck";
     this.dealer.shuffleDeck();    
+    return true;
 };
 
 BJGame.prototype.anteAllUp = function() {
+    if (this.status != BJGame.STARTING) return false;
     this.msg = "BJGame.anteAllUp";
     this.players.anteAllUp();
+    return true;
 };
 
 BJGame.prototype.dealFirstCards = function() {
+    if (this.status != BJGame.STARTING) return false;
     this.msg = "BJGame.dealFirstCards";
+    this.status = BJGame.PLAYING;
+    return true;
 };
 
 BJGame.prototype.dealPlayerCard = function(player) {
+    if (this.status != BJGame.PLAYING) return false;
     this.msg = "BJGame.dealPlayerCard";
     this.dealer.dealCardTo(player);    
+    return true;
 };
+
+BJGame.prototype.scorePlayersHands = function() {
+    if (this.status != BJGame.PLAYING) return false;
+    this.msg = "BJGame.scorePlayersHands";
+    this.status = BJGame.SCORING;
+    return true;
+};
+
 
 // player busted - dealer wins
 BJGame.prototype.scorePlayerIsBusted = function(player) {
+    if (this.status != BJGame.SCORING) return false;
     this.msg = "BJGame.scorePlayerIsBusted";
     player.isBusted = true;     // this round only
     player.lossCount++;
@@ -201,11 +226,14 @@ BJGame.prototype.scorePlayerIsBusted = function(player) {
     // player.cash -= this.anteAmount;   // no - already paid into ante
     this.dealer.winCount++;
     this.dealer.cash += this.anteAmount;
+    return true;
 };
 
 // only the non-busted players still in this round
 BJGame.prototype.scorePlayerHand = function(player, dealer) {
+    if (this.status != BJGame.SCORING) return false;
     this.msg = "BJGame.scorePlayerHand";
+    this.status = BJGame.SCORING;
     var playerHand = player.hand;
     var dealerHand = dealer.hand;
 
@@ -240,11 +268,22 @@ BJGame.prototype.scorePlayerHand = function(player, dealer) {
         dealer.tieCount++;
         dealer.outcome = "PUSH";
     }
+    return true;
 };
 
 BJGame.prototype.completeRound = function() {
+    if (this.status != BJGame.SCORING) return false;
     this.msg = "BJGame.completeRound";
+    this.status = BJGame.COMPLETE;
+    return true;
 };
 
+
+// status codes
+BJGame.IDLE     = 0;
+BJGame.STARTING = 1;
+BJGame.PLAYING  = 3;
+BJGame.SCORING  = 4;
+BJGame.COMPLETE = 5;
 
 module.exports = BJGame;
