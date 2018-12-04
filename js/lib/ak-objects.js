@@ -13,8 +13,9 @@
 
 *****************************************************************************/
 
-var br = "\r\n";      // CRLF newline for output
+// "use strict";
 
+var br = "\r\n";      // CRLF newline for output
 
 // base AKObject class
 AKObject = function(name, parent) {
@@ -41,6 +42,39 @@ AKObject.prototype.info = function() {
     s += ".className: " + this.className() + br;
     return s;
 };
+
+/*
+// ES6 syntax
+class AKObject {
+    #name = "";
+    #parent = null;
+    #className = "AKObject";
+
+    constructor(name, parent) {
+        this.#name = name;
+        this.#parent = parent;
+    }
+
+    get name() { return this.#name; }
+    get parent() { return this.#parent; }
+    get className() { return this.#className; }
+
+    get info() {
+        var s = "OBJECT PROPERTIES" + br;
+        s += ".name: " + this.#name + br;
+    
+        if (this.parent() != null) {
+            s += ".parent: " + this.#parent.#name + br;
+        } else {
+            s += ".parent: null" + br;
+        }
+    
+        s += ".className: " + this.#className + br;
+        return s;    
+    }
+};
+*/
+
 
 
 
@@ -113,10 +147,10 @@ AKCollection.prototype.constructor = AKCollection;
 
 
 // getters
-AKCollection.prototype.object    = function(idx) { return this.byIndex(idx); };
-AKCollection.prototype.currIndex = function() { return this._currIndex; };
-AKCollection.prototype.count     = function() { return this._objects.length; };
-AKCollection.prototype.isEmpty   = function() { return this.count() == 0; };
+AKCollection.prototype.object     = function(idx) { return this.byIndex(idx); };
+AKCollection.prototype.currIndex  = function() { return this._currIndex; };
+AKCollection.prototype.count      = function() { return this._objects.length; };
+AKCollection.prototype.isEmpty    = function() { return this.count() == 0; };
 
 AKCollection.prototype.isFirstObject = function() { return this._currIndex == 0; };
 AKCollection.prototype.isLastObject  = function() { return this._currIndex == this.count() - 1; };
