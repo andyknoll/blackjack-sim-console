@@ -218,7 +218,7 @@ BJGame.prototype.scorePlayersHands = function() {
 
 // player busted - dealer wins
 BJGame.prototype.scorePlayerIsBusted = function(player) {
-    if (this.status != BJGame.SCORING) return false;
+    //if (this.status != BJGame.SCORING) return false;
     this.msg = "BJGame.scorePlayerIsBusted";
     player.isBusted = true;     // this round only
     player.lossCount++;
@@ -231,7 +231,7 @@ BJGame.prototype.scorePlayerIsBusted = function(player) {
 
 // only the non-busted players still in this round
 BJGame.prototype.scorePlayerHand = function(player, dealer) {
-    if (this.status != BJGame.SCORING) return false;
+    //if (this.status != BJGame.SCORING) return false;
     this.msg = "BJGame.scorePlayerHand";
     this.status = BJGame.SCORING;
     var playerHand = player.hand;
@@ -272,7 +272,7 @@ BJGame.prototype.scorePlayerHand = function(player, dealer) {
 };
 
 BJGame.prototype.completeRound = function() {
-    if (this.status != BJGame.SCORING) return false;
+    //if (this.status != BJGame.SCORING) return false;
     this.msg = "BJGame.completeRound";
     this.status = BJGame.STOPPED;
     return true;
