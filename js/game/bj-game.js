@@ -32,10 +32,10 @@ var gameConfig = {
     ruleSet    : 1,     // Novice, Greedy, Vegas, AC
     dealer : { nickname : "Dealer" },
     players : [
-        { nickname : "Barrows"   },
-        { nickname : "Moran"     },
-        { nickname : "Dillenger" },
-        { nickname : "Corleone"  }
+        { nickname : "Vito"   },
+        { nickname : "Sonny"     },
+        { nickname : "Fredo" },
+        { nickname : "Michael"  }
     ]
 };
 
